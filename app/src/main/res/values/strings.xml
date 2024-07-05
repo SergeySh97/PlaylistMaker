@@ -1,3 +1,18 @@
 <resources>
     <string name="app_name">Playlist Maker</string>
+    <string name="playlist_maker">Playlist Maker</string>
+    <string name="search">Поиск</string>
+    <string name="media">Медиатека</string>
+    <string name="settings">Настройки</string>
+    <string name="loupe">Лупа</string>
+    <string name="note">Квадратная плашка с нотой</string>
+    <string name="gear">Шестерёнка</string>
+    <string name="arrow_left">Стрелка назад</string>
+    <string name="arrow_right">Стрелка вперед</string>
+    <string name="black_theme">Темная тема</string>
+    <string name="share_app">Поделиться приложением</string>
+    <string name="share_icon">Значок поделиться</string>
+    <string name="write_to_support">Написать в поддержку</string>
+    <string name="support_icon">Значок лица в наушниках с микрофоном</string>
+    <string name="user_agreement">Пользовательское соглашение</string>
 </resources>
