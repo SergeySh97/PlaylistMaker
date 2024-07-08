@@ -1,8 +1,8 @@
 package com.google.playlistmaker
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -16,25 +16,22 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         enableEdgeToEdge()
         setContentView(binding.root)
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
+        ViewCompat.setOnApplyWindowInsetsListener(binding.main) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
         val imageClickListener: View.OnClickListener = object : View.OnClickListener {
             override fun onClick(v: View?) {
-                toast(R.string.search)
+                startActivity(Intent(this@MainActivity, SearchActivity::class.java))
             }
         }
         binding.btSearch.setOnClickListener(imageClickListener)
         binding.btMedia.setOnClickListener {
-            toast(R.string.media)
+            startActivity(Intent(this, MediaActivity::class.java))
         }
         binding.btSettings.setOnClickListener {
-            toast(R.string.settings)
+            startActivity(Intent(this, SettingsActivity::class.java))
         }
-    }
-    private fun toast(text: Int) {
-        Toast.makeText(this@MainActivity, text, Toast.LENGTH_SHORT).show()
     }
 }

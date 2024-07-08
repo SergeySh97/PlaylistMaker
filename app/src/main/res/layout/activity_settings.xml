@@ -10,6 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/toolbar_height">
         <ImageView
+            android:id="@+id/btBack"
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:contentDescription="@string/arrow_left"
