@@ -21,12 +21,9 @@ class MainActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-        val imageClickListener: View.OnClickListener = object : View.OnClickListener {
-            override fun onClick(v: View?) {
-                startActivity(Intent(this@MainActivity, SearchActivity::class.java))
-            }
+        binding.btSearch.setOnClickListener {
+            startActivity(Intent(this, SearchActivity::class.java))
         }
-        binding.btSearch.setOnClickListener(imageClickListener)
         binding.btMedia.setOnClickListener {
             startActivity(Intent(this, MediaActivity::class.java))
         }

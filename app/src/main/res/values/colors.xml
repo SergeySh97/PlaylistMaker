@@ -4,6 +4,7 @@
     <color name="white">#FFFFFFFF</color>
     <color name="main_background">#3772E7</color>
     <color name="black_for_text">#1A1B22</color>
+    <color name="black_for_vectors">#1A1B22</color>
     <color name="transparent">#00000000</color>
 
 </resources>
