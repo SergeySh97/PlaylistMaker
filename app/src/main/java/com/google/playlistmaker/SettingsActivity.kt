@@ -10,7 +10,7 @@ import androidx.core.view.WindowInsetsCompat
 import com.google.playlistmaker.databinding.ActivitySettingsBinding
 
 class SettingsActivity : AppCompatActivity() {
-    lateinit var binding: ActivitySettingsBinding
+    private lateinit var binding: ActivitySettingsBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivitySettingsBinding.inflate(layoutInflater)
@@ -26,7 +26,7 @@ class SettingsActivity : AppCompatActivity() {
         }
         binding.tvShare.setOnClickListener {
             startActivity(Intent(Intent.ACTION_SEND).apply {
-                putExtra(Intent.EXTRA_TEXT, getString(R.string.share_link));
+                putExtra(Intent.EXTRA_TEXT, getString(R.string.share_link))
                 type = "text/plain"
             })
         }
