@@ -22,7 +22,7 @@ class SettingsActivity : AppCompatActivity() {
             insets
         }
         binding.btBack.setOnClickListener {
-            startActivity(Intent(this, MainActivity::class.java))
+            onBackPressed()
         }
         binding.tvShare.setOnClickListener {
             startActivity(Intent(Intent.ACTION_SEND).apply {
