@@ -30,6 +30,9 @@ class SearchActivity : AppCompatActivity() {
             binding.etSearch.setText(searchText)
             binding.etSearch.setSelection(searchText?.length ?: 0)
         }
+        binding.btBack.setOnClickListener {
+            onBackPressed()
+        }
         binding.ivClear.setOnClickListener {
             binding.etSearch.text?.clear()
             val imm = this.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
