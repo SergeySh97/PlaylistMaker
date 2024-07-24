@@ -14,6 +14,7 @@ import com.google.playlistmaker.databinding.ActivitySearchBinding
 
 class SearchActivity : AppCompatActivity() {
     private lateinit var binding:ActivitySearchBinding
+    private var searchText: String? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -23,6 +24,11 @@ class SearchActivity : AppCompatActivity() {
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
+        }
+        if (savedInstanceState != null) {
+            searchText = savedInstanceState.getString("searchText")
+            binding.etSearch.setText(searchText)
+            binding.etSearch.setSelection(searchText?.length ?: 0)
         }
         binding.ivClear.setOnClickListener {
             binding.etSearch.text?.clear()
@@ -36,7 +42,19 @@ class SearchActivity : AppCompatActivity() {
 
             override fun afterTextChanged(s: Editable?) {
                 binding.ivClear.visibility = if (s.isNullOrEmpty()) View.GONE else View.VISIBLE
+                searchText = s.toString()
             }
         })
+    }
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putString("searchText", searchText)
+    }
+
+    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+        super.onRestoreInstanceState(savedInstanceState)
+        searchText = savedInstanceState.getString("searchText")
+        binding.etSearch.setText(searchText)
+        binding.etSearch.setSelection(searchText?.length ?: 0)
     }
 }
