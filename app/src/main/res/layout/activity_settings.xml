@@ -47,16 +47,19 @@
     </LinearLayout>
 
     <TextView
+        android:id="@+id/tvShare"
         style="@style/SettingsTextView"
         android:text="@string/share_app"
         app:drawableEndCompat="@drawable/share"/>
 
     <TextView
+        android:id="@+id/tvSupport"
         style="@style/SettingsTextView"
         android:text="@string/write_to_support"
         app:drawableEndCompat="@drawable/support"/>
 
     <TextView
+        android:id="@+id/tvUserAgreement"
         style="@style/SettingsTextView"
         android:text="@string/user_agreement"
         app:drawableEndCompat="@drawable/open"/>

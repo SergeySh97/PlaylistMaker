@@ -11,8 +11,13 @@
     <string name="arrow_right">Стрелка вперед</string>
     <string name="black_theme">Темная тема</string>
     <string name="share_app">Поделиться приложением</string>
+    <string name="share_link">https://practicum.yandex.ru/profile/android-developer/</string>
     <string name="share_icon">Значок поделиться</string>
     <string name="write_to_support">Написать в поддержку</string>
     <string name="support_icon">Значок лица в наушниках с микрофоном</string>
     <string name="user_agreement">Пользовательское соглашение</string>
+    <string name="user_agreement_uri">https://yandex.ru/legal/practicum_offer/</string>
+    <string name="support_uri">mailto:worldoftanks14@yandex.ru
+        ?subject=Сообщение разработчикам и разработчицам приложения Playlist Maker
+    &amp;body=Спасибо разработчикам и разработчицам за крутое приложение!</string>
 </resources>
