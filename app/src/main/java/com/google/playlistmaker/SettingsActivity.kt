@@ -26,17 +26,22 @@ class SettingsActivity : AppCompatActivity() {
         }
         binding.tvShare.setOnClickListener {
             startActivity(Intent(Intent.ACTION_SEND).apply {
-                putExtra(Intent.EXTRA_TEXT, getString(R.string.share_link))
+                putExtra(Intent.EXTRA_TEXT, SHARE_LINK)
                 type = "text/plain"
             })
         }
         binding.tvSupport.setOnClickListener {
-            startActivity(Intent(Intent.ACTION_SENDTO).apply {
-                data = Uri.parse(getString(R.string.support_uri))
-            })
+            startActivity(Intent(Intent.ACTION_SENDTO, Uri.parse(SUPPORT_URI)))
         }
         binding.tvUserAgreement.setOnClickListener {
-            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.user_agreement_uri))))
+            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(USER_AGREEMENT_URI)))
         }
+    }
+    companion object {
+        const val SUPPORT_URI = "mailto:worldoftanks14@yandex.ru" +
+                "?subject=Сообщение разработчикам и разработчицам приложения Playlist Maker" +
+                "&body=Спасибо разработчикам и разработчицам за крутое приложение!"
+        const val USER_AGREEMENT_URI = "https://yandex.ru/legal/practicum_offer/"
+        const val SHARE_LINK = "https://practicum.yandex.ru/profile/android-developer/"
     }
 }

@@ -6,7 +6,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".SearchActivity">
+    tools:context=".SearchActivity"
+    style="@style/BackgroundWB">
 
     <androidx.appcompat.widget.Toolbar
         android:layout_width="match_parent"
@@ -27,7 +28,7 @@
             android:text="@string/search"
             android:textSize="22sp"
             android:fontFamily="@font/ys_display_medium"
-            style="@style/SettingsTextViewTextColor"/>
+            style="@style/TextColorBW"/>
     </androidx.appcompat.widget.Toolbar>
 
     <LinearLayout
@@ -41,9 +42,24 @@
         android:background="@drawable/search_et_background">
         <EditText
             android:id="@+id/etSearch"
+            android:layout_width="0dp"
+            android:layout_height="52dp"
+            android:layout_weight="1"
+            android:paddingStart="12dp"
+            android:paddingEnd="0dp"
             style="@style/SearchEditText"/>
         <ImageView
             android:id="@+id/ivClear"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingEnd="14dp"
+            android:paddingStart="0dp"
             style="@style/SearchClearIV"/>
     </LinearLayout>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvSearch"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="16dp"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
 </LinearLayout>
