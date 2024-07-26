@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/main"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@color/main_background">
+    style="@style/MainLayout">
 
     <androidx.appcompat.widget.Toolbar
         android:layout_width="match_parent"
@@ -15,6 +13,7 @@
             android:text="@string/playlist_maker"
             android:textColor="@color/white"
             android:textSize="@dimen/main_text_size"
+            android:fontFamily="@font/ys_display_medium"
             android:layout_marginStart="12dp"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="12dp" />
@@ -29,73 +28,24 @@
         android:layout_marginBottom="28dp"
         android:layout_marginStart="@dimen/margin_main_bt"
         android:layout_marginEnd="@dimen/margin_main_bt">
-        <LinearLayout
+        <Button
             android:id="@+id/btSearch"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:orientation="horizontal"
-            android:gravity="center"
-            android:background="@drawable/main_bt_background"
-            android:layout_marginTop="@dimen/margin_main_bt">
-            <ImageView
-                android:layout_width="@dimen/main_image_size"
-                android:layout_height="@dimen/main_image_size"
-                android:contentDescription="@string/loupe"
-                android:layout_marginEnd="8dp"
-                android:src="@drawable/bt_search"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/search"
-                android:textSize="@dimen/main_text_size"
-                android:textColor="@color/black_for_text"/>
-        </LinearLayout>
-
-        <LinearLayout
+            android:text="@string/search"
+            android:contentDescription="@string/loupe"
+            style="@style/MainButton"
+            app:icon="@drawable/bt_search"/>
+        <Button
             android:id="@+id/btMedia"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:orientation="horizontal"
-            android:gravity="center"
-            android:background="@drawable/main_bt_background"
-            android:layout_marginTop="@dimen/margin_main_bt">
-            <ImageView
-                android:layout_width="@dimen/main_image_size"
-                android:layout_height="@dimen/main_image_size"
-                android:contentDescription="@string/note"
-                android:layout_marginEnd="8dp"
-                android:src="@drawable/bt_media"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/media"
-                android:textSize="@dimen/main_text_size"
-                android:textColor="@color/black_for_text"/>
-        </LinearLayout>
+            android:text="@string/media"
+            android:contentDescription="@string/note"
+            style="@style/MainButton"
+            app:icon="@drawable/bt_media"/>
 
-        <LinearLayout
+        <Button
             android:id="@+id/btSettings"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:orientation="horizontal"
-            android:gravity="center"
-            android:background="@drawable/main_bt_background"
-            android:layout_marginTop="@dimen/margin_main_bt">
-            <ImageView
-                android:layout_width="@dimen/main_image_size"
-                android:layout_height="@dimen/main_image_size"
-                android:contentDescription="@string/gear"
-                android:layout_marginEnd="8dp"
-                android:src="@drawable/bt_settings"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/settings"
-                android:textSize="@dimen/main_text_size"
-                android:textColor="@color/black_for_text"/>
-        </LinearLayout>
+            android:text="@string/settings"
+            android:contentDescription="@string/gear"
+            style="@style/MainButton"
+            app:icon="@drawable/bt_settings" />
     </LinearLayout>
 </LinearLayout>

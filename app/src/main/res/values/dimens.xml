@@ -3,9 +3,11 @@
     <dimen name="margin_main_bt">16dp</dimen>
     <dimen name="margin_settings_iv">12dp</dimen>
     <dimen name="margin_settings_tv">16dp</dimen>
+    <dimen name="main_bt_corner">16dp</dimen>
     <dimen name="main_image_size">24dp</dimen>
     <dimen name="main_text_size">24sp</dimen>
     <dimen name="settings_text_size">16sp</dimen>
     <dimen name="toolbar_height">56dp</dimen>
     <dimen name="settings_layout_height">56dp</dimen>
+    <dimen name="icon_padding">8dp</dimen>
 </resources>
