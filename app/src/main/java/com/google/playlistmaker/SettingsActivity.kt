@@ -33,6 +33,9 @@ class SettingsActivity : AppCompatActivity() {
         binding.tvSupport.setOnClickListener {
             startActivity(Intent(Intent.ACTION_SENDTO).apply {
                 data = Uri.parse(getString(R.string.support_uri))
+                putExtra(Intent.EXTRA_EMAIL, arrayOf(getString(R.string.support_email)))
+                putExtra(Intent.EXTRA_SUBJECT, getString(R.string.support_subject))
+                putExtra(Intent.EXTRA_TEXT, getString(R.string.support_body))
             })
         }
         binding.tvUserAgreement.setOnClickListener {
