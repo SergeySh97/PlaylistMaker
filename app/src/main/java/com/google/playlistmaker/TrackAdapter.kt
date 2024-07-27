@@ -33,9 +33,12 @@ class TrackAdapter(private var trackList: ArrayList<Track>) : RecyclerView.Adapt
             trackName.text = trackData.trackName
             artistName.text = trackData.artistName
             trackTime.text = trackData.trackTime
+            val radiusInDp = 2
+            val density = itemView.resources.displayMetrics.density
+            val radiusInPixels = (radiusInDp * density).toInt()
             Glide.with(itemView)
                 .load(trackData.artworkUrl100)
-                .transform(RoundedCorners(2))
+                .transform(RoundedCorners(radiusInPixels))
                 .centerCrop()
                 .placeholder(R.drawable.placeholder)
                 .into(artworkUrl100)
