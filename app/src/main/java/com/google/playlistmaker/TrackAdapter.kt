@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -30,11 +31,13 @@ class TrackAdapter(private var trackList: ArrayList<Track>) : RecyclerView.Adapt
         private val artistName: TextView = itemView.findViewById(R.id.artistName)
         private val trackTime: TextView = itemView.findViewById(R.id.trackTime)
         private val artworkUrl100: ImageView = itemView.findViewById(R.id.ivAlbum)
+        private val llArtistName: LinearLayout = itemView.findViewById(R.id.llArtistName)
+        private val dateFormat by lazy { SimpleDateFormat("mm:ss", Locale.getDefault()) }
 
         fun bind(trackData: Track) {
             trackName.text = trackData.trackName
             artistName.text = trackData.artistName.trim()
-            trackTime.text = SimpleDateFormat("mm:ss", Locale.getDefault()).format(trackData.trackTimeMillis.toLong())
+            trackTime.text = dateFormat.format(trackData.trackTimeMillis.toLong())
 
             val radiusInDp = 2
             val density = itemView.resources.displayMetrics.density
@@ -45,6 +48,7 @@ class TrackAdapter(private var trackList: ArrayList<Track>) : RecyclerView.Adapt
                 .centerCrop()
                 .placeholder(R.drawable.placeholder)
                 .into(artworkUrl100)
+            artistName.requestLayout()
         }
     }
 }

@@ -1,6 +1,7 @@
 package com.google.playlistmaker
 
 import android.content.Context
+import android.net.ConnectivityManager
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -21,7 +22,6 @@ import retrofit2.Response
 class SearchActivity : AppCompatActivity() {
     private lateinit var binding:ActivitySearchBinding
     private var searchText: String? = null
-    private val utils = Utils()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -91,7 +91,7 @@ class SearchActivity : AppCompatActivity() {
     private fun searchError(errorCode: Int) {
         binding.apply {
             rvSearch.visibility = View.GONE
-            if (errorCode in 200..300) {
+            if (errorCode in 200..299) {
                 llError.visibility = View.VISIBLE
                 ivErrorSmile.visibility = View.VISIBLE
                 tvError.text = getString(R.string.didnt_have)
@@ -110,14 +110,24 @@ class SearchActivity : AppCompatActivity() {
         }
     }
         private fun search() {
-        val etSearch = binding.etSearch.text.toString()
-        CoroutineScope(Dispatchers.IO).launch {
-            val response = utils.initRetrofit().search(etSearch)
-            withContext(Dispatchers.Main) {
-                if (response.isSuccessful && response.body()?.resultCount != 0) createRecycler(response)
-                else searchError(response.code())
+            if (isInternetAvailable()) {
+                val etSearch = binding.etSearch.text.toString()
+                CoroutineScope(Dispatchers.IO).launch {
+                    val response = Utils.initRetrofit().search(etSearch)
+                    withContext(Dispatchers.Main) {
+                        if (response.isSuccessful && response.body()?.resultCount != 0) createRecycler(
+                            response
+                        )
+                        else searchError(response.code())
+                    }
+                }
             }
+            else searchError(0)
         }
+    private fun isInternetAvailable(): Boolean {
+        val connectivityManager = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val activeNetwork = connectivityManager.activeNetworkInfo
+        return activeNetwork != null && activeNetwork.isConnected
     }
     companion object {
         const val SEARCH_TEXT = "searchText"
