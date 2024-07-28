@@ -26,6 +26,7 @@
             android:layout_marginTop="14dp"
             style="@style/AdapterTrackName"/>
         <LinearLayout
+            android:id="@+id/llArtistName"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:orientation="horizontal"

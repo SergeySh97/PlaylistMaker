@@ -52,4 +52,9 @@ dependencies {
     androidTestImplementation(libs.androidx.espresso.core)
     //glide
     implementation(libs.com.github.bumptech.glide)
+    //Retrofit2
+    implementation(libs.com.squareup.retrofit2.retrofit)
+    implementation(libs.com.squareup.retrofit2.converter.gson)
+    implementation(libs.com.squareup.okhttp3.okhttp)
+    implementation(libs.com.squareup.okhttp3.logging.interceptor)
 }
