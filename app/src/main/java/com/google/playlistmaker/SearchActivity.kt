@@ -5,16 +5,23 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
+import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.google.playlistmaker.databinding.ActivitySearchBinding
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import retrofit2.Response
 
 class SearchActivity : AppCompatActivity() {
     private lateinit var binding:ActivitySearchBinding
     private var searchText: String? = null
+    private val utils = Utils()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -25,30 +32,41 @@ class SearchActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-        createRecycler()
+        binding.apply {
         if (savedInstanceState != null) {
             searchText = savedInstanceState.getString(SEARCH_TEXT)
-            binding.etSearch.setText(searchText)
-            binding.etSearch.setSelection(searchText?.length ?: 0)
+            etSearch.setText(searchText)
+            etSearch.setSelection(searchText?.length ?: 0)
         }
-        binding.btBack.setOnClickListener {
-            onBackPressed()
-        }
-        binding.ivClear.setOnClickListener {
-            binding.etSearch.text?.clear()
-            val imm = this.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            imm.hideSoftInputFromWindow(binding.etSearch.windowToken, 0)
-        }
-        binding.etSearch.addTextChangedListener(object: TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
-
-            override fun afterTextChanged(s: Editable?) {
-                binding.ivClear.visibility = if (s.isNullOrEmpty()) View.GONE else View.VISIBLE
-                searchText = s.toString()
+            btBack.setOnClickListener {
+                onBackPressed()
             }
-        })
+            ivClear.setOnClickListener {
+                etSearch.text?.clear()
+                llError.visibility = View.GONE
+                rvSearch.visibility = View.GONE
+                val imm = this@SearchActivity
+                    .getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                imm.hideSoftInputFromWindow(etSearch.windowToken, 0)
+            }
+            etSearch.setOnEditorActionListener { _, actionId, _ ->
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    search()
+                    true
+                }
+                else false
+            }
+            etSearch.addTextChangedListener(object: TextWatcher {
+                override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+
+                override fun afterTextChanged(s: Editable?) {
+                    ivClear.visibility = if (s.isNullOrEmpty()) View.GONE else View.VISIBLE
+                    searchText = s.toString()
+                }
+            })
+        }
     }
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
@@ -61,31 +79,45 @@ class SearchActivity : AppCompatActivity() {
         binding.etSearch.setText(searchText)
         binding.etSearch.setSelection(searchText?.length ?: 0)
     }
-    private fun createRecycler() {
-        val trackList: ArrayList<Track> = arrayListOf(
-            Track("Smells Like Teen Spirit", "Nirvana", "5:01",
-        "https://is5-ssl.mzstatic.com/image/thumb/Music115/v4/7b/58/c2/7b58c21a-2b51" +
-                    "-2bb2-e59a-9bb9b96ad8c3/00602567924166.rgb.jpg/100x100bb.jpg"),
-            Track("Billie Jean", "Michael Jackson", "4:35",
-            "https://is5-ssl.mzstatic.com/image/thumb/Music125/v4/3d/9d/38/3d9d3811" +
-                    "-71f0-3a0e-1ada-3004e56ff852/827969428726.jpg/100x100bb.jpg"),
-            Track("Stayin' Alive", "Bee Gees", "4:10",
-                "https://is4-ssl.mzstatic.com/image/thumb/Music115/v4/1f/80/1f/1f801fc1" +
-                        "-8c0f-ea3e-d3e5-387c6619619e/16UMGIM86640.rgb.jpg/100x100bb.jpg"),
-            Track("Whole Lotta Love", "Led Zeppelin", "5:33",
-                "https://is2-ssl.mzstatic.com/image/thumb/Music62/v4/7e/17/e3/7e17e33f" +
-                        "-2efa-2a36-e916-7f808576cf6b/mzm.fyigqcbs.jpg/100x100bb.jpg"),
-            Track("Sweet Child O'Mine", "Guns N' Roses", "5:03",
-                "https://is5-ssl.mzstatic.com/image/thumb/Music125/v4/a0/4d/c4/a04dc484" +
-                        "-03cc-02aa-fa82-5334fcb4bc16/18UMGIM24878.rgb.jpg/100x100bb.jpg"),
-            Track("Sweet Child O'Mineeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee", "Guns N' Rosessssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss", "5:03",
-                "https://is5-ssl.mzstatic.com/image/thumb/Music125/v4/a0/4d/c4/a04dc484" +
-                        "-03cc-02aa-fa82-5334fcb4bc16/18UMGIM24878.rgb.jpg/100x100bb.jpg")
-        )
-        val recyclerView = binding.rvSearch
-        val adapter = TrackAdapter(trackList)
-        recyclerView.adapter = adapter
-        adapter.notifyDataSetChanged()
+    private fun createRecycler(response: Response<TracksFound>) {
+            val trackList = response.body()?.results
+            val recyclerView = binding.rvSearch
+            val adapter = trackList?.let { TrackAdapter(it) }
+            binding.llError.visibility = View.GONE
+            recyclerView.visibility = View.VISIBLE
+            recyclerView.adapter = adapter
+            adapter?.notifyDataSetChanged()
+    }
+    private fun searchError(errorCode: Int) {
+        binding.apply {
+            rvSearch.visibility = View.GONE
+            if (errorCode in 200..300) {
+                llError.visibility = View.VISIBLE
+                ivErrorSmile.visibility = View.VISIBLE
+                tvError.text = getString(R.string.didnt_have)
+                ivErrorWifi.visibility = View.GONE
+                btRefresh.visibility = View.GONE
+            } else {
+                llError.visibility = View.VISIBLE
+                ivErrorSmile.visibility = View.GONE
+                ivErrorWifi.visibility = View.VISIBLE
+                btRefresh.visibility = View.VISIBLE
+                tvError.text = getString(R.string.internet_problem)
+                btRefresh.setOnClickListener {
+                    search()
+                }
+            }
+        }
+    }
+        private fun search() {
+        val etSearch = binding.etSearch.text.toString()
+        CoroutineScope(Dispatchers.IO).launch {
+            val response = utils.initRetrofit().search(etSearch)
+            withContext(Dispatchers.Main) {
+                if (response.isSuccessful && response.body()?.resultCount != 0) createRecycler(response)
+                else searchError(response.code())
+            }
+        }
     }
     companion object {
         const val SEARCH_TEXT = "searchText"

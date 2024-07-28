@@ -8,6 +8,8 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import java.text.SimpleDateFormat
+import java.util.Locale
 
 class TrackAdapter(private var trackList: ArrayList<Track>) : RecyclerView.Adapter<TrackAdapter.TrackViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TrackViewHolder {
@@ -31,8 +33,9 @@ class TrackAdapter(private var trackList: ArrayList<Track>) : RecyclerView.Adapt
 
         fun bind(trackData: Track) {
             trackName.text = trackData.trackName
-            artistName.text = trackData.artistName
-            trackTime.text = trackData.trackTime
+            artistName.text = trackData.artistName.trim()
+            trackTime.text = SimpleDateFormat("mm:ss", Locale.getDefault()).format(trackData.trackTimeMillis.toLong())
+
             val radiusInDp = 2
             val density = itemView.resources.displayMetrics.density
             val radiusInPixels = (radiusInDp * density).toInt()
