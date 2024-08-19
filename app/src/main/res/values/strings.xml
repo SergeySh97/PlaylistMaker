@@ -23,4 +23,9 @@
     <string name="support_body">Спасибо разработчикам и разработчицам за крутое приложение!</string>
     <string name="album_art">Обложка альбома</string>
     <string name="ellipse">Кружок</string>
+    <string name="error_message">Изображение с ошибкой</string>
+    <string name="cross">Крестик</string>
+    <string name="refresh">Обновить</string>
+    <string name="didnt_have">Ничего не нашлось</string>
+    <string name="internet_problem">Проблемы со связью\n\nЗагрузка не удалась. Проверьте подключение к интернету</string>
 </resources>
