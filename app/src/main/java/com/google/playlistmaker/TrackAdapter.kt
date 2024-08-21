@@ -1,10 +1,10 @@
 package com.google.playlistmaker
 
+import android.content.SharedPreferences
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -12,7 +12,8 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import java.text.SimpleDateFormat
 import java.util.Locale
 
-class TrackAdapter(private var trackList: ArrayList<Track>) : RecyclerView.Adapter<TrackAdapter.TrackViewHolder>() {
+class TrackAdapter(private var trackList: ArrayList<Track>, private val prefs: SharedPreferences)
+    : RecyclerView.Adapter<TrackAdapter.TrackViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TrackViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.track_adapter, parent, false)
         return TrackViewHolder(view)
@@ -21,6 +22,9 @@ class TrackAdapter(private var trackList: ArrayList<Track>) : RecyclerView.Adapt
     override fun onBindViewHolder(holder: TrackViewHolder, position: Int) {
         val trackData = trackList[position]
         holder.bind(trackData)
+        holder.itemView.setOnClickListener {
+            SearchHistory(prefs).saveHistoryList(trackData)
+        }
     }
 
     override fun getItemCount(): Int {
@@ -31,10 +35,10 @@ class TrackAdapter(private var trackList: ArrayList<Track>) : RecyclerView.Adapt
         private val artistName: TextView = itemView.findViewById(R.id.artistName)
         private val trackTime: TextView = itemView.findViewById(R.id.trackTime)
         private val artworkUrl100: ImageView = itemView.findViewById(R.id.ivAlbum)
-        private val llArtistName: LinearLayout = itemView.findViewById(R.id.llArtistName)
         private val dateFormat by lazy { SimpleDateFormat("mm:ss", Locale.getDefault()) }
 
         fun bind(trackData: Track) {
+
             trackName.text = trackData.trackName
             artistName.text = trackData.artistName.trim()
             trackTime.text = dateFormat.format(trackData.trackTimeMillis.toLong())

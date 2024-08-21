@@ -1,6 +1,7 @@
-package com.google.playlistmaker
+package com.google.playlistmaker.ui
 
 import android.content.Context
+import android.content.SharedPreferences
 import android.net.ConnectivityManager
 import android.os.Bundle
 import android.text.Editable
@@ -12,6 +13,12 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.google.playlistmaker.HistoryTrackAdapter
+import com.google.playlistmaker.R
+import com.google.playlistmaker.SearchHistory
+import com.google.playlistmaker.TrackAdapter
+import com.google.playlistmaker.TracksFound
+import com.google.playlistmaker.Utils
 import com.google.playlistmaker.databinding.ActivitySearchBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -20,7 +27,9 @@ import kotlinx.coroutines.withContext
 import retrofit2.Response
 
 class SearchActivity : AppCompatActivity() {
-    private lateinit var binding:ActivitySearchBinding
+    private lateinit var binding: ActivitySearchBinding
+    private lateinit var prefs: SharedPreferences
+    private lateinit var searchHistory: SearchHistory
     private var searchText: String? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,6 +41,9 @@ class SearchActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+        prefs = getSharedPreferences(PLAYLIST_PREFS, MODE_PRIVATE)
+        searchHistory = SearchHistory(prefs)
+        createHistory()
         binding.apply {
         if (savedInstanceState != null) {
             searchText = savedInstanceState.getString(SEARCH_TEXT)
@@ -41,8 +53,13 @@ class SearchActivity : AppCompatActivity() {
             btBack.setOnClickListener {
                 onBackPressed()
             }
+            btClearHistory.setOnClickListener {
+                searchHistory.clearHistoryList()
+                llHistory.visibility = View.GONE
+            }
             ivClear.setOnClickListener {
                 etSearch.text?.clear()
+                createHistory()
                 llError.visibility = View.GONE
                 rvSearch.visibility = View.GONE
                 val imm = this@SearchActivity
@@ -59,7 +76,12 @@ class SearchActivity : AppCompatActivity() {
             etSearch.addTextChangedListener(object: TextWatcher {
                 override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
-                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                        if (etSearch.hasFocus() && s?.isEmpty() == true) {
+                            llHistory.visibility = View.VISIBLE
+                            createHistory()
+                        } else llHistory.visibility = View.GONE
+                }
 
                 override fun afterTextChanged(s: Editable?) {
                     ivClear.visibility = if (s.isNullOrEmpty()) View.GONE else View.VISIBLE
@@ -67,6 +89,11 @@ class SearchActivity : AppCompatActivity() {
                 }
             })
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        createHistory()
     }
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
@@ -82,11 +109,22 @@ class SearchActivity : AppCompatActivity() {
     private fun createRecycler(response: Response<TracksFound>) {
             val trackList = response.body()?.results
             val recyclerView = binding.rvSearch
-            val adapter = trackList?.let { TrackAdapter(it) }
+            val adapter = trackList?.let { TrackAdapter(it, prefs) }
             binding.llError.visibility = View.GONE
             recyclerView.visibility = View.VISIBLE
             recyclerView.adapter = adapter
             adapter?.notifyDataSetChanged()
+    }
+    private fun createHistory() {
+        val historyList = searchHistory.getHistoryList()
+        if (historyList.isNotEmpty()) {
+            historyList.reverse()
+            val adapter = historyList.let { HistoryTrackAdapter(it, prefs) }
+            val recyclerView = binding.rvHistory
+            recyclerView.visibility = View.VISIBLE
+            recyclerView.adapter = adapter
+            adapter?.notifyDataSetChanged()
+        } else binding.llHistory.visibility = View.GONE
     }
     private fun searchError(errorCode: Int) {
         binding.apply {
@@ -131,5 +169,6 @@ class SearchActivity : AppCompatActivity() {
     }
     companion object {
         const val SEARCH_TEXT = "searchText"
+        const val PLAYLIST_PREFS = "playlist_maker"
     }
 }

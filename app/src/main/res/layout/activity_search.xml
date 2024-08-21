@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".SearchActivity"
+    tools:context=".ui.SearchActivity"
     style="@style/BackgroundWB">
 
     <androidx.appcompat.widget.Toolbar
@@ -119,4 +119,45 @@
         android:layout_marginTop="16dp"
         android:visibility="gone"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+    <LinearLayout
+        android:id="@+id/llHistory"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_gravity="center"
+        android:layout_marginTop="42dp"
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="24dp"
+            android:layout_gravity="center"
+            android:fontFamily="@font/ys_display_medium"
+            android:text="@string/looking_for"
+            android:textSize="19sp"
+            android:gravity="center"
+            style="@style/TextColorBW"/>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvHistory"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:layout_marginTop="16dp"
+                tools:itemCount="5"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+        <Button
+            android:id="@+id/btClearHistory"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:layout_gravity="center"
+            android:textAllCaps="false"
+            android:text="@string/clear_history"
+            android:fontFamily="@font/ys_display_medium"
+            android:textSize="14sp"
+            android:letterSpacing="0"
+            app:cornerRadius="54dp"
+            style="@style/BackgroundTintBW"/>
+    </LinearLayout>
 </LinearLayout>
