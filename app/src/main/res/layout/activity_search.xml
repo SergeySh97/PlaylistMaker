@@ -13,7 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/toolbar_height">
         <ImageView
-            android:id="@+id/btBack"
+            android:id="@+id/bt_back"
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:contentDescription="@string/arrow_left"
@@ -33,7 +33,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="52dp"
+        android:layout_height="36dp"
         android:orientation="horizontal"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
@@ -41,9 +41,9 @@
         android:layout_marginBottom="8dp"
         android:background="@drawable/search_et_background">
         <EditText
-            android:id="@+id/etSearch"
+            android:id="@+id/et_search"
             android:layout_width="0dp"
-            android:layout_height="52dp"
+            android:layout_height="36dp"
             android:layout_weight="1"
             android:paddingStart="12dp"
             android:paddingEnd="0dp"
@@ -51,7 +51,7 @@
             android:imeOptions="actionDone"
             android:singleLine="true"/>
         <ImageView
-            android:id="@+id/ivClear"
+            android:id="@+id/iv_clear"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingEnd="14dp"
@@ -60,7 +60,7 @@
             style="@style/SearchClearIV"/>
     </LinearLayout>
     <LinearLayout
-        android:id="@+id/llError"
+        android:id="@+id/ll_error"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
@@ -68,7 +68,7 @@
         android:visibility="gone">
 
         <ImageView
-            android:id="@+id/ivErrorSmile"
+            android:id="@+id/iv_error_smile"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="102dp"
@@ -77,7 +77,7 @@
             android:contentDescription="@string/error_message"
             style="@style/SearchErrorSmileIV" />
         <ImageView
-            android:id="@+id/ivErrorWifi"
+            android:id="@+id/iv_error_wifi"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="102dp"
@@ -87,7 +87,7 @@
             android:visibility="gone"
             style="@style/SearchErrorWiFiIV"/>
         <TextView
-            android:id="@+id/tvError"
+            android:id="@+id/tv_error"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
@@ -99,7 +99,7 @@
             android:gravity="center"
             style="@style/TextColorBW"/>
         <Button
-            android:id="@+id/btRefresh"
+            android:id="@+id/bt_refresh"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
@@ -113,20 +113,19 @@
             style="@style/BackgroundTintBW"/>
     </LinearLayout>
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvSearch"
+        android:id="@+id/rv_search"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="16dp"
         android:visibility="gone"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
     <LinearLayout
-        android:id="@+id/llHistory"
+        android:id="@+id/ll_history"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_gravity="center"
-        android:layout_marginTop="42dp"
-        >
+        android:layout_marginTop="42dp">
 
         <TextView
             android:layout_width="wrap_content"
@@ -139,7 +138,7 @@
             android:gravity="center"
             style="@style/TextColorBW"/>
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rvHistory"
+                android:id="@+id/rv_history"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
@@ -147,7 +146,7 @@
                 tools:itemCount="5"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
         <Button
-            android:id="@+id/btClearHistory"
+            android:id="@+id/bt_clear_history"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"

@@ -14,22 +14,27 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.google.playlistmaker.HistoryTrackAdapter
+import com.google.playlistmaker.OnTrackClickListener
 import com.google.playlistmaker.R
 import com.google.playlistmaker.SearchHistory
+import com.google.playlistmaker.Track
 import com.google.playlistmaker.TrackAdapter
 import com.google.playlistmaker.TracksFound
 import com.google.playlistmaker.Utils
 import com.google.playlistmaker.databinding.ActivitySearchBinding
+import com.google.playlistmaker.ui.Extensions.gone
+import com.google.playlistmaker.ui.Extensions.visible
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import retrofit2.Response
 
-class SearchActivity : AppCompatActivity() {
+class SearchActivity : AppCompatActivity(), OnTrackClickListener {
     private lateinit var binding: ActivitySearchBinding
     private lateinit var prefs: SharedPreferences
     private lateinit var searchHistory: SearchHistory
+    private lateinit var listener: OnTrackClickListener
     private var searchText: String? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,6 +48,7 @@ class SearchActivity : AppCompatActivity() {
         }
         prefs = getSharedPreferences(PLAYLIST_PREFS, MODE_PRIVATE)
         searchHistory = SearchHistory(prefs)
+        listener = this
         createHistory()
         binding.apply {
         if (savedInstanceState != null) {
@@ -55,13 +61,14 @@ class SearchActivity : AppCompatActivity() {
             }
             btClearHistory.setOnClickListener {
                 searchHistory.clearHistoryList()
-                llHistory.visibility = View.GONE
+                llHistory.gone()
+                btClearHistory.gone()
             }
             ivClear.setOnClickListener {
                 etSearch.text?.clear()
                 createHistory()
-                llError.visibility = View.GONE
-                rvSearch.visibility = View.GONE
+                llError.gone()
+                rvSearch.gone()
                 val imm = this@SearchActivity
                     .getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
                 imm.hideSoftInputFromWindow(etSearch.windowToken, 0)
@@ -78,9 +85,13 @@ class SearchActivity : AppCompatActivity() {
 
                 override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                         if (etSearch.hasFocus() && s?.isEmpty() == true) {
-                            llHistory.visibility = View.VISIBLE
+                            llHistory.visible()
+                            btClearHistory.visible()
                             createHistory()
-                        } else llHistory.visibility = View.GONE
+                        } else {
+                            llHistory.gone()
+                            btClearHistory.gone()
+                        }
                 }
 
                 override fun afterTextChanged(s: Editable?) {
@@ -110,36 +121,42 @@ class SearchActivity : AppCompatActivity() {
             val trackList = response.body()?.results
             val recyclerView = binding.rvSearch
             val adapter = trackList?.let { TrackAdapter(it, prefs) }
-            binding.llError.visibility = View.GONE
-            recyclerView.visibility = View.VISIBLE
+            binding.llError.gone()
+            recyclerView.visible()
             recyclerView.adapter = adapter
             adapter?.notifyDataSetChanged()
     }
     private fun createHistory() {
         val historyList = searchHistory.getHistoryList()
         if (historyList.isNotEmpty()) {
-            historyList.reverse()
-            val adapter = historyList.let { HistoryTrackAdapter(it, prefs) }
+            val adapter = HistoryTrackAdapter(historyList, prefs, listener)
             val recyclerView = binding.rvHistory
-            recyclerView.visibility = View.VISIBLE
+            recyclerView.visible()
             recyclerView.adapter = adapter
             adapter?.notifyDataSetChanged()
-        } else binding.llHistory.visibility = View.GONE
+        } else {
+            binding.llHistory.gone()
+            binding.btClearHistory.gone()
+        }
+    }
+
+    override fun onTrackClick(track: Track) {
+        createHistory()
     }
     private fun searchError(errorCode: Int) {
         binding.apply {
-            rvSearch.visibility = View.GONE
+            rvSearch.gone()
             if (errorCode in 200..299) {
-                llError.visibility = View.VISIBLE
-                ivErrorSmile.visibility = View.VISIBLE
+                llError.visible()
+                ivErrorSmile.visible()
                 tvError.text = getString(R.string.didnt_have)
-                ivErrorWifi.visibility = View.GONE
-                btRefresh.visibility = View.GONE
+                ivErrorWifi.gone()
+                btRefresh.gone()
             } else {
-                llError.visibility = View.VISIBLE
-                ivErrorSmile.visibility = View.GONE
-                ivErrorWifi.visibility = View.VISIBLE
-                btRefresh.visibility = View.VISIBLE
+                llError.visible()
+                ivErrorSmile.gone()
+                ivErrorWifi.visible()
+                btRefresh.visible()
                 tvError.text = getString(R.string.internet_problem)
                 btRefresh.setOnClickListener {
                     search()
@@ -156,11 +173,15 @@ class SearchActivity : AppCompatActivity() {
                         if (response.isSuccessful && response.body()?.resultCount != 0) createRecycler(
                             response
                         )
-                        else searchError(response.code())
+                        else {
+                            searchError(response.code())
+                        }
                     }
                 }
             }
-            else searchError(0)
+            else {
+                searchError(0)
+            }
         }
     private fun isInternetAvailable(): Boolean {
         val connectivityManager = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager

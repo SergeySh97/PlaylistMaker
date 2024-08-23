@@ -17,9 +17,13 @@ class SearchHistory(private val prefs: SharedPreferences) {
     }
     fun saveHistoryList(track: Track) {
         val historyList = getHistoryList()
-        if (historyList.isNotEmpty()) historyList.removeIf { it.trackId == track.trackId }
-        historyList.add(track)
-        if (historyList.size == 11) historyList.removeAt(0)
+        if (historyList.isNotEmpty()) {
+            historyList.removeIf { it.trackId == track.trackId }
+        }
+        historyList.add(0, track)
+        if (historyList.size == 11) {
+            historyList.removeAt(10)
+        }
         val updatedList = Gson().toJson(historyList)
         editor.putString(SEARCH_HISTORY_LIST, updatedList)
         editor.apply()
