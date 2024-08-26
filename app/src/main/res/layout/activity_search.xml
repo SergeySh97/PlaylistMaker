@@ -143,7 +143,6 @@
                 android:layout_height="0dp"
                 android:layout_weight="1"
                 android:layout_marginTop="16dp"
-                tools:itemCount="5"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
         <Button
             android:id="@+id/bt_clear_history"

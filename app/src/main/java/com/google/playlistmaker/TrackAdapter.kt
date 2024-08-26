@@ -13,7 +13,7 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import java.text.SimpleDateFormat
 import java.util.Locale
 
-class TrackAdapter(private var trackList: ArrayList<Track>, private val prefs: SharedPreferences)
+class TrackAdapter(private var trackList: ArrayList<Track>, private val listener: OnTrackClickListener)
     : RecyclerView.Adapter<TrackAdapter.TrackViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TrackViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.track_adapter, parent, false)
@@ -22,10 +22,9 @@ class TrackAdapter(private var trackList: ArrayList<Track>, private val prefs: S
 
     override fun onBindViewHolder(holder: TrackViewHolder, position: Int) {
         val trackData = trackList[position]
-        val searchHistory = SearchHistory(prefs)
         holder.bind(trackData)
         holder.itemView.setOnClickListener {
-            searchHistory.saveHistoryList(trackData)
+            listener.onTrackClick(trackData)
         }
     }
 

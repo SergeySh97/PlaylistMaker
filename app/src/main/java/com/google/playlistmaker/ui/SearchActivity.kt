@@ -13,7 +13,6 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import com.google.playlistmaker.HistoryTrackAdapter
 import com.google.playlistmaker.OnTrackClickListener
 import com.google.playlistmaker.R
 import com.google.playlistmaker.SearchHistory
@@ -120,7 +119,7 @@ class SearchActivity : AppCompatActivity(), OnTrackClickListener {
     private fun createRecycler(response: Response<TracksFound>) {
             val trackList = response.body()?.results
             val recyclerView = binding.rvSearch
-            val adapter = trackList?.let { TrackAdapter(it, prefs) }
+            val adapter = trackList?.let { TrackAdapter(it, listener) }
             binding.llError.gone()
             recyclerView.visible()
             recyclerView.adapter = adapter
@@ -129,11 +128,11 @@ class SearchActivity : AppCompatActivity(), OnTrackClickListener {
     private fun createHistory() {
         val historyList = searchHistory.getHistoryList()
         if (historyList.isNotEmpty()) {
-            val adapter = HistoryTrackAdapter(historyList, prefs, listener)
+            val adapter = TrackAdapter(historyList, listener)
             val recyclerView = binding.rvHistory
             recyclerView.visible()
             recyclerView.adapter = adapter
-            adapter?.notifyDataSetChanged()
+            adapter.notifyDataSetChanged()
         } else {
             binding.llHistory.gone()
             binding.btClearHistory.gone()
@@ -141,6 +140,7 @@ class SearchActivity : AppCompatActivity(), OnTrackClickListener {
     }
 
     override fun onTrackClick(track: Track) {
+        searchHistory.saveHistoryList(track)
         createHistory()
     }
     private fun searchError(errorCode: Int) {
