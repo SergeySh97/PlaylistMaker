@@ -1,6 +1,5 @@
 package com.google.playlistmaker
 
-import android.content.SharedPreferences
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,7 +7,6 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.bumptech.glide.load.PreferredColorSpace
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import java.text.SimpleDateFormat
 import java.util.Locale
@@ -32,10 +30,10 @@ class TrackAdapter(private var trackList: ArrayList<Track>, private val listener
         return trackList.size
     }
     class TrackViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
-        private val trackName: TextView = itemView.findViewById(R.id.trackName)
-        private val artistName: TextView = itemView.findViewById(R.id.artistName)
-        private val trackTime: TextView = itemView.findViewById(R.id.trackTime)
-        private val artworkUrl100: ImageView = itemView.findViewById(R.id.ivAlbum)
+        private val trackName: TextView = itemView.findViewById(R.id.tv_track_name)
+        private val artistName: TextView = itemView.findViewById(R.id.tv_artist_name)
+        private val trackTime: TextView = itemView.findViewById(R.id.tv_track_time)
+        private val artworkUrl100: ImageView = itemView.findViewById(R.id.iv_album)
         private val dateFormat by lazy { SimpleDateFormat("mm:ss", Locale.getDefault()) }
 
         fun bind(trackData: Track) {
@@ -51,7 +49,7 @@ class TrackAdapter(private var trackList: ArrayList<Track>, private val listener
                 .load(trackData.artworkUrl100)
                 .transform(RoundedCorners(radiusInPixels))
                 .centerCrop()
-                .placeholder(R.drawable.placeholder)
+                .placeholder(R.drawable.placeholder_35dp)
                 .into(artworkUrl100)
             artistName.requestLayout()
         }

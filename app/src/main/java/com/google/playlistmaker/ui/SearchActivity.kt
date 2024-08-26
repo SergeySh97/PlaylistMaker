@@ -1,6 +1,7 @@
 package com.google.playlistmaker.ui
 
 import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
 import android.net.ConnectivityManager
 import android.os.Bundle
@@ -13,6 +14,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.google.gson.Gson
 import com.google.playlistmaker.OnTrackClickListener
 import com.google.playlistmaker.R
 import com.google.playlistmaker.SearchHistory
@@ -142,6 +144,9 @@ class SearchActivity : AppCompatActivity(), OnTrackClickListener {
     override fun onTrackClick(track: Track) {
         searchHistory.saveHistoryList(track)
         createHistory()
+        val intent = Intent(this, TrackActivity::class.java)
+        intent.putExtra(TRACK, Gson().toJson(track))
+        startActivity(intent)
     }
     private fun searchError(errorCode: Int) {
         binding.apply {
@@ -191,5 +196,6 @@ class SearchActivity : AppCompatActivity(), OnTrackClickListener {
     companion object {
         const val SEARCH_TEXT = "searchText"
         const val PLAYLIST_PREFS = "playlist_maker"
+        const val TRACK = "track"
     }
 }
