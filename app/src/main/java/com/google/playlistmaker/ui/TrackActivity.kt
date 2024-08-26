@@ -34,7 +34,7 @@ class TrackActivity : AppCompatActivity() {
         binding.apply {
             tvTrackName.text = track.trackName
             tvArtistName.text = track.artistName.trim()
-            tvTrackTime.text = dateFormat.format(track.trackTimeMillis.toLong())
+            tvDuration.text = dateFormat.format(track.trackTimeMillis.toLong())
             tvYear.text = track.releaseDate.take(4)
             tvGenre.text = track.primaryGenreName
             tvCountry.text = track.country

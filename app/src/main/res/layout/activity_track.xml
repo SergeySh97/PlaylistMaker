@@ -108,7 +108,7 @@
         app:layout_constraintTop_toBottomOf="@+id/bt_play"
         app:layout_constraintStart_toStartOf="@+id/left_guideline"
         app:layout_constraintEnd_toEndOf="@+id/right_guideline"
-        android:text="0:30"/>
+        android:text="0:00"/>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="16dp"
