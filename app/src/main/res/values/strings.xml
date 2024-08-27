@@ -30,4 +30,12 @@
     <string name="didnt_have">Ничего не нашлось</string>
     <string name="looking_for">Вы искали</string>
     <string name="internet_problem">Проблемы со связью\n\nЗагрузка не удалась. Проверьте подключение к интернету</string>
+    <string name="duration">Длительность</string>
+    <string name="album">Альбом</string>
+    <string name="year">Год</string>
+    <string name="genre">Жанр</string>
+    <string name="country">Страна</string>
+    <string name="add_in_playlist">Добавить в плейлист</string>
+    <string name="play_music">Воспроизвести песню</string>
+    <string name="add_into_favorites">Добавить в мне нравится</string>
 </resources>

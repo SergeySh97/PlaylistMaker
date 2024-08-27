@@ -17,9 +17,6 @@
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:contentDescription="@string/arrow_left"
-            android:layout_marginTop="4dp"
-            android:layout_marginBottom="4dp"
-            android:layout_marginStart="4dp"
             android:layout_marginEnd="@dimen/margin_settings_iv"
             android:src="@drawable/bt_back"/>
         <TextView

@@ -7,7 +7,7 @@
     style="@style/BackgroundWB">
 
     <ImageView
-        android:id="@+id/ivAlbum"
+        android:id="@+id/iv_album"
         android:layout_width="45dp"
         android:layout_height="45dp"
         android:layout_marginVertical="8dp"
@@ -20,19 +20,19 @@
         android:layout_weight="1"
         android:orientation="vertical">
         <TextView
-            android:id="@+id/trackName"
+            android:id="@+id/tv_track_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="14dp"
             style="@style/AdapterTrackName"/>
         <LinearLayout
-            android:id="@+id/llArtistName"
+            android:id="@+id/ll_artist_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:layout_marginBottom="14dp">
             <TextView
-                android:id="@+id/artistName"
+                android:id="@+id/tv_artist_name"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -44,14 +44,14 @@
                 android:contentDescription="@string/ellipse"
                 style="@style/AdapterEllipse"/>
             <TextView
-                android:id="@+id/trackTime"
+                android:id="@+id/tv_track_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 style="@style/AdapterArtistName"/>
         </LinearLayout>
     </LinearLayout>
     <ImageView
-        android:id="@+id/open"
+        android:id="@+id/iv_open"
         android:layout_width="24dp"
         android:layout_height="24dp"
         android:layout_marginStart="16dp"
