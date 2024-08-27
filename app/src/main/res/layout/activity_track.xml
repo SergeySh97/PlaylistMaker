@@ -53,7 +53,7 @@
         style="@style/TextColorBW"
         app:layout_constraintTop_toBottomOf="@+id/iv_album"
         app:layout_constraintStart_toStartOf="@+id/left_guideline"
-        android:text="Yesterday (Remastered 2009)"/>
+        tools:text="Yesterday (Remastered 2009)"/>
     <TextView
         android:id="@+id/tv_artist_name"
         android:layout_width="wrap_content"
@@ -64,7 +64,7 @@
         style="@style/TextColorBW"
         app:layout_constraintTop_toBottomOf="@+id/tv_track_name"
         app:layout_constraintStart_toStartOf="@+id/left_guideline"
-        android:text="The Beatles"/>
+        tools:text="The Beatles"/>
     <ImageButton
         android:id="@+id/bt_add_in_playlist"
         android:layout_width="wrap_content"
@@ -108,7 +108,7 @@
         app:layout_constraintTop_toBottomOf="@+id/bt_play"
         app:layout_constraintStart_toStartOf="@+id/left_guideline"
         app:layout_constraintEnd_toEndOf="@+id/right_guideline"
-        android:text="0:00"/>
+        tools:text="0:00"/>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="16dp"
@@ -125,7 +125,7 @@
         style="@style/TrackInfoRight"
         app:layout_constraintTop_toBottomOf="@+id/tv_track_time"
         app:layout_constraintEnd_toEndOf="@+id/right_guideline"
-        android:text="5:35"/>
+        tools:text="5:35"/>
     <TextView
         android:id="@+id/tv_album_hint"
         android:layout_width="wrap_content"
@@ -143,7 +143,7 @@
         style="@style/TrackInfoRight"
         app:layout_constraintTop_toBottomOf="@+id/tv_duration"
         app:layout_constraintEnd_toEndOf="@+id/right_guideline"
-        android:text="Yesterday(Remastered 2009)"/>
+        tools:text="Yesterday(Remastered 2009)"/>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="16dp"
@@ -160,7 +160,7 @@
         style="@style/TrackInfoRight"
         app:layout_constraintTop_toBottomOf="@+id/tv_album"
         app:layout_constraintEnd_toEndOf="@+id/right_guideline"
-        android:text="1965"/>
+        tools:text="1965"/>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="16dp"
@@ -177,7 +177,7 @@
         style="@style/TrackInfoRight"
         app:layout_constraintTop_toBottomOf="@+id/tv_year"
         app:layout_constraintEnd_toEndOf="@+id/right_guideline"
-        android:text="Rock"/>
+        tools:text="Rock"/>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="16dp"
@@ -194,7 +194,7 @@
         style="@style/TrackInfoRight"
         app:layout_constraintTop_toBottomOf="@+id/tv_genre"
         app:layout_constraintEnd_toEndOf="@+id/right_guideline"
-        android:text="Великобритания"/>
+        tools:text="Великобритания"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     </ScrollView>
