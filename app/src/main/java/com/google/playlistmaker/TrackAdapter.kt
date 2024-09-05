@@ -8,13 +8,17 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.google.playlistmaker.utils.OnTrackClickListener
 import java.text.SimpleDateFormat
 import java.util.Locale
 
-class TrackAdapter(private var trackList: ArrayList<Track>, private val listener: OnTrackClickListener)
-    : RecyclerView.Adapter<TrackAdapter.TrackViewHolder>() {
+class TrackAdapter(
+    private var trackList: ArrayList<Track>,
+    private val listener: OnTrackClickListener
+) : RecyclerView.Adapter<TrackAdapter.TrackViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TrackViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.track_adapter, parent, false)
+        val view =
+            LayoutInflater.from(parent.context).inflate(R.layout.track_adapter, parent, false)
         return TrackViewHolder(view)
     }
 
@@ -29,7 +33,8 @@ class TrackAdapter(private var trackList: ArrayList<Track>, private val listener
     override fun getItemCount(): Int {
         return trackList.size
     }
-    class TrackViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
+
+    class TrackViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val trackName: TextView = itemView.findViewById(R.id.tv_track_name)
         private val artistName: TextView = itemView.findViewById(R.id.tv_artist_name)
         private val trackTime: TextView = itemView.findViewById(R.id.tv_track_time)

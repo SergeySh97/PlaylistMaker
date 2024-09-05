@@ -43,11 +43,17 @@ class SettingsActivity : AppCompatActivity() {
                 })
             }
             tvUserAgreement.setOnClickListener {
-                startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.user_agreement_uri))))
+                startActivity(
+                    Intent(
+                        Intent.ACTION_VIEW,
+                        Uri.parse(getString(R.string.user_agreement_uri))
+                    )
+                )
             }
         }
     }
-    fun switchTheme() {
+
+    private fun switchTheme() {
         val prefs = getSharedPreferences(PLAYLIST_MAKER, MODE_PRIVATE)
         val appTheme = prefs.getBoolean(APP_THEME, true)
         binding.scAppTheme.setOnCheckedChangeListener { _, isChecked ->
@@ -57,6 +63,7 @@ class SettingsActivity : AppCompatActivity() {
         }
         if (appTheme) binding.scAppTheme.isChecked = true
     }
+
     companion object {
         const val PLAYLIST_MAKER = "playlist_maker"
         const val APP_THEME = "app_theme"

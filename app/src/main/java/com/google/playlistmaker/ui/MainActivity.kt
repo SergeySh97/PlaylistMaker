@@ -32,12 +32,14 @@ class MainActivity : AppCompatActivity() {
             startActivity(Intent(this, SettingsActivity::class.java))
         }
     }
+
     private fun setTheme() {
         val prefs = getSharedPreferences(PLAYLIST_MAKER, MODE_PRIVATE)
         val appTheme = prefs.getBoolean(APP_THEME, true)
         if (appTheme) AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
         else AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
     }
+
     companion object {
         const val PLAYLIST_MAKER = "playlist_maker"
         const val APP_THEME = "app_theme"

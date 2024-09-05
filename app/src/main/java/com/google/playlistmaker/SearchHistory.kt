@@ -5,7 +5,7 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 
 class SearchHistory(private val prefs: SharedPreferences) {
-    val editor = prefs.edit()
+    private val editor = prefs.edit()
     fun getHistoryList(): ArrayList<Track> {
         val json = prefs.getString(SEARCH_HISTORY_LIST, null)
         val listType = object : TypeToken<ArrayList<Track>>() {}.type
@@ -15,6 +15,7 @@ class SearchHistory(private val prefs: SharedPreferences) {
             Gson().fromJson(json, listType) ?: ArrayList()
         }
     }
+
     fun saveHistoryList(track: Track) {
         val historyList = getHistoryList()
         if (historyList.isNotEmpty()) {
@@ -28,10 +29,12 @@ class SearchHistory(private val prefs: SharedPreferences) {
         editor.putString(SEARCH_HISTORY_LIST, updatedList)
         editor.apply()
     }
+
     fun clearHistoryList() {
         editor.remove(SEARCH_HISTORY_LIST)
         editor.apply()
     }
+
     companion object {
         const val SEARCH_HISTORY_LIST = "search_history_list"
     }

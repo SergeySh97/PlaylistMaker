@@ -74,6 +74,6 @@
         android:layout_marginHorizontal="@dimen/margin_settings_tv"
         style="@style/SettingsTextView"
         android:text="@string/user_agreement"
-        app:drawableEndCompat="@drawable/open_grey"/>
+        app:drawableEndCompat="@drawable/open"/>
 
 </LinearLayout>
