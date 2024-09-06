@@ -6,6 +6,7 @@ import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.content.edit
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.google.playlistmaker.R
@@ -59,12 +60,12 @@ class SettingsActivity : AppCompatActivity() {
         binding.scAppTheme.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
             else AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-            prefs.edit().putBoolean(APP_THEME, isChecked).apply()
+            prefs.edit { putBoolean(APP_THEME, isChecked).apply() }
         }
         if (appTheme) binding.scAppTheme.isChecked = true
     }
 
-    companion object {
+    private companion object {
         const val PLAYLIST_MAKER = "playlist_maker"
         const val APP_THEME = "app_theme"
     }

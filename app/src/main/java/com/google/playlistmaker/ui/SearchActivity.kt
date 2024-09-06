@@ -2,17 +2,15 @@ package com.google.playlistmaker.ui
 
 import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
 import android.net.ConnectivityManager
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.core.widget.addTextChangedListener
 import com.google.gson.Gson
 import com.google.playlistmaker.ItunesApi
 import com.google.playlistmaker.R
@@ -20,20 +18,19 @@ import com.google.playlistmaker.SearchHistory
 import com.google.playlistmaker.Track
 import com.google.playlistmaker.TrackAdapter
 import com.google.playlistmaker.TracksFound
+import com.google.playlistmaker.databinding.ActivitySearchBinding
 import com.google.playlistmaker.utils.Debouncer.clickDebounce
 import com.google.playlistmaker.utils.Debouncer.searchDebounce
 import com.google.playlistmaker.utils.Extensions.gone
 import com.google.playlistmaker.utils.Extensions.visible
 import com.google.playlistmaker.utils.OnTrackClickListener
 import com.google.playlistmaker.utils.Retrofit.initRetrofit
-import com.google.playlistmaker.databinding.ActivitySearchBinding
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
 class SearchActivity : AppCompatActivity(), OnTrackClickListener {
     private lateinit var binding: ActivitySearchBinding
-    private lateinit var prefs: SharedPreferences
     private lateinit var searchHistory: SearchHistory
     private lateinit var itunesService: ItunesApi
     private lateinit var searchRunnable: Runnable
@@ -50,7 +47,7 @@ class SearchActivity : AppCompatActivity(), OnTrackClickListener {
             insets
         }
         itunesService = initRetrofit()
-        prefs = getSharedPreferences(PLAYLIST_PREFS, MODE_PRIVATE)
+        val prefs = getSharedPreferences(PLAYLIST_PREFS, MODE_PRIVATE)
         searchHistory = SearchHistory(prefs)
         listener = this
         createHistory()
@@ -78,17 +75,9 @@ class SearchActivity : AppCompatActivity(), OnTrackClickListener {
                     .getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
                 imm.hideSoftInputFromWindow(etSearch.windowToken, 0)
             }
-            etSearch.addTextChangedListener(object : TextWatcher {
-                override fun beforeTextChanged(
-                    s: CharSequence?,
-                    start: Int,
-                    count: Int,
-                    after: Int
-                ) {
-                }
-
-                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                    if (etSearch.hasFocus() && s?.isEmpty() == true) {
+            etSearch.addTextChangedListener(
+                onTextChanged = { charSequence, _, _, _ ->
+                    if (etSearch.hasFocus() && charSequence?.isEmpty() == true) {
                         llHistory.visible()
                         btClearHistory.visible()
                         createHistory()
@@ -96,16 +85,15 @@ class SearchActivity : AppCompatActivity(), OnTrackClickListener {
                         llHistory.gone()
                         btClearHistory.gone()
                     }
-                    if (s?.isEmpty() == false) {
+                    if (charSequence?.isEmpty() == false) {
                         searchDebounce(searchRunnable)
                     }
+                },
+                afterTextChanged = { editable ->
+                    ivClear.visibility = if (editable.isNullOrEmpty()) View.GONE else View.VISIBLE
+                    searchText = editable.toString()
                 }
-
-                override fun afterTextChanged(s: Editable?) {
-                    ivClear.visibility = if (s.isNullOrEmpty()) View.GONE else View.VISIBLE
-                    searchText = s.toString()
-                }
-            })
+            )
         }
     }
 
@@ -242,9 +230,9 @@ class SearchActivity : AppCompatActivity(), OnTrackClickListener {
         }
     }
 
-    companion object {
-        private const val SEARCH_TEXT = "searchText"
-        private const val PLAYLIST_PREFS = "playlist_maker"
-        private const val TRACK = "track"
+    private companion object {
+        const val SEARCH_TEXT = "searchText"
+        const val PLAYLIST_PREFS = "playlist_maker"
+        const val TRACK = "track"
     }
 }

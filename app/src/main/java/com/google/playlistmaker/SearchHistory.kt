@@ -1,23 +1,23 @@
 package com.google.playlistmaker
 
 import android.content.SharedPreferences
+import androidx.core.content.edit
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 
 class SearchHistory(private val prefs: SharedPreferences) {
-    private val editor = prefs.edit()
-    fun getHistoryList(): ArrayList<Track> {
+    fun getHistoryList(): List<Track> {
         val json = prefs.getString(SEARCH_HISTORY_LIST, null)
-        val listType = object : TypeToken<ArrayList<Track>>() {}.type
+        val listType = object : TypeToken<List<Track>>() {}.type
         return if (json.isNullOrEmpty()) {
-            ArrayList()
+            emptyList()
         } else {
-            Gson().fromJson(json, listType) ?: ArrayList()
+            Gson().fromJson(json, listType) ?: emptyList()
         }
     }
 
     fun saveHistoryList(track: Track) {
-        val historyList = getHistoryList()
+        val historyList = getHistoryList().toMutableList()
         if (historyList.isNotEmpty()) {
             historyList.removeIf { it.trackId == track.trackId }
         }
@@ -26,13 +26,13 @@ class SearchHistory(private val prefs: SharedPreferences) {
             historyList.removeAt(10)
         }
         val updatedList = Gson().toJson(historyList)
-        editor.putString(SEARCH_HISTORY_LIST, updatedList)
-        editor.apply()
+        prefs.edit {
+            putString(SEARCH_HISTORY_LIST, updatedList)
+        }
     }
 
     fun clearHistoryList() {
-        editor.remove(SEARCH_HISTORY_LIST)
-        editor.apply()
+        prefs.edit { remove(SEARCH_HISTORY_LIST) }
     }
 
     companion object {

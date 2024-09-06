@@ -40,7 +40,7 @@ class MainActivity : AppCompatActivity() {
         else AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
     }
 
-    companion object {
+    private companion object {
         const val PLAYLIST_MAKER = "playlist_maker"
         const val APP_THEME = "app_theme"
     }

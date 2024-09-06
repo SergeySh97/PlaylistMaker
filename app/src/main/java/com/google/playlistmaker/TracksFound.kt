@@ -2,7 +2,7 @@ package com.google.playlistmaker
 
 data class TracksFound(
     val resultCount: Int,
-    val results: ArrayList<Track>
+    val results: List<Track>
 )
 
 data class Track(

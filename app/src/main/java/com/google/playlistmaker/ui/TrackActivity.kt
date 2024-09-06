@@ -13,9 +13,9 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.google.gson.Gson
 import com.google.playlistmaker.R
 import com.google.playlistmaker.Track
+import com.google.playlistmaker.databinding.ActivityTrackBinding
 import com.google.playlistmaker.utils.Extensions.gone
 import com.google.playlistmaker.utils.Extensions.visible
-import com.google.playlistmaker.databinding.ActivityTrackBinding
 import java.text.SimpleDateFormat
 import java.util.Locale
 
@@ -142,12 +142,12 @@ class TrackActivity : AppCompatActivity() {
         mediaPlayer.release()
     }
 
-    companion object {
-        private const val TRACK = "track"
-        private const val STATE_DEFAULT = 0
-        private const val STATE_PREPARED = 1
-        private const val STATE_PLAYING = 2
-        private const val STATE_PAUSED = 3
-        private const val TRACK_TIME_DELAY = 300L
+    private companion object {
+        const val TRACK = "track"
+        const val STATE_DEFAULT = 0
+        const val STATE_PREPARED = 1
+        const val STATE_PLAYING = 2
+        const val STATE_PAUSED = 3
+        const val TRACK_TIME_DELAY = 300L
     }
 }
