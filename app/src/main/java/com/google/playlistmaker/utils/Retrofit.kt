@@ -1,13 +1,12 @@
-package com.google.playlistmaker
+package com.google.playlistmaker.utils
 
+import com.google.playlistmaker.ItunesApi
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-object Utils {
-    private lateinit var itunesApi: ItunesApi
-
+object Retrofit {
     fun initRetrofit(): ItunesApi {
         val interceptor = HttpLoggingInterceptor()
         interceptor.level = HttpLoggingInterceptor.Level.BODY
@@ -16,7 +15,6 @@ object Utils {
             .baseUrl("https://itunes.apple.com").client(client)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
-        itunesApi = retrofit.create(ItunesApi::class.java)
-        return itunesApi
+        return retrofit.create(ItunesApi::class.java)
     }
 }

@@ -107,8 +107,7 @@
         style="@style/TextColorBW"
         app:layout_constraintTop_toBottomOf="@+id/bt_play"
         app:layout_constraintStart_toStartOf="@+id/left_guideline"
-        app:layout_constraintEnd_toEndOf="@+id/right_guideline"
-        tools:text="0:00"/>
+        app:layout_constraintEnd_toEndOf="@+id/right_guideline" />
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="16dp"

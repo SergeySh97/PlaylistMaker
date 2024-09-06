@@ -2,7 +2,7 @@ package com.google.playlistmaker
 
 data class TracksFound(
     val resultCount: Int,
-    val results: ArrayList<Track>
+    val results: List<Track>
 )
 
 data class Track(
@@ -11,11 +11,12 @@ data class Track(
     val trackTimeMillis: String,
     val artworkUrl100: String,
     val trackId: Int,
-    val collectonName: String?,
+    val collectionName: String?,
     val releaseDate: String,
     val primaryGenreName: String,
-    val country: String
+    val country: String,
+    val previewUrl: String
 ) {
-    fun getCoverArtwork() = artworkUrl100.replaceAfterLast('/',"512x512bb.jpg")
+    fun getCoverArtwork() = artworkUrl100.replaceAfterLast('/', "512x512bb.jpg")
 }
 
