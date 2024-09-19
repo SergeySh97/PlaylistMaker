@@ -1,9 +1,4 @@
-package com.google.playlistmaker
-
-data class TracksFound(
-    val resultCount: Int,
-    val results: List<Track>
-)
+package com.google.playlistmaker.domain.models
 
 data class Track(
     val trackName: String,
@@ -19,4 +14,3 @@ data class Track(
 ) {
     fun getCoverArtwork() = artworkUrl100.replaceAfterLast('/', "512x512bb.jpg")
 }
-

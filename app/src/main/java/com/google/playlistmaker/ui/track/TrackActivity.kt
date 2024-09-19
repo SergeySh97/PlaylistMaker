@@ -1,4 +1,4 @@
-package com.google.playlistmaker.ui
+package com.google.playlistmaker.ui.track
 
 import android.media.MediaPlayer
 import android.os.Bundle
@@ -12,10 +12,10 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.google.gson.Gson
 import com.google.playlistmaker.R
-import com.google.playlistmaker.Track
 import com.google.playlistmaker.databinding.ActivityTrackBinding
-import com.google.playlistmaker.utils.Extensions.gone
-import com.google.playlistmaker.utils.Extensions.visible
+import com.google.playlistmaker.domain.models.Track
+import com.google.playlistmaker.ui.utils.Extensions.gone
+import com.google.playlistmaker.ui.utils.Extensions.visible
 import java.text.SimpleDateFormat
 import java.util.Locale
 
