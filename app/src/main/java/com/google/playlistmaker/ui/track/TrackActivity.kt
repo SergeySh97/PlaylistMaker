@@ -39,15 +39,15 @@ class TrackActivity : AppCompatActivity() {
         }
         track = Gson().fromJson(intent.getStringExtra(TRACK), Track::class.java)
         mainThreadHandler = Handler(Looper.getMainLooper())
-        binding.apply {
+        with(binding) {
             tvTrackName.text = track.trackName
             tvArtistName.text = track.artistName.trim()
             tvDuration.text = dateFormat.format(track.trackTimeMillis.toLong())
-            tvYear.text = track.releaseDate.take(4)
+            tvYear.text = track.releaseDate?.take(4) ?: ""
             tvGenre.text = track.primaryGenreName
             tvCountry.text = track.country
             tvTrackTime.text = "00:00"
-            url = track.previewUrl
+            url = track.previewUrl.toString()
             if (track.collectionName == null) {
                 tvAlbum.gone()
                 tvAlbumHint.gone()

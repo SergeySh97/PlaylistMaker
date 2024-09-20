@@ -1,8 +1,8 @@
 package com.google.playlistmaker.data.network
 
-import com.google.playlistmaker.data.network.model.Response
-import com.google.playlistmaker.data.network.model.TracksSearchRequest
-import com.google.playlistmaker.data.network.model.StatusCode
+import com.google.playlistmaker.data.network.models.Response
+import com.google.playlistmaker.data.network.models.TracksSearchRequest
+import com.google.playlistmaker.data.network.models.StatusCode
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -25,7 +25,11 @@ object RetrofitNetworkClient : NetworkClient {
         if (dto is TracksSearchRequest) {
             val response = initRetrofit().searchTracks(dto.expression).execute()
             val body = response.body() ?: Response()
-            return body.apply { resultCode = StatusCode(response.code()) }
+            if (response.body()?.results?.isNotEmpty() == true) {
+                return body.apply { resultCode = StatusCode(response.code()) }
+            } else {
+                return Response().apply { resultCode = StatusCode(404) }
+            }
         } else {
             return Response().apply { resultCode = StatusCode(400) }
         }

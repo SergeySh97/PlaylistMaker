@@ -8,16 +8,21 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.google.playlistmaker.R
+import com.google.playlistmaker.app.Creator.providerSwitchThemeUseCase
+import com.google.playlistmaker.app.Creator.setContext
 import com.google.playlistmaker.databinding.ActivitySettingsBinding
-import com.google.playlistmaker.presentation.thememanager.SwitchTheme
+import com.google.playlistmaker.domain.usecases.SwitchThemeUseCase
 
 class SettingsActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySettingsBinding
+    private lateinit var switchTheme: SwitchThemeUseCase
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivitySettingsBinding.inflate(layoutInflater)
         enableEdgeToEdge()
         setContentView(binding.root)
+        setContext(applicationContext)
+        switchTheme = providerSwitchThemeUseCase()
         initializeUI()
     }
 
@@ -28,7 +33,6 @@ class SettingsActivity : AppCompatActivity() {
             insets
         }
         with(binding) {
-            val switchTheme = SwitchTheme(applicationContext)
             scAppTheme.isChecked = switchTheme.isNightMode()
             scAppTheme.setOnCheckedChangeListener { _, isChecked ->
                 switchTheme.switchTheme(isChecked)

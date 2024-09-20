@@ -12,13 +12,19 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.widget.addTextChangedListener
 import com.google.gson.Gson
-import com.google.playlistmaker.app.Creator
 import com.google.playlistmaker.R
-import com.google.playlistmaker.data.network.model.ErrorType
-import com.google.playlistmaker.data.network.model.NetworkResult
-import com.google.playlistmaker.data.sharedprefs.SharedPrefsManager.setupPrefs
+import com.google.playlistmaker.app.Creator.providerClearHistoryUseCase
+import com.google.playlistmaker.app.Creator.providerGetHistoryUseCase
+import com.google.playlistmaker.app.Creator.providerSaveHistoryUseCase
+import com.google.playlistmaker.app.Creator.providerTracksSearchUseCase
+import com.google.playlistmaker.app.Creator.setContext
+import com.google.playlistmaker.domain.models.ErrorType
+import com.google.playlistmaker.domain.models.NetworkResult
 import com.google.playlistmaker.databinding.ActivitySearchBinding
 import com.google.playlistmaker.domain.models.Track
+import com.google.playlistmaker.domain.usecases.ClearHistoryUseCase
+import com.google.playlistmaker.domain.usecases.GetHistoryUseCase
+import com.google.playlistmaker.domain.usecases.SaveHistoryUseCase
 import com.google.playlistmaker.domain.usecases.TracksSearchUseCase
 import com.google.playlistmaker.ui.search.ClickDebounce.clickDebounce
 import com.google.playlistmaker.ui.search.SearchDebounce.searchDebounce
@@ -32,12 +38,21 @@ class SearchActivity : AppCompatActivity(), OnTrackClickListener {
     private lateinit var binding: ActivitySearchBinding
     private lateinit var searchRunnable: Runnable
     private lateinit var listener: OnTrackClickListener
+    private lateinit var searchTrack: TracksSearchUseCase
+    private lateinit var getHistory: GetHistoryUseCase
+    private lateinit var saveHistory: SaveHistoryUseCase
+    private lateinit var clearHistory: ClearHistoryUseCase
     private var searchText: String? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         binding = ActivitySearchBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        setContext(applicationContext)
+        searchTrack = providerTracksSearchUseCase()
+        getHistory = providerGetHistoryUseCase()
+        saveHistory = providerSaveHistoryUseCase()
+        clearHistory = providerClearHistoryUseCase()
         if (savedInstanceState != null) {
             searchText = savedInstanceState.getString(SEARCH_TEXT)
             with(binding) {
@@ -46,7 +61,6 @@ class SearchActivity : AppCompatActivity(), OnTrackClickListener {
             }
         }
         initializeUI()
-        setupPrefs(applicationContext)
         listener = this
         createHistory()
         searchRunnable = Runnable { search() }
@@ -73,7 +87,7 @@ class SearchActivity : AppCompatActivity(), OnTrackClickListener {
 
     override fun onTrackClick(track: Track) {
         if (clickDebounce()) {
-            Creator.providerSaveHistoryUseCase().saveHistoryList(track)
+            saveHistory.saveHistoryList(track)
             createHistory()
             val intent = Intent(applicationContext, TrackActivity::class.java)
             intent.putExtra(TRACK, Gson().toJson(track))
@@ -92,7 +106,7 @@ class SearchActivity : AppCompatActivity(), OnTrackClickListener {
                 onBackPressed()
             }
             btClearHistory.setOnClickListener {
-                Creator.providerClearHistoryUseCase().clearHistoryList()
+                clearHistory.clearHistoryList()
                 llHistory.gone()
                 btClearHistory.gone()
             }
@@ -131,13 +145,13 @@ class SearchActivity : AppCompatActivity(), OnTrackClickListener {
             llError.gone()
             recyclerView.visible()
             recyclerView.adapter = adapter
-            adapter?.notifyDataSetChanged()
+            adapter.notifyDataSetChanged()
         }
     }
 
     private fun createHistory() {
         with(binding) {
-            val historyList = Creator.providerGetHistoryUseCase().getHistoryList()
+            val historyList = getHistory.getHistoryList()
             if (historyList.isNotEmpty()) {
                 val adapter = TrackAdapter(historyList, listener)
                 val recyclerView = rvHistory
@@ -161,8 +175,7 @@ class SearchActivity : AppCompatActivity(), OnTrackClickListener {
                 progressBar.visible()
                 val etSearch = etSearch.text.toString()
                 if (etSearch.isNotEmpty()) {
-                    Creator.providerTracksSearchUseCase()
-                        .searchTracks(etSearch, object : TracksSearchUseCase.TracksConsumer {
+                    searchTrack.searchTracks(etSearch, object : TracksSearchUseCase.TracksConsumer {
                             override fun consume(foundTracks: NetworkResult<List<Track>, ErrorType>) {
                                 runOnUiThread {
                                     when (foundTracks) {

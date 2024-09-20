@@ -1,4 +1,4 @@
-package com.google.playlistmaker.data.network.model
+package com.google.playlistmaker.data.network.models
 
 import com.google.playlistmaker.data.dto.TrackDto
 

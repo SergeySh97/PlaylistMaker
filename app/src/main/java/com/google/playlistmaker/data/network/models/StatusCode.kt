@@ -1,4 +1,6 @@
-package com.google.playlistmaker.data.network.model
+package com.google.playlistmaker.data.network.models
+
+import com.google.playlistmaker.domain.models.ErrorType
 
 @JvmInline
 value class StatusCode(val code: Int)

@@ -3,7 +3,7 @@ package com.google.playlistmaker.data.converters
 import com.google.playlistmaker.data.dto.TrackDto
 import com.google.playlistmaker.domain.models.Track
 
-object Converters {
+object Mapper {
 
     fun mapToDomain(trackDto: TrackDto): Track {
         return Track(

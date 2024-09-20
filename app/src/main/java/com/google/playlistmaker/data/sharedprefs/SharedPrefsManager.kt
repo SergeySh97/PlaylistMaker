@@ -1,21 +1,17 @@
 package com.google.playlistmaker.data.sharedprefs
 
 import android.content.Context
-import android.content.SharedPreferences
 import androidx.core.content.edit
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.google.playlistmaker.data.dto.TrackDto
 
 
-object SharedPrefsManager : HistoryTracksManager {
+class SharedPrefsManager(context: Context) : HistoryTracksManager {
     private val SEARCH_HISTORY_LIST = "search_history_list"
     private val PLAYLIST_MAKER = "playlist_maker_prefs"
-    var prefs: SharedPreferences? = null
+    private var prefs = context.getSharedPreferences(PLAYLIST_MAKER, Context.MODE_PRIVATE)
 
-    fun setupPrefs(context: Context) {
-        prefs = context.getSharedPreferences(PLAYLIST_MAKER, Context.MODE_PRIVATE)
-    }
     override fun getHistoryList(): List<TrackDto> {
         val json = prefs?.getString(SEARCH_HISTORY_LIST, null)
         val listType = object : TypeToken<List<TrackDto>>() {}.type

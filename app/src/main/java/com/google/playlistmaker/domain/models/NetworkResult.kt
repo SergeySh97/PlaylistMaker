@@ -1,4 +1,4 @@
-package com.google.playlistmaker.data.network.model
+package com.google.playlistmaker.domain.models
 
 
 sealed class NetworkResult<T, E> {

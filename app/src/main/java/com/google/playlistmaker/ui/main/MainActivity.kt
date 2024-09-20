@@ -7,7 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.google.playlistmaker.databinding.ActivityMainBinding
-import com.google.playlistmaker.presentation.thememanager.SwitchTheme
+import com.google.playlistmaker.presentation.thememanager.SwitchThemeRepositoryImpl
 import com.google.playlistmaker.ui.media.MediaActivity
 import com.google.playlistmaker.ui.search.SearchActivity
 import com.google.playlistmaker.ui.settings.SettingsActivity
@@ -39,7 +39,7 @@ class MainActivity : AppCompatActivity() {
                 startActivity(Intent(applicationContext, SettingsActivity::class.java))
             }
         }
-        val switchTheme = SwitchTheme(this)
+        val switchTheme = SwitchThemeRepositoryImpl(this)
         switchTheme.switchTheme(switchTheme.isNightMode())
     }
 }
