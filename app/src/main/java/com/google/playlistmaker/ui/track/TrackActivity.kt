@@ -43,12 +43,13 @@ class TrackActivity : AppCompatActivity() {
             tvTrackName.text = track.trackName
             tvArtistName.text = track.artistName.trim()
             tvDuration.text = dateFormat.format(track.trackTimeMillis.toLong())
-            tvYear.text = track.releaseDate?.take(4) ?: ""
+            tvYear.text = if (track.releaseDate == "Неизвестно") track.releaseDate else track
+                .releaseDate.take(4)
             tvGenre.text = track.primaryGenreName
             tvCountry.text = track.country
             tvTrackTime.text = "00:00"
-            url = track.previewUrl.toString()
-            if (track.collectionName == null) {
+            url = track.previewUrl
+            if (track.collectionName == "null") {
                 tvAlbum.gone()
                 tvAlbumHint.gone()
             } else {
@@ -68,7 +69,9 @@ class TrackActivity : AppCompatActivity() {
             btBack.setOnClickListener { onBackPressed() }
             btPlay.setOnClickListener { playbackControl() }
         }
-        preparePlayer()
+        if (track.previewUrl != "null") {
+            preparePlayer()
+        }
     }
 
     private fun preparePlayer() {

@@ -7,16 +7,16 @@ object Mapper {
 
     fun mapToDomain(trackDto: TrackDto): Track {
         return Track(
-            trackName = trackDto.trackName,
-            artistName = trackDto.artistName,
+            trackName = trackDto.trackName ?: "Без названия",
+            artistName = trackDto.artistName ?: "Неизвестный автор",
             trackTimeMillis = trackDto.trackTimeMillis.toString(),
-            artworkUrl100 = trackDto.artworkUrl100,
-            trackId = trackDto.trackId,
-            collectionName = trackDto.collectionName,
-            releaseDate = trackDto.releaseDate,
-            primaryGenreName = trackDto.primaryGenreName,
-            country = trackDto.country,
-            previewUrl = trackDto.previewUrl
+            artworkUrl100 = trackDto.artworkUrl100 ?: "",
+            trackId = trackDto.trackId ?: 0,
+            collectionName = trackDto.collectionName ?: "null",
+            releaseDate = trackDto.releaseDate ?: "Неизвестно",
+            primaryGenreName = trackDto.primaryGenreName ?: "Неизвестно",
+            country = trackDto.country ?: "Неизветсно",
+            previewUrl = trackDto.previewUrl ?: "null"
         )
     }
 
