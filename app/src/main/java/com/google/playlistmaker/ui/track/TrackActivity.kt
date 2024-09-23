@@ -1,4 +1,4 @@
-package com.google.playlistmaker.ui
+package com.google.playlistmaker.ui.track
 
 import android.media.MediaPlayer
 import android.os.Bundle
@@ -12,10 +12,10 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.google.gson.Gson
 import com.google.playlistmaker.R
-import com.google.playlistmaker.Track
 import com.google.playlistmaker.databinding.ActivityTrackBinding
-import com.google.playlistmaker.utils.Extensions.gone
-import com.google.playlistmaker.utils.Extensions.visible
+import com.google.playlistmaker.domain.models.Track
+import com.google.playlistmaker.ui.utils.Extensions.gone
+import com.google.playlistmaker.ui.utils.Extensions.visible
 import java.text.SimpleDateFormat
 import java.util.Locale
 
@@ -39,16 +39,17 @@ class TrackActivity : AppCompatActivity() {
         }
         track = Gson().fromJson(intent.getStringExtra(TRACK), Track::class.java)
         mainThreadHandler = Handler(Looper.getMainLooper())
-        binding.apply {
+        with(binding) {
             tvTrackName.text = track.trackName
             tvArtistName.text = track.artistName.trim()
             tvDuration.text = dateFormat.format(track.trackTimeMillis.toLong())
-            tvYear.text = track.releaseDate.take(4)
+            tvYear.text = if (track.releaseDate == "Неизвестно") track.releaseDate else track
+                .releaseDate.take(4)
             tvGenre.text = track.primaryGenreName
             tvCountry.text = track.country
             tvTrackTime.text = "00:00"
             url = track.previewUrl
-            if (track.collectionName == null) {
+            if (track.collectionName == "null") {
                 tvAlbum.gone()
                 tvAlbumHint.gone()
             } else {
@@ -68,7 +69,9 @@ class TrackActivity : AppCompatActivity() {
             btBack.setOnClickListener { onBackPressed() }
             btPlay.setOnClickListener { playbackControl() }
         }
-        preparePlayer()
+        if (track.previewUrl != "null") {
+            preparePlayer()
+        }
     }
 
     private fun preparePlayer() {

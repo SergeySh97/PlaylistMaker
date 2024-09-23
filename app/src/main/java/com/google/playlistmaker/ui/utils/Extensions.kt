@@ -1,4 +1,4 @@
-package com.google.playlistmaker.utils
+package com.google.playlistmaker.ui.utils
 
 import android.view.View
 

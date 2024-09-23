@@ -1,4 +1,4 @@
-package com.google.playlistmaker.ui
+package com.google.playlistmaker.ui.media
 
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
