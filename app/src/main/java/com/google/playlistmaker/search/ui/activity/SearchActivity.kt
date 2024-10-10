@@ -39,10 +39,10 @@ class SearchActivity : AppCompatActivity(), OnTrackClickListener {
         ActivitySearchBinding.inflate(layoutInflater)
     }
     private val searchRunnable: Runnable by lazy {
-        Runnable { searchText?.let { viewModel.searchTracks(it) } }
+        Runnable { searchText.let { viewModel.searchTracks(it) } }
     }
 
-    private var searchText: String? = null
+    private var searchText = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,6 +52,9 @@ class SearchActivity : AppCompatActivity(), OnTrackClickListener {
         initializeUI()
         viewModel.getState().observe(this) {
             renderState(it)
+        }
+        viewModel.getSearchTextState().observe(this) {
+            searchText
         }
     }
 
@@ -87,7 +90,7 @@ class SearchActivity : AppCompatActivity(), OnTrackClickListener {
                 imm.hideSoftInputFromWindow(etSearch.windowToken, 0)
             }
             etSearch.addTextChangedListener(onTextChanged = { s, _, _, _ ->
-                searchText = s?.toString()
+                searchText = s.toString()
                 if (etSearch.hasFocus() && s?.isEmpty() == true) {
                     viewModel.getHistory()
                 }

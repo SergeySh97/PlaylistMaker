@@ -56,13 +56,13 @@ class PlayerActivity : ComponentActivity() {
             tvTrackName.text = track.trackName
             tvArtistName.text = track.artistName.trim()
             tvDuration.text = dateFormat.format(track.trackTimeMillis.toLong())
-            tvYear.text = if (track.releaseDate == "Неизвестно") track.releaseDate else track
+            tvYear.text = if (track.releaseDate == NONE) track.releaseDate else track
                 .releaseDate.take(4)
             tvGenre.text = track.primaryGenreName
             tvCountry.text = track.country
             @SuppressLint("SetTextI18n")
-            tvTrackTime.text = "00:00"
-            if (track.collectionName == "null") {
+            tvTrackTime.text = DEFAULT_TIME
+            if (track.collectionName == NULL) {
                 tvAlbum.gone()
                 tvAlbumHint.gone()
             } else {
@@ -178,6 +178,7 @@ class PlayerActivity : ComponentActivity() {
     private companion object {
         const val TRACK = "track"
         const val NULL = "null"
+        const val NONE = "Неизвестно"
         const val TRACK_TIME_DELAY = 300L
         const val DEFAULT_TIME = "00:00"
     }
