@@ -20,14 +20,12 @@ class SearchVM(
 ) : ViewModel() {
 
     private val searchState = MutableLiveData<SearchState>()
-    private val searchTextState = MutableLiveData<String>()
 
     init {
         getHistory()
     }
 
     fun getState(): LiveData<SearchState> = searchState
-    fun getSearchTextState(): LiveData<String> = searchTextState
 
     fun searchTracks(input: String) {
         if (input.isBlank()) {

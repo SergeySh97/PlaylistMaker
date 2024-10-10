@@ -53,9 +53,6 @@ class SearchActivity : AppCompatActivity(), OnTrackClickListener {
         viewModel.getState().observe(this) {
             renderState(it)
         }
-        viewModel.getSearchTextState().observe(this) {
-            searchText
-        }
     }
 
     override fun onTrackClick(track: Track) {
