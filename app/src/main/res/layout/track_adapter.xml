@@ -14,42 +14,49 @@
         android:layout_marginStart="13dp"
         android:layout_marginEnd="8dp"
         android:contentDescription="@string/album_art" />
+
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:orientation="vertical">
+
         <TextView
             android:id="@+id/tv_track_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="14dp"
-            style="@style/AdapterTrackName"/>
+            style="@style/AdapterTrackName" />
+
         <LinearLayout
             android:id="@+id/ll_artist_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:layout_marginBottom="14dp">
+
             <TextView
                 android:id="@+id/tv_artist_name"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                style="@style/AdapterArtistName"/>
+                style="@style/AdapterArtistName" />
+
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
                 android:contentDescription="@string/ellipse"
-                style="@style/AdapterEllipse"/>
+                style="@style/AdapterEllipse" />
+
             <TextView
                 android:id="@+id/tv_track_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                style="@style/AdapterArtistName"/>
+                style="@style/AdapterArtistName" />
         </LinearLayout>
     </LinearLayout>
+
     <ImageView
         android:id="@+id/iv_open"
         android:layout_width="24dp"
@@ -58,5 +65,5 @@
         android:layout_marginEnd="12dp"
         android:layout_gravity="center"
         android:contentDescription="@string/arrow_right"
-        style="@style/AdapterOpen"/>
+        style="@style/AdapterOpen" />
 </LinearLayout>

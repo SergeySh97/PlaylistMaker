@@ -5,24 +5,26 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     style="@style/SettingsLayout">
-    
+
     <androidx.appcompat.widget.Toolbar
         android:layout_width="match_parent"
         android:layout_height="@dimen/toolbar_height">
+
         <ImageView
             android:id="@+id/btBack"
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:contentDescription="@string/arrow_left"
             android:layout_marginEnd="@dimen/margin_settings_iv"
-            android:src="@drawable/bt_back"/>
+            android:src="@drawable/bt_back" />
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/settings"
             android:textSize="22sp"
             android:fontFamily="@font/ys_display_medium"
-            style="@style/TextColorBW"/>
+            style="@style/TextColorBW" />
     </androidx.appcompat.widget.Toolbar>
 
     <LinearLayout
@@ -31,6 +33,7 @@
         android:orientation="horizontal"
         android:gravity="center"
         android:layout_marginTop="24dp">
+
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -38,12 +41,13 @@
             android:text="@string/black_theme"
             android:textSize="@dimen/settings_text_size"
             android:layout_marginStart="@dimen/margin_settings_tv"
-            style="@style/TextColorBW"/>
+            style="@style/TextColorBW" />
+
         <androidx.appcompat.widget.SwitchCompat
             android:id="@+id/scAppTheme"
             android:layout_width="56dp"
             android:layout_height="40dp"
-            android:layout_marginEnd="18dp"/>
+            android:layout_marginEnd="18dp" />
     </LinearLayout>
 
     <TextView
@@ -54,7 +58,7 @@
         android:layout_marginHorizontal="@dimen/margin_settings_tv"
         style="@style/SettingsTextView"
         android:text="@string/share_app"
-        app:drawableEndCompat="@drawable/share"/>
+        app:drawableEndCompat="@drawable/share" />
 
     <TextView
         android:id="@+id/tvSupport"
@@ -64,7 +68,7 @@
         android:layout_marginHorizontal="@dimen/margin_settings_tv"
         style="@style/SettingsTextView"
         android:text="@string/write_to_support"
-        app:drawableEndCompat="@drawable/support"/>
+        app:drawableEndCompat="@drawable/support" />
 
     <TextView
         android:id="@+id/tvUserAgreement"
@@ -74,6 +78,6 @@
         android:layout_marginHorizontal="@dimen/margin_settings_tv"
         style="@style/SettingsTextView"
         android:text="@string/user_agreement"
-        app:drawableEndCompat="@drawable/open"/>
+        app:drawableEndCompat="@drawable/open" />
 
 </LinearLayout>

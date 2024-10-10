@@ -37,9 +37,11 @@
     <string name="country">Страна</string>
     <string name="add_in_playlist">Добавить в плейлист</string>
     <string name="play_music">Воспроизвести песню</string>
+    <string name="error_play_music">Не удалось воспроизвести песню</string>
     <string name="add_into_favorites">Добавить в мне нравится</string>
     <string name="no_name">Без названия</string>
     <string name="unknown_author">Неизвестный автор</string>
     <string name="unknown">Неизвестно</string>
     <string name="none">none</string>
+    <string name="null_preview_url">Демо отсутствует</string>
 </resources>
