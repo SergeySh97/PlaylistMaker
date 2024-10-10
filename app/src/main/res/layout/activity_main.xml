@@ -9,6 +9,7 @@
     <androidx.appcompat.widget.Toolbar
         android:layout_width="match_parent"
         android:layout_height="@dimen/toolbar_height">
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -30,6 +31,7 @@
         android:layout_marginBottom="28dp"
         android:layout_marginStart="@dimen/margin_main_bt"
         android:layout_marginEnd="@dimen/margin_main_bt">
+
         <Button
             android:id="@+id/btSearch"
             android:layout_width="match_parent"
@@ -40,7 +42,8 @@
             android:text="@string/search"
             android:contentDescription="@string/loupe"
             style="@style/MainButton"
-            app:icon="@drawable/bt_search"/>
+            app:icon="@drawable/bt_search" />
+
         <Button
             android:id="@+id/btMedia"
             android:layout_width="match_parent"
@@ -51,7 +54,7 @@
             android:text="@string/media"
             android:contentDescription="@string/note"
             style="@style/MainButton"
-            app:icon="@drawable/bt_media"/>
+            app:icon="@drawable/bt_media" />
 
         <Button
             android:id="@+id/btSettings"

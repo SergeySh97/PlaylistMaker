@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <style name="MainButton" parent="Widget.MaterialComponents.Button.UnelevatedButton">
         <item name="android:backgroundTint">@color/white</item>
         <item name="android:textSize">@dimen/main_text_size</item>
@@ -12,19 +13,23 @@
         <item name="iconPadding">@dimen/icon_padding</item>
         <item name="iconTint">@color/black_for_vectors</item>
     </style>
+
     <style name="SettingsTextView">
         <item name="android:textColor">@color/black</item>
         <item name="android:textSize">@dimen/settings_text_size</item>
         <item name="android:fontFamily">@font/ys_text_regular</item>
     </style>
+
     <style name="MainLayout">
         <item name="android:orientation">vertical</item>
         <item name="android:background">@color/main_background</item>
     </style>
+
     <style name="SettingsLayout">
         <item name="android:orientation">vertical</item>
         <item name="android:background">@color/white</item>
     </style>
+
     <style name="SearchEditText">
         <item name="android:hint">@string/search</item>
         <item name="android:inputType">text</item>
@@ -38,17 +43,21 @@
         <item name="android:drawablePadding">8dp</item>
         <item name="android:cursorVisible">true</item>
     </style>
+
     <style name="SearchClearIV">
         <item name="android:src">@drawable/clear</item>
         <item name="android:layout_gravity">center</item>
         <item name="android:visibility">gone</item>
     </style>
+
     <style name="SearchErrorSmileIV">
         <item name="android:src">@drawable/sad_smile</item>
     </style>
+
     <style name="SearchErrorWiFiIV">
         <item name="android:src">@drawable/no_internet</item>
     </style>
+
     <style name="AdapterTrackName">
         <item name="android:textSize">16sp</item>
         <item name="android:textColor">@color/black</item>
@@ -56,6 +65,7 @@
         <item name="android:ellipsize">end</item>
         <item name="android:maxLines">1</item>
     </style>
+
     <style name="AdapterArtistName">
         <item name="android:textSize">11sp</item>
         <item name="android:textColor">@color/grey_hint_search</item>
@@ -63,26 +73,33 @@
         <item name="android:ellipsize">end</item>
         <item name="android:maxLines">1</item>
     </style>
+
     <style name="AdapterOpen">
         <item name="android:src">@drawable/open</item>
     </style>
+
     <style name="BackgroundTintBW">
         <item name="android:backgroundTint">@color/black_for_vectors</item>
     </style>
+
     <style name="BackgroundWB">
         <item name="android:background">@color/white</item>
     </style>
+
     <style name="TextColorBW">
         <item name="android:textColor">@color/black_for_vectors</item>
     </style>
+
     <style name="AdapterEllipse">
         <item name="android:src">@drawable/ellipse</item>
     </style>
+
     <style name="TrackInfoLeft">
         <item name="android:textSize">13sp</item>
         <item name="android:fontFamily">@font/ys_display_regular</item>
         <item name="android:textColor">@color/grey_hint_search</item>
     </style>
+
     <style name="TrackInfoRight">
         <item name="android:textSize">13sp</item>
         <item name="android:fontFamily">@font/ys_display_regular</item>
