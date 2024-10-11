@@ -3,11 +3,15 @@ package com.google.playlistmaker.player.ui.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewmodel.initializer
+import androidx.lifecycle.viewmodel.viewModelFactory
+import com.google.playlistmaker.app.Creator
 import com.google.playlistmaker.player.domain.usecase.PlayerInteractor
 import com.google.playlistmaker.player.ui.model.PlayerState
 
 class PlayerVM(
-    private val trackInteractor: PlayerInteractor
+    private val playerInteractor: PlayerInteractor
 ) : ViewModel() {
 
     private val playerState = MutableLiveData<PlayerState>()
@@ -26,27 +30,27 @@ class PlayerVM(
         onPreparedListener: () -> Unit,
         onCompletionListener: () -> Unit
     ) {
-        trackInteractor.prepare(url, onPreparedListener, onCompletionListener)
+        playerInteractor.prepare(url, onPreparedListener, onCompletionListener)
     }
 
     fun startPlayer() {
         playingState.value = true
-        trackInteractor.start()
+        playerInteractor.start()
         renderState(PlayerState.Playing)
     }
 
     fun pausePlayer() {
         playingState.value = false
-        trackInteractor.pause()
+        playerInteractor.pause()
         renderState(PlayerState.Paused)
     }
 
     fun getCurrentPosition(): Long {
-        return trackInteractor.getCurrentPosition()
+        return playerInteractor.getCurrentPosition()
     }
 
     fun releasePlayer() {
-        trackInteractor.release()
+        playerInteractor.release()
     }
 
     private fun renderState(state: PlayerState) {
@@ -54,7 +58,16 @@ class PlayerVM(
     }
 
     override fun onCleared() {
-        trackInteractor.release()
+        playerInteractor.release()
     }
+
+    companion object {
+        fun getViewModelFactory(): ViewModelProvider.Factory = viewModelFactory {
+            initializer {
+                val playerInteractor = Creator.providerPlayerInteractor()
+                PlayerVM(playerInteractor)
+            }
+        }
+    }//rm
 
 }

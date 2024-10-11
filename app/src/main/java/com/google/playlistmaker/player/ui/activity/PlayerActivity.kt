@@ -9,6 +9,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.enableEdgeToEdge
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.google.gson.Gson
@@ -27,7 +28,8 @@ class PlayerActivity : ComponentActivity() {
     private lateinit var binding: ActivityPlayerBinding
     private lateinit var track: Track
     private lateinit var mainThreadHandler: Handler
-    private val viewModel: PlayerVM by viewModel()
+    //private val viewModel: PlayerVM by viewModel()
+    private lateinit var viewModel: PlayerVM//rm
     private val dateFormat by lazy { SimpleDateFormat("mm:ss", Locale.getDefault()) }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,6 +37,8 @@ class PlayerActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContentView(binding.root)
         initializeUI()
+        viewModel = ViewModelProvider(this,
+            PlayerVM.getViewModelFactory())[PlayerVM::class.java]//rm
         viewModel.getPlayerState().observe(this) {
             renderState(it)
         }

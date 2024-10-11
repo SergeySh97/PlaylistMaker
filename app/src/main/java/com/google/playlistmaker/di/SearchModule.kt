@@ -28,7 +28,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 
-val searchModule = module {
+/*val searchModule = module {
 
     viewModelOf(::SearchVM) { bind<ViewModel>() }
     singleOf(::SearchTracksRepositoryImpl) { bind<SearchTracksRepository>() }
@@ -48,4 +48,4 @@ val searchModule = module {
             .addConverterFactory(GsonConverterFactory.create())
             .build()
     }
-}
+}*/

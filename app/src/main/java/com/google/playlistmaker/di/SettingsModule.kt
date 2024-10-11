@@ -17,6 +17,7 @@ import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
 
 
+/*
 val settingsModule = module {
 
     viewModelOf(::SettingsVM) { bind<ViewModel>() }
@@ -25,3 +26,4 @@ val settingsModule = module {
     factoryOf(::SwitchThemeUseCaseImpl) { bind<SwitchThemeUseCase>() }
     factoryOf(::SharingInteractorImpl) { bind<SharingInteractor>() }
 }
+*/

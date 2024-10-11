@@ -3,6 +3,12 @@ package com.google.playlistmaker.search.ui.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY
+import androidx.lifecycle.viewmodel.initializer
+import androidx.lifecycle.viewmodel.viewModelFactory
+import com.google.playlistmaker.app.App
+import com.google.playlistmaker.app.Creator
 import com.google.playlistmaker.search.domain.model.ErrorType
 import com.google.playlistmaker.search.domain.model.NetworkResult
 import com.google.playlistmaker.search.domain.model.Track
@@ -80,4 +86,21 @@ class SearchVM(
     private fun renderState(state: SearchState) {
         searchState.postValue(state)
     }
+
+    companion object {
+        fun getViewModelFactory(): ViewModelProvider.Factory = viewModelFactory {
+            initializer {
+                val searchUseCase = Creator.providerTracksSearchUseCase()
+                val getHistoryUseCase = Creator.providerGetHistoryUseCase()
+                val saveHistoryUseCase = Creator.providerSaveHistoryUseCase()
+                val clearHistoryUseCase = Creator.providerClearHistoryUseCase()
+                SearchVM(
+                    searchUseCase,
+                    getHistoryUseCase,
+                    saveHistoryUseCase,
+                    clearHistoryUseCase
+                )
+            }
+        }
+    }//rm
 }

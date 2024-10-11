@@ -15,7 +15,7 @@ import org.koin.core.module.dsl.factoryOf
 import org.koin.core.module.dsl.singleOf
 
 
-val trackModule = module {
+/*val trackModule = module {
 
     viewModelOf(::PlayerVM) { bind<ViewModel>() }
 
@@ -27,4 +27,4 @@ val trackModule = module {
     single { Handler() }
 
     factoryOf(::PlayerInteractorImpl) { bind<PlayerInteractor>()}
-}
+}*/
