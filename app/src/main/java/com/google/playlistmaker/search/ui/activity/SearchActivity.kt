@@ -12,7 +12,6 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
-import androidx.lifecycle.ViewModelProvider
 import com.google.gson.Gson
 import com.google.playlistmaker.R
 import com.google.playlistmaker.databinding.ActivitySearchBinding
@@ -34,8 +33,7 @@ class SearchActivity : AppCompatActivity(), OnTrackClickListener {
     private val listener: OnTrackClickListener by lazy {
         this
     }
-    //private val viewModel: SearchVM by viewModel()
-    private lateinit var viewModel: SearchVM//rm
+    private val viewModel: SearchVM by viewModel()
 
     private val binding: ActivitySearchBinding by lazy {
         ActivitySearchBinding.inflate(layoutInflater)
@@ -51,9 +49,6 @@ class SearchActivity : AppCompatActivity(), OnTrackClickListener {
         enableEdgeToEdge()
         setContentView(binding.root)
         initializeUI()
-        viewModel = ViewModelProvider(
-            this,
-            SearchVM.getViewModelFactory())[SearchVM::class.java]//rm
 
         viewModel.getState().observe(this) {
             renderState(it)

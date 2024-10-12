@@ -1,4 +1,4 @@
-package com.google.playlistmaker.di
+package com.google.playlistmaker.settings.di
 
 import androidx.lifecycle.ViewModel
 import com.google.playlistmaker.settings.domain.api.SwitchThemeRepository
@@ -17,7 +17,7 @@ import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
 
 
-/*
+
 val settingsModule = module {
 
     viewModelOf(::SettingsVM) { bind<ViewModel>() }
@@ -26,4 +26,4 @@ val settingsModule = module {
     factoryOf(::SwitchThemeUseCaseImpl) { bind<SwitchThemeUseCase>() }
     factoryOf(::SharingInteractorImpl) { bind<SharingInteractor>() }
 }
-*/
+

@@ -12,31 +12,31 @@ import com.google.playlistmaker.search.ui.activity.SearchActivity
 import com.google.playlistmaker.settings.ui.activity.SettingsActivity
 
 class MainActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityMainBinding
+    private var binding: ActivityMainBinding? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         enableEdgeToEdge()
         initializeUI()
-        setContentView(binding.root)
+        setContentView(binding!!.root)
     }
 
     private fun initializeUI() {
-        ViewCompat.setOnApplyWindowInsetsListener(binding.main) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
+        binding?.let {
+            ViewCompat.setOnApplyWindowInsetsListener(it.main) { v, insets ->
+                val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+                v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+                insets
+            }
         }
-        with(binding) {
-            btSearch.setOnClickListener {
-                startActivity(Intent(applicationContext, SearchActivity::class.java))
-            }
-            btMedia.setOnClickListener {
-                startActivity(Intent(applicationContext, MediaActivity::class.java))
-            }
-            btSettings.setOnClickListener {
-                startActivity(Intent(applicationContext, SettingsActivity::class.java))
-            }
+        binding?.btSearch?.setOnClickListener {
+            startActivity(Intent(applicationContext, SearchActivity::class.java))
+        }
+        binding?.btMedia?.setOnClickListener {
+            startActivity(Intent(applicationContext, MediaActivity::class.java))
+        }
+        binding?.btSettings?.setOnClickListener {
+               startActivity(Intent(applicationContext, SettingsActivity::class.java))
         }
     }
 }

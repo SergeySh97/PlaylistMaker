@@ -1,4 +1,4 @@
-package com.google.playlistmaker.di
+package com.google.playlistmaker.search.di
 
 import androidx.lifecycle.ViewModel
 import com.google.playlistmaker.search.data.impl.HistoryTracksRepositoryImpl
@@ -13,11 +13,11 @@ import com.google.playlistmaker.search.domain.api.SearchTracksRepository
 import com.google.playlistmaker.search.domain.impl.ClearHistoryUseCaseImpl
 import com.google.playlistmaker.search.domain.impl.GetHistoryUseCaseImpl
 import com.google.playlistmaker.search.domain.impl.SaveHistoryUseCaseImpl
-import com.google.playlistmaker.search.domain.impl.TracksSearchUseCaseImpl
+import com.google.playlistmaker.search.domain.impl.SearchTracksUseCaseImpl
 import com.google.playlistmaker.search.domain.usecase.ClearHistoryUseCase
 import com.google.playlistmaker.search.domain.usecase.GetHistoryUseCase
 import com.google.playlistmaker.search.domain.usecase.SaveHistoryUseCase
-import com.google.playlistmaker.search.domain.usecase.TracksSearchUseCase
+import com.google.playlistmaker.search.domain.usecase.SearchTracksUseCase
 import com.google.playlistmaker.search.ui.viewmodel.SearchVM
 import org.koin.androidx.viewmodel.dsl.viewModelOf
 import org.koin.core.module.dsl.bind
@@ -28,13 +28,13 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 
-/*val searchModule = module {
+val searchModule = module {
 
     viewModelOf(::SearchVM) { bind<ViewModel>() }
     singleOf(::SearchTracksRepositoryImpl) { bind<SearchTracksRepository>() }
     singleOf(::SharedPrefsManager) { bind<HistoryTracksManager>() }
     singleOf(::HistoryTracksRepositoryImpl) { bind<HistoryRepository>() }
-    factoryOf(::TracksSearchUseCaseImpl) { bind<TracksSearchUseCase>() }
+    factoryOf(::SearchTracksUseCaseImpl) { bind<SearchTracksUseCase>() }
     factoryOf(::GetHistoryUseCaseImpl) { bind<GetHistoryUseCase>() }
     factoryOf(::SaveHistoryUseCaseImpl) { bind<SaveHistoryUseCase>() }
     factoryOf(::ClearHistoryUseCaseImpl) { bind<ClearHistoryUseCase>() }
@@ -48,4 +48,4 @@ import retrofit2.converter.gson.GsonConverterFactory
             .addConverterFactory(GsonConverterFactory.create())
             .build()
     }
-}*/
+}

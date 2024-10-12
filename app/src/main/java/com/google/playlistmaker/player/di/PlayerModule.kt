@@ -1,4 +1,4 @@
-package com.google.playlistmaker.di
+package com.google.playlistmaker.player.di
 
 import androidx.lifecycle.ViewModel
 import android.media.MediaPlayer
@@ -15,7 +15,7 @@ import org.koin.core.module.dsl.factoryOf
 import org.koin.core.module.dsl.singleOf
 
 
-/*val trackModule = module {
+val trackModule = module {
 
     viewModelOf(::PlayerVM) { bind<ViewModel>() }
 
@@ -27,4 +27,4 @@ import org.koin.core.module.dsl.singleOf
     single { Handler() }
 
     factoryOf(::PlayerInteractorImpl) { bind<PlayerInteractor>()}
-}*/
+}
