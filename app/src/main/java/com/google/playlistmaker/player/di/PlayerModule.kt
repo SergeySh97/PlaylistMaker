@@ -17,6 +17,7 @@ import org.koin.core.module.dsl.singleOf
 
 val trackModule = module {
 
+
     viewModelOf(::PlayerVM) { bind<ViewModel>() }
 
     singleOf(::PlayerRepositoryImpl) { bind<PlayerRepository>() }

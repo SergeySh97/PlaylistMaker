@@ -30,6 +30,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 val searchModule = module {
 
+
     viewModelOf(::SearchVM) { bind<ViewModel>() }
     singleOf(::SearchTracksRepositoryImpl) { bind<SearchTracksRepository>() }
     singleOf(::SharedPrefsManager) { bind<HistoryTracksManager>() }

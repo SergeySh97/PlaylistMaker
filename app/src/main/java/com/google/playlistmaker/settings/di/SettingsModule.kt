@@ -20,6 +20,7 @@ import org.koin.dsl.module
 
 val settingsModule = module {
 
+
     viewModelOf(::SettingsVM) { bind<ViewModel>() }
     singleOf(::SwitchThemeRepositoryImpl) { bind<SwitchThemeRepository>() }
     singleOf(::ExternalNavigatorImpl) { bind<ExternalNavigator>() }
