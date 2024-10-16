@@ -14,14 +14,14 @@ import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
 
 
-val trackModule = module {
+val playerModule = module {
 
 
     viewModelOf(::PlayerVM)
 
-    singleOf(::PlayerRepositoryImpl) { bind<PlayerRepository>() }
+    factoryOf(::PlayerRepositoryImpl) { bind<PlayerRepository>() }
 
-    single { MediaPlayer() }
+    factory { MediaPlayer() }
 
     @Suppress("DEPRECATION")
     single { Handler() }

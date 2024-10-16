@@ -1,7 +1,7 @@
 package com.google.playlistmaker.app
 
 import android.app.Application
-import com.google.playlistmaker.player.di.trackModule
+import com.google.playlistmaker.player.di.playerModule
 import com.google.playlistmaker.search.di.searchModule
 import com.google.playlistmaker.settings.di.settingsModule
 import com.google.playlistmaker.settings.domain.usecase.SwitchThemeUseCase
@@ -20,7 +20,7 @@ class App : Application() {
         startKoin {
             androidLogger(Level.DEBUG)
             androidContext(this@App)
-            modules(listOf(searchModule, settingsModule, trackModule))
+            modules(listOf(searchModule, settingsModule, playerModule))
         }
 
         val switchTheme: SwitchThemeUseCase by inject()
