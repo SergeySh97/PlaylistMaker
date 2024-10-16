@@ -49,8 +49,11 @@ class SearchActivity : AppCompatActivity(), OnTrackClickListener {
         enableEdgeToEdge()
         setContentView(binding.root)
         initializeUI()
+    }
 
-        viewModel.getState().observe(this) {
+    override fun onResume() {
+        super.onResume()
+        viewModel.getSearchState().observe(this) {
             renderState(it)
         }
     }
@@ -61,7 +64,6 @@ class SearchActivity : AppCompatActivity(), OnTrackClickListener {
             val intent = Intent(applicationContext, PlayerActivity::class.java)
             intent.putExtra(TRACK, Gson().toJson(track))
             startActivity(intent)
-            viewModel.getHistory()
         }
     }
 
@@ -87,12 +89,12 @@ class SearchActivity : AppCompatActivity(), OnTrackClickListener {
                     applicationContext.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
                 imm.hideSoftInputFromWindow(etSearch.windowToken, 0)
             }
-            etSearch.addTextChangedListener(onTextChanged = { s, _, _, _ ->
+            etSearch.addTextChangedListener(
+                onTextChanged = { s, _, _, _ ->
                 searchText = s.toString()
-                if (etSearch.hasFocus() && s?.isEmpty() == true) {
+                if (s?.isEmpty() == true) {
                     viewModel.getHistory()
-                }
-                if (s?.isEmpty() == false) {
+                } else {
                     viewModel.loading()
                     searchDebounce(searchRunnable)
                 }
@@ -106,7 +108,7 @@ class SearchActivity : AppCompatActivity(), OnTrackClickListener {
         when (state) {
             is SearchState.SearchContent -> showSearch(state.searchList)
             SearchState.NotFound -> showError(ErrorType.NOT_FOUND)
-            is SearchState.HistoryContent -> showHistory(state.historyList)
+            is SearchState.HistoryContent -> showHistory()
             SearchState.EmptyHistory -> goneHistory()
             is SearchState.Error -> showError(state.errorMessage)
             SearchState.Loading -> showLoading(true)
@@ -156,9 +158,10 @@ class SearchActivity : AppCompatActivity(), OnTrackClickListener {
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    private fun showHistory(historyList: List<Track>) {
+    private fun showHistory() {
         showLoading(false)
         with(binding) {
+            val historyList = viewModel.updateHistory()
             val adapter = TrackAdapter(historyList, listener)
             val recyclerView = rvHistory
             llError.gone()

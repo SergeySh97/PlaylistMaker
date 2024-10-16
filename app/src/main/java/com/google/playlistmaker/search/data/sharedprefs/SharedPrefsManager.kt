@@ -22,17 +22,13 @@ class SharedPrefsManager(context: Context) : HistoryTracksManager {
 
     override fun saveHistoryList(expression: TrackDto) {
         val historyList = getHistoryList().toMutableList()
-        if (historyList.isNotEmpty()) {
-            historyList.removeIf { it.trackId == expression.trackId }
-        }
+        historyList.removeAll { it.trackId == expression.trackId }
         historyList.add(0, expression)
-        if (historyList.size == 11) {
-            historyList.removeAt(10)
+        if (historyList.size > 10) {
+            historyList.removeLast()
         }
         val updatedList = Gson().toJson(historyList)
-        prefs?.edit {
-            putString(SEARCH_HISTORY_LIST, updatedList)
-        }
+        prefs?.edit { putString(SEARCH_HISTORY_LIST, updatedList) }
     }
 
     override fun clearHistoryList() {

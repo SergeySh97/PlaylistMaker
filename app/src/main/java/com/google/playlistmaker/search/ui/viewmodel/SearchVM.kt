@@ -26,7 +26,7 @@ class SearchVM(
         getHistory()
     }
 
-    fun getState(): LiveData<SearchState> {
+    fun getSearchState(): LiveData<SearchState> {
         return searchState
     }
 
@@ -69,6 +69,10 @@ class SearchVM(
         } else {
             renderState(SearchState.EmptyHistory)
         }
+    }
+
+    fun updateHistory(): List<Track> {
+        return getHistoryUseCase.execute()
     }
 
     fun saveHistory(track: Track) {

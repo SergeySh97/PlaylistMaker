@@ -57,9 +57,4 @@ class PlayerVM(
     private fun renderState(state: PlayerState) {
         playerState.postValue(state)
     }
-
-    override fun onCleared() {
-        playerInteractor.release()
-    }
-
 }
