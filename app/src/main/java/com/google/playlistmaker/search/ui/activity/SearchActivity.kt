@@ -15,15 +15,15 @@ import androidx.core.widget.addTextChangedListener
 import com.google.gson.Gson
 import com.google.playlistmaker.R
 import com.google.playlistmaker.databinding.ActivitySearchBinding
+import com.google.playlistmaker.player.ui.OnTrackClickListener
+import com.google.playlistmaker.player.ui.TrackAdapter
+import com.google.playlistmaker.player.ui.activity.PlayerActivity
 import com.google.playlistmaker.search.domain.model.ErrorType
 import com.google.playlistmaker.search.domain.model.Track
 import com.google.playlistmaker.search.ui.ClickDebounce.clickDebounce
 import com.google.playlistmaker.search.ui.SearchDebounce.searchDebounce
 import com.google.playlistmaker.search.ui.model.SearchState
 import com.google.playlistmaker.search.ui.viewmodel.SearchVM
-import com.google.playlistmaker.player.ui.OnTrackClickListener
-import com.google.playlistmaker.player.ui.TrackAdapter
-import com.google.playlistmaker.player.ui.activity.PlayerActivity
 import com.google.playlistmaker.utils.Extensions.gone
 import com.google.playlistmaker.utils.Extensions.visible
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -61,6 +61,7 @@ class SearchActivity : AppCompatActivity(), OnTrackClickListener {
             val intent = Intent(applicationContext, PlayerActivity::class.java)
             intent.putExtra(TRACK, Gson().toJson(track))
             startActivity(intent)
+            viewModel.getHistory()
         }
     }
 

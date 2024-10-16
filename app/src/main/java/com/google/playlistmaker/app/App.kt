@@ -1,10 +1,9 @@
 package com.google.playlistmaker.app
 
 import android.app.Application
-
+import com.google.playlistmaker.player.di.trackModule
 import com.google.playlistmaker.search.di.searchModule
 import com.google.playlistmaker.settings.di.settingsModule
-import com.google.playlistmaker.player.di.trackModule
 import com.google.playlistmaker.settings.domain.usecase.SwitchThemeUseCase
 import org.koin.android.ext.android.inject
 import org.koin.android.ext.koin.androidContext

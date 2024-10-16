@@ -12,31 +12,31 @@ import com.google.playlistmaker.search.ui.activity.SearchActivity
 import com.google.playlistmaker.settings.ui.activity.SettingsActivity
 
 class MainActivity : AppCompatActivity() {
-    private var binding: ActivityMainBinding? = null
+    private val binding: ActivityMainBinding by lazy {
+        ActivityMainBinding.inflate(layoutInflater)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityMainBinding.inflate(layoutInflater)
         enableEdgeToEdge()
+        setContentView(binding.root)
         initializeUI()
-        setContentView(binding!!.root)
     }
 
     private fun initializeUI() {
-        binding?.let {
-            ViewCompat.setOnApplyWindowInsetsListener(it.main) { v, insets ->
-                val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-                v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-                insets
-            }
+        ViewCompat.setOnApplyWindowInsetsListener(binding.main) { v, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+            insets
         }
-        binding?.btSearch?.setOnClickListener {
+        binding.btSearch.setOnClickListener {
             startActivity(Intent(applicationContext, SearchActivity::class.java))
         }
-        binding?.btMedia?.setOnClickListener {
+        binding.btMedia.setOnClickListener {
             startActivity(Intent(applicationContext, MediaActivity::class.java))
         }
-        binding?.btSettings?.setOnClickListener {
-               startActivity(Intent(applicationContext, SettingsActivity::class.java))
+        binding.btSettings.setOnClickListener {
+            startActivity(Intent(applicationContext, SettingsActivity::class.java))
         }
     }
 }

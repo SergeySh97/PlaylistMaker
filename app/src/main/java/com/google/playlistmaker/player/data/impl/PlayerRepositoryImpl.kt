@@ -3,11 +3,13 @@ package com.google.playlistmaker.player.data.impl
 import android.media.MediaPlayer
 import com.google.playlistmaker.player.domain.api.PlayerRepository
 
-class PlayerRepositoryImpl(private val mediaPlayer : MediaPlayer) : PlayerRepository {
+class PlayerRepositoryImpl(private val mediaPlayer: MediaPlayer) : PlayerRepository {
 
-    override fun prepare(url: String,
-                         onPreparedListener: () -> Unit,
-                         onCompletionListener: () -> Unit) {
+    override fun prepare(
+        url: String,
+        onPreparedListener: () -> Unit,
+        onCompletionListener: () -> Unit
+    ) {
         mediaPlayer.setDataSource(url)
         mediaPlayer.prepareAsync()
         mediaPlayer.setOnPreparedListener {
@@ -17,15 +19,16 @@ class PlayerRepositoryImpl(private val mediaPlayer : MediaPlayer) : PlayerReposi
             onCompletionListener()
         }
     }
+
     override fun start() {
         mediaPlayer.start()
     }
 
-    override fun pause(){
+    override fun pause() {
         mediaPlayer.pause()
     }
 
-    override fun getCurrentPosition() : Long {
+    override fun getCurrentPosition(): Long {
         return mediaPlayer.currentPosition.toLong()
     }
 

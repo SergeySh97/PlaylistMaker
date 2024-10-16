@@ -21,6 +21,7 @@ class PlayerVM(
     fun getPlayerState(): LiveData<PlayerState> {
         return playerState
     }
+
     fun getPlayingState(): LiveData<Boolean> {
         return playingState
     }
