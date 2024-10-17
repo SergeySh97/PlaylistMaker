@@ -9,15 +9,14 @@ import androidx.activity.ComponentActivity
 import androidx.activity.enableEdgeToEdge
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.google.gson.Gson
 import com.google.playlistmaker.R
 import com.google.playlistmaker.databinding.ActivityPlayerBinding
-import com.google.playlistmaker.search.domain.model.Track
 import com.google.playlistmaker.player.ui.model.PlayerState
 import com.google.playlistmaker.player.ui.viewmodel.PlayerVM
+import com.google.playlistmaker.search.domain.model.Track
 import com.google.playlistmaker.utils.Extensions.gone
 import com.google.playlistmaker.utils.Extensions.visible
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -25,20 +24,18 @@ import java.text.SimpleDateFormat
 import java.util.Locale
 
 class PlayerActivity : ComponentActivity() {
-    private lateinit var binding: ActivityPlayerBinding
-    private lateinit var track: Track
-    private lateinit var mainThreadHandler: Handler
-    //private val viewModel: PlayerVM by viewModel()
-    private lateinit var viewModel: PlayerVM//rm
+    private val binding: ActivityPlayerBinding by lazy {
+        ActivityPlayerBinding.inflate(layoutInflater)
+    }
+    private var track: Track? = null
+    private var mainThreadHandler: Handler? = null
+    private val viewModel: PlayerVM by viewModel()
     private val dateFormat by lazy { SimpleDateFormat("mm:ss", Locale.getDefault()) }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityPlayerBinding.inflate(layoutInflater)
         enableEdgeToEdge()
         setContentView(binding.root)
         initializeUI()
-        viewModel = ViewModelProvider(this,
-            PlayerVM.getViewModelFactory())[PlayerVM::class.java]//rm
         viewModel.getPlayerState().observe(this) {
             renderState(it)
         }
@@ -56,37 +53,39 @@ class PlayerActivity : ComponentActivity() {
         }
         track = Gson().fromJson(intent.getStringExtra(TRACK), Track::class.java)
         mainThreadHandler = Handler(Looper.getMainLooper())
-        with(binding) {
-            tvTrackName.text = track.trackName
-            tvArtistName.text = track.artistName.trim()
-            tvDuration.text = dateFormat.format(track.trackTimeMillis.toLong())
-            tvYear.text = if (track.releaseDate == NONE) track.releaseDate else track
-                .releaseDate.take(4)
-            tvGenre.text = track.primaryGenreName
-            tvCountry.text = track.country
-            @SuppressLint("SetTextI18n")
-            tvTrackTime.text = DEFAULT_TIME
-            if (track.collectionName == NULL) {
-                tvAlbum.gone()
-                tvAlbumHint.gone()
-            } else {
-                tvAlbum.visible()
-                tvAlbumHint.visible()
-                tvAlbum.text = track.collectionName
-            }
-            val radiusInDp = 8
-            val density = resources.displayMetrics.density
-            val radiusInPixels = (radiusInDp * density).toInt()
-            Glide.with(applicationContext)
-                .load(track.getCoverArtwork())
-                .transform(RoundedCorners(radiusInPixels))
-                .centerCrop()
-                .placeholder(R.drawable.placeholder_300dp)
-                .into(ivAlbum)
+        track?.let { t ->
+            with(binding) {
+                tvTrackName.text = t.trackName
+                tvArtistName.text = t.artistName.trim()
+                tvDuration.text = dateFormat.format(t.trackTimeMillis.toLong())
+                tvYear.text = if (t.releaseDate == NONE) t.releaseDate else t
+                    .releaseDate.take(4)
+                tvGenre.text = t.primaryGenreName
+                tvCountry.text = t.country
+                @SuppressLint("SetTextI18n")
+                tvTrackTime.text = DEFAULT_TIME
+                if (t.collectionName == NULL) {
+                    tvAlbum.gone()
+                    tvAlbumHint.gone()
+                } else {
+                    tvAlbum.visible()
+                    tvAlbumHint.visible()
+                    tvAlbum.text = t.collectionName
+                }
+                val radiusInDp = 8
+                val density = resources.displayMetrics.density
+                val radiusInPixels = (radiusInDp * density).toInt()
+                Glide.with(applicationContext)
+                    .load(t.getCoverArtwork())
+                    .transform(RoundedCorners(radiusInPixels))
+                    .centerCrop()
+                    .placeholder(R.drawable.placeholder_300dp)
+                    .into(ivAlbum)
 
-            btBack.setOnClickListener {
-                @Suppress("DEPRECATION")
-                onBackPressed()
+                btBack.setOnClickListener {
+                    @Suppress("DEPRECATION")
+                    onBackPressed()
+                }
             }
         }
     }
@@ -95,7 +94,7 @@ class PlayerActivity : ComponentActivity() {
         return object : Runnable {
             override fun run() {
                 if (viewModel.getPlayingState().value == true) {
-                    mainThreadHandler.postDelayed(this, TRACK_TIME_DELAY)
+                    mainThreadHandler!!.postDelayed(this, TRACK_TIME_DELAY)
                     val trackTime = dateFormat.format(viewModel.getCurrentPosition())
                     binding.tvTrackTime.text = trackTime
                 }
@@ -113,13 +112,19 @@ class PlayerActivity : ComponentActivity() {
 
     private fun playbackControl(isPlaying: Boolean) {
         with(binding) {
-            if (isPlaying) {
-                btPlay.setOnClickListener { viewModel.pausePlayer() }
-                btPlay.setImageResource(R.drawable.bt_pause)
-            }
-            else {
-                btPlay.setOnClickListener { viewModel.startPlayer() }
-                btPlay.setImageResource(R.drawable.bt_play)
+            btPlay.setImageResource(
+                if (isPlaying) {
+                    R.drawable.bt_pause
+                } else {
+                    R.drawable.bt_play
+                }
+            )
+            btPlay.setOnClickListener {
+                if (isPlaying) {
+                    viewModel.pausePlayer()
+                } else {
+                    viewModel.startPlayer()
+                }
             }
         }
     }
@@ -127,22 +132,25 @@ class PlayerActivity : ComponentActivity() {
     @SuppressLint("SetTextI18n")
     private fun preparePlayer() {
         with(binding) {
-            if (track.previewUrl != NULL) {
-                    viewModel.preparePlayer(track.previewUrl,
-                        {
-                            onPreparedListener()
-                        },{
-                            onCompletionListener()
-                        })
+            if (track!!.previewUrl != NULL) {
+                viewModel.preparePlayer(track!!.previewUrl,
+                    {
+                        onPreparedListener()
+                    }, {
+                        onCompletionListener()
+                    })
             } else {
-                Toast.makeText(applicationContext, R.string.null_preview_url, Toast.LENGTH_LONG)
-                    .show()
+                showToast()
                 btPlay.setOnClickListener {
-                    Toast.makeText(applicationContext, R.string.null_preview_url, Toast.LENGTH_LONG)
-                        .show()
+                    showToast()
                 }
             }
         }
+    }
+
+    private fun showToast() {
+        Toast.makeText(applicationContext, R.string.null_preview_url, Toast.LENGTH_LONG)
+            .show()
     }
 
     private fun onPreparedListener() {
@@ -150,19 +158,21 @@ class PlayerActivity : ComponentActivity() {
     }
 
     private fun onCompletionListener() {
-        mainThreadHandler.removeCallbacks(trackCurrentTime())
-        binding.btPlay.setImageResource(R.drawable.bt_play)
-        binding.tvTrackTime.text = DEFAULT_TIME
-        viewModel.pausePlayer()
+        with(binding) {
+            mainThreadHandler!!.removeCallbacks(trackCurrentTime())
+            btPlay.setImageResource(R.drawable.bt_play)
+            tvTrackTime.text = DEFAULT_TIME
+            viewModel.pausePlayer()
+        }
     }
 
     private fun startPlayer() {
-        mainThreadHandler.post(trackCurrentTime())
+        mainThreadHandler!!.post(trackCurrentTime())
         viewModel.startPlayer()
     }
 
     private fun pausePlayer() {
-        mainThreadHandler.removeCallbacks(trackCurrentTime())
+        mainThreadHandler!!.removeCallbacks(trackCurrentTime())
         viewModel.pausePlayer()
     }
 
@@ -175,7 +185,7 @@ class PlayerActivity : ComponentActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        mainThreadHandler.removeCallbacks(trackCurrentTime())
+        mainThreadHandler!!.removeCallbacks(trackCurrentTime())
         viewModel.releasePlayer()
     }
 

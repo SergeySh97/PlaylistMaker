@@ -12,19 +12,18 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
-import androidx.lifecycle.ViewModelProvider
 import com.google.gson.Gson
 import com.google.playlistmaker.R
 import com.google.playlistmaker.databinding.ActivitySearchBinding
+import com.google.playlistmaker.player.ui.OnTrackClickListener
+import com.google.playlistmaker.player.ui.TrackAdapter
+import com.google.playlistmaker.player.ui.activity.PlayerActivity
 import com.google.playlistmaker.search.domain.model.ErrorType
 import com.google.playlistmaker.search.domain.model.Track
 import com.google.playlistmaker.search.ui.ClickDebounce.clickDebounce
 import com.google.playlistmaker.search.ui.SearchDebounce.searchDebounce
 import com.google.playlistmaker.search.ui.model.SearchState
 import com.google.playlistmaker.search.ui.viewmodel.SearchVM
-import com.google.playlistmaker.player.ui.OnTrackClickListener
-import com.google.playlistmaker.player.ui.TrackAdapter
-import com.google.playlistmaker.player.ui.activity.PlayerActivity
 import com.google.playlistmaker.utils.Extensions.gone
 import com.google.playlistmaker.utils.Extensions.visible
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -34,8 +33,7 @@ class SearchActivity : AppCompatActivity(), OnTrackClickListener {
     private val listener: OnTrackClickListener by lazy {
         this
     }
-    //private val viewModel: SearchVM by viewModel()
-    private lateinit var viewModel: SearchVM//rm
+    private val viewModel: SearchVM by viewModel()
 
     private val binding: ActivitySearchBinding by lazy {
         ActivitySearchBinding.inflate(layoutInflater)
@@ -51,11 +49,11 @@ class SearchActivity : AppCompatActivity(), OnTrackClickListener {
         enableEdgeToEdge()
         setContentView(binding.root)
         initializeUI()
-        viewModel = ViewModelProvider(
-            this,
-            SearchVM.getViewModelFactory())[SearchVM::class.java]//rm
+    }
 
-        viewModel.getState().observe(this) {
+    override fun onResume() {
+        super.onResume()
+        viewModel.getSearchState().observe(this) {
             renderState(it)
         }
     }
@@ -91,12 +89,12 @@ class SearchActivity : AppCompatActivity(), OnTrackClickListener {
                     applicationContext.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
                 imm.hideSoftInputFromWindow(etSearch.windowToken, 0)
             }
-            etSearch.addTextChangedListener(onTextChanged = { s, _, _, _ ->
+            etSearch.addTextChangedListener(
+                onTextChanged = { s, _, _, _ ->
                 searchText = s.toString()
-                if (etSearch.hasFocus() && s?.isEmpty() == true) {
+                if (s?.isEmpty() == true) {
                     viewModel.getHistory()
-                }
-                if (s?.isEmpty() == false) {
+                } else {
                     viewModel.loading()
                     searchDebounce(searchRunnable)
                 }
@@ -110,7 +108,7 @@ class SearchActivity : AppCompatActivity(), OnTrackClickListener {
         when (state) {
             is SearchState.SearchContent -> showSearch(state.searchList)
             SearchState.NotFound -> showError(ErrorType.NOT_FOUND)
-            is SearchState.HistoryContent -> showHistory(state.historyList)
+            is SearchState.HistoryContent -> showHistory()
             SearchState.EmptyHistory -> goneHistory()
             is SearchState.Error -> showError(state.errorMessage)
             SearchState.Loading -> showLoading(true)
@@ -160,9 +158,10 @@ class SearchActivity : AppCompatActivity(), OnTrackClickListener {
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    private fun showHistory(historyList: List<Track>) {
+    private fun showHistory() {
         showLoading(false)
         with(binding) {
+            val historyList = viewModel.updateHistory()
             val adapter = TrackAdapter(historyList, listener)
             val recyclerView = rvHistory
             llError.gone()

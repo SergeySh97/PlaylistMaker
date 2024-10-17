@@ -3,10 +3,12 @@ package com.google.playlistmaker.player.domain.impl
 import com.google.playlistmaker.player.domain.api.PlayerRepository
 import com.google.playlistmaker.player.domain.usecase.PlayerInteractor
 
-class PlayerInteractorImpl(private val repository: PlayerRepository): PlayerInteractor {
-    override fun prepare(url: String,
-                         onPreparedListener: () -> Unit,
-                         onCompletionListener: () -> Unit) {
+class PlayerInteractorImpl(private val repository: PlayerRepository) : PlayerInteractor {
+    override fun prepare(
+        url: String,
+        onPreparedListener: () -> Unit,
+        onCompletionListener: () -> Unit
+    ) {
         repository.prepare(url, onPreparedListener, onCompletionListener)
     }
 
@@ -19,7 +21,7 @@ class PlayerInteractorImpl(private val repository: PlayerRepository): PlayerInte
     }
 
     override fun getCurrentPosition(): Long {
-       return repository.getCurrentPosition()
+        return repository.getCurrentPosition()
     }
 
     override fun release() {

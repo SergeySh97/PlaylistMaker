@@ -3,23 +3,18 @@ package com.google.playlistmaker.search.ui.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY
-import androidx.lifecycle.viewmodel.initializer
-import androidx.lifecycle.viewmodel.viewModelFactory
-import com.google.playlistmaker.app.App
-import com.google.playlistmaker.app.Creator
+import com.google.playlistmaker.search.domain.api.TracksConsumer
 import com.google.playlistmaker.search.domain.model.ErrorType
 import com.google.playlistmaker.search.domain.model.NetworkResult
 import com.google.playlistmaker.search.domain.model.Track
 import com.google.playlistmaker.search.domain.usecase.ClearHistoryUseCase
 import com.google.playlistmaker.search.domain.usecase.GetHistoryUseCase
 import com.google.playlistmaker.search.domain.usecase.SaveHistoryUseCase
-import com.google.playlistmaker.search.domain.usecase.TracksSearchUseCase
+import com.google.playlistmaker.search.domain.usecase.SearchTracksUseCase
 import com.google.playlistmaker.search.ui.model.SearchState
 
 class SearchVM(
-    private val tracksSearchUseCase: TracksSearchUseCase,
+    private val tracksSearchUseCase: SearchTracksUseCase,
     private val getHistoryUseCase: GetHistoryUseCase,
     private val saveHistoryUseCase: SaveHistoryUseCase,
     private val clearHistoryUseCase: ClearHistoryUseCase
@@ -31,13 +26,15 @@ class SearchVM(
         getHistory()
     }
 
-    fun getState(): LiveData<SearchState> = searchState
+    fun getSearchState(): LiveData<SearchState> {
+        return searchState
+    }
 
     fun searchTracks(input: String) {
         if (input.isBlank()) {
             getHistory()
         } else {
-            tracksSearchUseCase.execute(input, object : TracksSearchUseCase.TracksConsumer {
+            tracksSearchUseCase.execute(input, object : TracksConsumer {
                 override fun consume(foundTracks: NetworkResult<List<Track>, ErrorType>) {
                     when (foundTracks) {
                         is NetworkResult.Success -> renderState(
@@ -74,6 +71,10 @@ class SearchVM(
         }
     }
 
+    fun updateHistory(): List<Track> {
+        return getHistoryUseCase.execute()
+    }
+
     fun saveHistory(track: Track) {
         saveHistoryUseCase.execute(track)
     }
@@ -86,21 +87,4 @@ class SearchVM(
     private fun renderState(state: SearchState) {
         searchState.postValue(state)
     }
-
-    companion object {
-        fun getViewModelFactory(): ViewModelProvider.Factory = viewModelFactory {
-            initializer {
-                val searchUseCase = Creator.providerTracksSearchUseCase()
-                val getHistoryUseCase = Creator.providerGetHistoryUseCase()
-                val saveHistoryUseCase = Creator.providerSaveHistoryUseCase()
-                val clearHistoryUseCase = Creator.providerClearHistoryUseCase()
-                SearchVM(
-                    searchUseCase,
-                    getHistoryUseCase,
-                    saveHistoryUseCase,
-                    clearHistoryUseCase
-                )
-            }
-        }
-    }//rm
 }
