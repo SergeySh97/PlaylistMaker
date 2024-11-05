@@ -10,7 +10,6 @@ import com.google.playlistmaker.player.ui.viewmodel.PlayerVM
 import org.koin.androidx.viewmodel.dsl.viewModelOf
 import org.koin.core.module.dsl.bind
 import org.koin.core.module.dsl.factoryOf
-import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
 
 
