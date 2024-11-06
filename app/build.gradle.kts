@@ -6,7 +6,7 @@ plugins {
 
 android {
     namespace = "com.google.playlistmaker"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.google.playlistmaker"

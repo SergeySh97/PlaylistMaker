@@ -30,11 +30,10 @@ class MediaActivity : AppCompatActivity() {
             insets
         }
         binding.btBack.setOnClickListener{
-            @Suppress("DEPRECATION")
-            onBackPressed()
+            finish()
         }
-        val favoriteList = intent.getStringExtra("favorite_list") ?: ""
-        val playlist = intent.getStringExtra("playlist") ?: ""
+        val favoriteList = intent.getStringExtra(FAVORITE_LIST) ?: ""
+        val playlist = intent.getStringExtra(PLAYLIST) ?: ""
         binding.viewPager.adapter = MediaViewPagerAdapter(
             fragmentManager = supportFragmentManager,
             lifecycle = lifecycle,
@@ -53,5 +52,10 @@ class MediaActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         tabLayoutMediator?.detach()
+    }
+
+    private companion object {
+        const val FAVORITE_LIST = "favorite_list"
+        const val PLAYLIST = "playlist"
     }
 }

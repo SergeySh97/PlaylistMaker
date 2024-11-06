@@ -18,14 +18,15 @@ class FavoriteFragment: Fragment() {
         parametersOf(favoriteList)
     }
 
-    private lateinit var binding: FragmentFavoriteBinding
+    private var _binding: FragmentFavoriteBinding? = null
+    private val binding: FragmentFavoriteBinding get() = requireNotNull(_binding) { "Binding wasn't initiliazed!" }
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?,
+        savedInstanceState: Bundle?
     ): View {
-        binding = FragmentFavoriteBinding.inflate(inflater, container, false)
+        _binding = FragmentFavoriteBinding.inflate(inflater, container, false)
         return binding.root
     }
 
