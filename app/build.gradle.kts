@@ -6,7 +6,7 @@ plugins {
 
 android {
     namespace = "com.google.playlistmaker"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.google.playlistmaker"
@@ -60,4 +60,6 @@ dependencies {
     implementation(libs.com.squareup.okhttp3.logging.interceptor)
     //Koin
     implementation(libs.io.insert.koin)
+    //viewpager2
+    implementation (libs.androidx.viewpager2)
 }

@@ -1,6 +1,7 @@
 package com.google.playlistmaker.app
 
 import android.app.Application
+import com.google.playlistmaker.media.di.mediaModule
 import com.google.playlistmaker.player.di.playerModule
 import com.google.playlistmaker.search.di.searchModule
 import com.google.playlistmaker.settings.di.settingsModule
@@ -20,7 +21,12 @@ class App : Application() {
         startKoin {
             androidLogger(Level.DEBUG)
             androidContext(this@App)
-            modules(listOf(searchModule, settingsModule, playerModule))
+            modules(listOf(
+                searchModule,
+                settingsModule,
+                playerModule,
+                mediaModule
+                ))
         }
 
         val switchTheme: SwitchThemeUseCase by inject()
