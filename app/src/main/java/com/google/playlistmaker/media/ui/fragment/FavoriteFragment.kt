@@ -1,4 +1,4 @@
-package com.google.playlistmaker.media.ui.activity
+package com.google.playlistmaker.media.ui.fragment
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -14,12 +14,12 @@ import org.koin.core.parameter.parametersOf
 class FavoriteFragment: Fragment() {
 
     private val viewModel: FavoriteVM by viewModel {
-        val favoriteList = requireArguments().getString(FAVORITE_LIST) ?: ""
+        val favoriteList = ""
         parametersOf(favoriteList)
     }
 
     private var _binding: FragmentFavoriteBinding? = null
-    private val binding: FragmentFavoriteBinding get() = requireNotNull(_binding) { "Binding wasn't initiliazed!" }
+    private val binding: FragmentFavoriteBinding get() = requireNotNull(_binding) { "Binding wasn't initialized!" }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -44,13 +44,18 @@ class FavoriteFragment: Fragment() {
         }
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
     companion object {
         private const val FAVORITE_LIST = "favorite_list"
 
-        fun newInstance(favoriteList: String) = FavoriteFragment().apply {
+        fun newInstance(playlist: String) = FavoriteFragment().apply {
             arguments = Bundle().apply {
-                putString(FAVORITE_LIST, favoriteList)
+                putString(FAVORITE_LIST, playlist)
             }
         }
-    }
+        }
 }

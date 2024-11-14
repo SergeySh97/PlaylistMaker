@@ -22,7 +22,7 @@
 
     <style name="MainLayout">
         <item name="android:orientation">vertical</item>
-        <item name="android:background">@color/main_background</item>
+        <item name="android:background">@color/white</item>
     </style>
 
     <style name="SettingsLayout">
@@ -116,5 +116,10 @@
 
     <style name="TabLayoutTextAppearance" parent="TextAppearance.Design.Tab">
         <item name="textAllCaps">false</item>
+    </style>
+
+    <style name="MainBottomNavigationView">
+        <item name="itemTextAppearanceActive">@color/blue</item>
+        <item name="itemTextAppearanceInactive">@color/black_for_text</item>
     </style>
 </resources>

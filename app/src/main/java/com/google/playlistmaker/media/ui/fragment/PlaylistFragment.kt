@@ -1,4 +1,4 @@
-package com.google.playlistmaker.media.ui.activity
+package com.google.playlistmaker.media.ui.fragment
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -19,7 +19,7 @@ class PlaylistFragment: Fragment() {
     }
 
     private var _binding: FragmentPlaylistBinding? = null
-    private val binding: FragmentPlaylistBinding  get() = requireNotNull(_binding) { "Binding wasn't initiliazed!" }
+    private val binding: FragmentPlaylistBinding  get() = requireNotNull(_binding) { "Binding wasn't initialized!" }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -36,6 +36,11 @@ class PlaylistFragment: Fragment() {
         viewModel.observePlaylist().observe(viewLifecycleOwner) {
             showFavoriteList(it)
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     private fun showFavoriteList(playlist: String) {

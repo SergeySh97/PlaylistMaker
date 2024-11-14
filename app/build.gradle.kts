@@ -60,6 +60,9 @@ dependencies {
     implementation(libs.com.squareup.okhttp3.logging.interceptor)
     //Koin
     implementation(libs.io.insert.koin)
-    //viewpager2
+    //Viewpager2
     implementation (libs.androidx.viewpager2)
+    //Navigation Graph
+    implementation(libs.androidx.navigation.fragment.ktx)
+    implementation(libs.androidx.navigation.ui.ktx)
 }

@@ -117,4 +117,9 @@
     <style name="TabLayoutTextAppearance" parent="TextAppearance.Design.Tab">
         <item name="textAllCaps">false</item>
     </style>
+
+    <style name="MainBottomNavigationView">
+        <item name="itemTextAppearanceActive">@color/blue</item>
+        <item name="itemTextAppearanceInactive">@color/white</item>
+    </style>
 </resources>
