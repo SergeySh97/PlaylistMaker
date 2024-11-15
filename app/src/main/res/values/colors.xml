@@ -9,5 +9,6 @@
     <color name="grey_hint_search">#AEAFB4</color>
     <color name="ripple_color">#AEAFB4</color>
     <color name="grey_background_search">#E6E8EB</color>
+    <color name="switch_track">#9FBBF3</color>
 
 </resources>

@@ -5,11 +5,9 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.widget.Toast
-import androidx.activity.ComponentActivity
-import androidx.activity.enableEdgeToEdge
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
+import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.google.gson.Gson
 import com.google.playlistmaker.R
@@ -23,7 +21,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.text.SimpleDateFormat
 import java.util.Locale
 
-class PlayerActivity : ComponentActivity() {
+class PlayerActivity : AppCompatActivity() {
     private val binding: ActivityPlayerBinding by lazy {
         ActivityPlayerBinding.inflate(layoutInflater)
     }
@@ -33,7 +31,6 @@ class PlayerActivity : ComponentActivity() {
     private val dateFormat by lazy { SimpleDateFormat("mm:ss", Locale.getDefault()) }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
         setContentView(binding.root)
         initializeUI()
         viewModel.getPlayerState().observe(this) {
@@ -46,11 +43,6 @@ class PlayerActivity : ComponentActivity() {
 
     private fun initializeUI() {
 
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
-        }
         track = Gson().fromJson(intent.getStringExtra(TRACK), Track::class.java)
         mainThreadHandler = Handler(Looper.getMainLooper())
         track?.let { t ->
@@ -77,8 +69,7 @@ class PlayerActivity : ComponentActivity() {
                 val radiusInPixels = (radiusInDp * density).toInt()
                 Glide.with(applicationContext)
                     .load(t.getCoverArtwork())
-                    .transform(RoundedCorners(radiusInPixels))
-                    .centerCrop()
+                    .transform(CenterCrop(), RoundedCorners(radiusInPixels))
                     .placeholder(R.drawable.placeholder_300dp)
                     .into(ivAlbum)
 

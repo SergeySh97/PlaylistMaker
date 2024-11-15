@@ -121,5 +121,11 @@
     <style name="MainBottomNavigationView">
         <item name="itemTextAppearanceActive">@color/blue</item>
         <item name="itemTextAppearanceInactive">@color/black_for_text</item>
+        <item name="android:background">@color/white</item>
+    </style>
+
+    <style name="ThemeSwitchCompat">
+        <item name="thumbTint">@color/grey_hint_search</item>
+        <item name="trackTint">@color/grey_background_search</item>
     </style>
 </resources>

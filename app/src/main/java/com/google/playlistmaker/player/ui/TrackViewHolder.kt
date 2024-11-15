@@ -5,6 +5,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.google.playlistmaker.R
 import com.google.playlistmaker.search.domain.model.Track
@@ -29,8 +30,7 @@ class TrackViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val radiusInPixels = (radiusInDp * density).toInt()
         Glide.with(itemView)
             .load(trackData.artworkUrl100)
-            .transform(RoundedCorners(radiusInPixels))
-            .centerCrop()
+            .transform(CenterCrop(), RoundedCorners(radiusInPixels))
             .placeholder(R.drawable.placeholder_35dp)
             .into(artworkUrl100)
         artistName.requestLayout()

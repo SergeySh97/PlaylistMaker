@@ -52,9 +52,9 @@ class FavoriteFragment: Fragment() {
     companion object {
         private const val FAVORITE_LIST = "favorite_list"
 
-        fun newInstance(playlist: String) = FavoriteFragment().apply {
+        fun newInstance(favoriteList: String) = FavoriteFragment().apply {
             arguments = Bundle().apply {
-                putString(FAVORITE_LIST, playlist)
+                putString(FAVORITE_LIST, favoriteList)
             }
         }
         }
