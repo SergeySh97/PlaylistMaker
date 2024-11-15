@@ -70,7 +70,7 @@ class PlayerActivity : AppCompatActivity() {
                 Glide.with(applicationContext)
                     .load(t.getCoverArtwork())
                     .transform(CenterCrop(), RoundedCorners(radiusInPixels))
-                    .placeholder(R.drawable.placeholder_300dp)
+                    .placeholder(R.drawable.placeholder)
                     .into(ivAlbum)
 
                 btBack.setOnClickListener {
