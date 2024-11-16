@@ -6,20 +6,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".search.ui.activity.SearchActivity"
+    tools:context=".search.ui.fragment.SearchFragment"
     style="@style/BackgroundWB">
 
     <androidx.appcompat.widget.Toolbar
         android:layout_width="match_parent"
         android:layout_height="@dimen/toolbar_height">
-
-        <ImageView
-            android:id="@+id/bt_back"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:contentDescription="@string/arrow_left"
-            android:layout_marginEnd="@dimen/margin_settings_iv"
-            android:src="@drawable/bt_back" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -49,7 +41,8 @@
             android:paddingEnd="0dp"
             style="@style/SearchEditText"
             android:imeOptions="actionDone"
-            android:singleLine="true" />
+            android:singleLine="true"
+            android:textCursorDrawable="@drawable/search_cursor"/>
 
         <ImageView
             android:id="@+id/iv_clear"
@@ -125,7 +118,7 @@
         android:layout_height="44dp"
         android:layout_gravity="center"
         android:layout_marginTop="140dp"
-        android:indeterminateTint="@color/main_background"
+        android:indeterminateTint="@color/blue"
         android:visibility="gone" />
 
     <androidx.recyclerview.widget.RecyclerView

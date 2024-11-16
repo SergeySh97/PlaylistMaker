@@ -2,12 +2,13 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="main_background">#3772E7</color>
+    <color name="blue">#3772E7</color>
     <color name="black_for_text">#1A1B22</color>
     <color name="black_for_vectors">#1A1B22</color>
     <color name="transparent">#00000000</color>
     <color name="grey_hint_search">#AEAFB4</color>
     <color name="ripple_color">#AEAFB4</color>
     <color name="grey_background_search">#E6E8EB</color>
+    <color name="switch_track">#9FBBF3</color>
 
 </resources>

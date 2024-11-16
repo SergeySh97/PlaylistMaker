@@ -1,20 +1,19 @@
-package com.google.playlistmaker.search.ui.activity
+package com.google.playlistmaker.search.ui.fragment
 
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
-import androidx.activity.enableEdgeToEdge
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
+import androidx.fragment.app.Fragment
 import com.google.gson.Gson
 import com.google.playlistmaker.R
-import com.google.playlistmaker.databinding.ActivitySearchBinding
+import com.google.playlistmaker.databinding.FragmentSearchBinding
 import com.google.playlistmaker.player.ui.OnTrackClickListener
 import com.google.playlistmaker.player.ui.TrackAdapter
 import com.google.playlistmaker.player.ui.activity.PlayerActivity
@@ -28,55 +27,60 @@ import com.google.playlistmaker.utils.Extensions.gone
 import com.google.playlistmaker.utils.Extensions.visible
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class SearchActivity : AppCompatActivity(), OnTrackClickListener {
+class SearchFragment : Fragment(), OnTrackClickListener {
 
     private val listener: OnTrackClickListener by lazy {
         this
     }
     private val viewModel: SearchVM by viewModel()
 
-    private val binding: ActivitySearchBinding by lazy {
-        ActivitySearchBinding.inflate(layoutInflater)
-    }
+    private var _binding: FragmentSearchBinding? = null
+    private val binding: FragmentSearchBinding get() = requireNotNull(_binding) { "Binding wasn't initialized!" }
     private val searchRunnable: Runnable by lazy {
         Runnable { searchText.let { viewModel.searchTracks(it) } }
     }
 
     private var searchText = ""
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-        setContentView(binding.root)
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        _binding = FragmentSearchBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         initializeUI()
     }
 
     override fun onResume() {
         super.onResume()
-        viewModel.getSearchState().observe(this) {
+        viewModel.getSearchState().observe(viewLifecycleOwner) {
             renderState(it)
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     override fun onTrackClick(track: Track) {
         if (clickDebounce()) {
             viewModel.saveHistory(track)
-            val intent = Intent(applicationContext, PlayerActivity::class.java)
+            val intent = Intent(requireContext(), PlayerActivity::class.java)
             intent.putExtra(TRACK, Gson().toJson(track))
             startActivity(intent)
         }
     }
 
     private fun initializeUI() {
-        ViewCompat.setOnApplyWindowInsetsListener(binding.main) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
-        }
+
         with(binding) {
-            btBack.setOnClickListener {
-                @Suppress("DEPRECATION") onBackPressed()
-            }
             btClearHistory.setOnClickListener {
                 viewModel.clearHistory()
             }
@@ -86,7 +90,7 @@ class SearchActivity : AppCompatActivity(), OnTrackClickListener {
                 llError.gone()
                 rvSearch.gone()
                 val imm =
-                    applicationContext.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                    context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
                 imm.hideSoftInputFromWindow(etSearch.windowToken, 0)
             }
             etSearch.addTextChangedListener(
