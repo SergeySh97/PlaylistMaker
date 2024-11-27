@@ -1,51 +1,63 @@
-package com.google.playlistmaker.player.ui.activity
+package com.google.playlistmaker.player.ui.fragment
 
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
-import com.google.gson.Gson
 import com.google.playlistmaker.R
-import com.google.playlistmaker.databinding.ActivityPlayerBinding
+import com.google.playlistmaker.databinding.FragmentPlayerBinding
 import com.google.playlistmaker.player.ui.model.PlayerState
 import com.google.playlistmaker.player.ui.viewmodel.PlayerVM
-import com.google.playlistmaker.search.domain.model.Track
 import com.google.playlistmaker.utils.Extensions.gone
 import com.google.playlistmaker.utils.Extensions.visible
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.text.SimpleDateFormat
 import java.util.Locale
 
-class PlayerActivity : AppCompatActivity() {
-    private val binding: ActivityPlayerBinding by lazy {
-        ActivityPlayerBinding.inflate(layoutInflater)
-    }
-    private var track: Track? = null
+class PlayerFragment : Fragment() {
+
+    private var _binding: FragmentPlayerBinding? = null
+    private val binding: FragmentPlayerBinding get() = requireNotNull(_binding) { "Binding wasn't initialized" }
+
+    private val args by navArgs<PlayerFragmentArgs>()
+    private val track by lazy { args.track }
     private var mainThreadHandler: Handler? = null
     private val viewModel: PlayerVM by viewModel()
     private val dateFormat by lazy { SimpleDateFormat("mm:ss", Locale.getDefault()) }
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(binding.root)
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        _binding = FragmentPlayerBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         initializeUI()
-        viewModel.getPlayerState().observe(this) {
+        viewModel.getPlayerState().observe(viewLifecycleOwner) {
             renderState(it)
         }
-        viewModel.getPlayingState().observe(this) {
+        viewModel.getPlayingState().observe(viewLifecycleOwner) {
             playbackControl(it)
         }
     }
 
     private fun initializeUI() {
 
-        track = Gson().fromJson(intent.getStringExtra(TRACK), Track::class.java)
         mainThreadHandler = Handler(Looper.getMainLooper())
-        track?.let { t ->
+        track.let { t ->
             with(binding) {
                 tvTrackName.text = t.trackName
                 tvArtistName.text = t.artistName.trim()
@@ -67,15 +79,14 @@ class PlayerActivity : AppCompatActivity() {
                 val radiusInDp = 8
                 val density = resources.displayMetrics.density
                 val radiusInPixels = (radiusInDp * density).toInt()
-                Glide.with(applicationContext)
+                Glide.with(requireContext())
                     .load(t.getCoverArtwork())
                     .transform(CenterCrop(), RoundedCorners(radiusInPixels))
                     .placeholder(R.drawable.placeholder)
                     .into(ivAlbum)
 
                 btBack.setOnClickListener {
-                    @Suppress("DEPRECATION")
-                    onBackPressed()
+                    requireActivity().onBackPressedDispatcher.onBackPressed()
                 }
             }
         }
@@ -140,7 +151,7 @@ class PlayerActivity : AppCompatActivity() {
     }
 
     private fun showToast() {
-        Toast.makeText(applicationContext, R.string.null_preview_url, Toast.LENGTH_LONG)
+        Toast.makeText(requireContext(), R.string.null_preview_url, Toast.LENGTH_LONG)
             .show()
     }
 

@@ -1,6 +1,7 @@
 [versions]
 agp = "8.7.2"
 kotlin = "1.9.22"
+parcelize = "2.1.0-RC2"
 coreKtx = "1.15.0"
 junit = "4.13.2"
 junitVersion = "1.2.1"
@@ -40,4 +41,6 @@ io-insert-koin = { group = "io.insert-koin", name = "koin-android", version.ref 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+jetbrains-kotlin-parcelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref = "parcelize"}
+androidx-navigation-safeargs = { id = "androidx.navigation.safeargs.kotlin", version.ref = "navigation"}
 

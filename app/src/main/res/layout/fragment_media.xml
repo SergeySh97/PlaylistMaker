@@ -35,7 +35,7 @@
         app:layout_constraintTop_toTopOf="@id/toolbar_media"
         app:layout_constraintStart_toStartOf="@id/toolbar_media"
         app:layout_constraintEnd_toEndOf="@id/toolbar_media"
-        style="@style/TabLayout"/>
+        style="@style/TabLayout" />
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/viewPager"

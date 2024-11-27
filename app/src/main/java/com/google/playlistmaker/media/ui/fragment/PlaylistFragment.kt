@@ -11,7 +11,7 @@ import com.google.playlistmaker.utils.Extensions.visible
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
-class PlaylistFragment: Fragment() {
+class PlaylistFragment : Fragment() {
 
     private val viewModel: PlaylistVM by viewModel {
         val playlist = requireArguments().getString(PLAYLIST) ?: ""
@@ -19,7 +19,7 @@ class PlaylistFragment: Fragment() {
     }
 
     private var _binding: FragmentPlaylistBinding? = null
-    private val binding: FragmentPlaylistBinding  get() = requireNotNull(_binding) { "Binding wasn't initialized!" }
+    private val binding: FragmentPlaylistBinding get() = requireNotNull(_binding) { "Binding wasn't initialized!" }
 
     override fun onCreateView(
         inflater: LayoutInflater,

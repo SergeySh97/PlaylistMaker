@@ -19,7 +19,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initializeUI() {
-        val navHostFragment = supportFragmentManager.findFragmentById(R.id.fcv_main) as NavHostFragment
+        val navHostFragment =
+            supportFragmentManager.findFragmentById(R.id.fcv_main) as NavHostFragment
         binding.bnvMain.setupWithNavController(navHostFragment.navController)
     }
 }

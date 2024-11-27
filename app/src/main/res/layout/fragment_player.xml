@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".player.ui.activity.PlayerActivity"
+    tools:context=".player.ui.fragment.PlayerFragment"
     style="@style/BackgroundWB">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -30,9 +30,10 @@
 
         <ImageView
             android:id="@+id/bt_back"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:contentDescription="@string/arrow_left"
+            android:layout_marginTop="20dp"
             app:layout_constraintStart_toEndOf="@+id/left_guideline"
             app:layout_constraintTop_toTopOf="parent"
             android:src="@drawable/bt_back" />
@@ -201,19 +202,23 @@
             android:layout_width="wrap_content"
             android:layout_height="16dp"
             android:layout_marginTop="16dp"
+            android:layout_marginBottom="54dp"
             android:text="@string/country"
             style="@style/TrackInfoLeft"
             app:layout_constraintTop_toBottomOf="@+id/tv_genre"
-            app:layout_constraintStart_toStartOf="@+id/left_guideline" />
+            app:layout_constraintStart_toStartOf="@+id/left_guideline"
+            app:layout_constraintBottom_toBottomOf="parent" />
 
         <TextView
             android:id="@+id/tv_country"
             android:layout_width="wrap_content"
             android:layout_height="16dp"
             android:layout_marginTop="16dp"
+            android:layout_marginBottom="54dp"
             style="@style/TrackInfoRight"
             app:layout_constraintTop_toBottomOf="@+id/tv_genre"
             app:layout_constraintEnd_toEndOf="@+id/right_guideline"
+            app:layout_constraintBottom_toBottomOf="parent"
             tools:text="Великобритания" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 

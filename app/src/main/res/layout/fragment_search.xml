@@ -42,7 +42,7 @@
             style="@style/SearchEditText"
             android:imeOptions="actionDone"
             android:singleLine="true"
-            android:textCursorDrawable="@drawable/search_cursor"/>
+            android:textCursorDrawable="@drawable/search_cursor" />
 
         <ImageView
             android:id="@+id/iv_clear"
@@ -162,6 +162,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
+            android:layout_marginBottom="54dp"
             android:layout_gravity="center"
             android:textAllCaps="false"
             android:text="@string/clear_history"

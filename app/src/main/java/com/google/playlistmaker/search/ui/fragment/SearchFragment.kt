@@ -2,7 +2,6 @@ package com.google.playlistmaker.search.ui.fragment
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,12 +10,11 @@ import android.view.inputmethod.InputMethodManager
 import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
-import com.google.gson.Gson
+import androidx.navigation.fragment.findNavController
 import com.google.playlistmaker.R
 import com.google.playlistmaker.databinding.FragmentSearchBinding
 import com.google.playlistmaker.player.ui.OnTrackClickListener
 import com.google.playlistmaker.player.ui.TrackAdapter
-import com.google.playlistmaker.player.ui.activity.PlayerActivity
 import com.google.playlistmaker.search.domain.model.ErrorType
 import com.google.playlistmaker.search.domain.model.Track
 import com.google.playlistmaker.search.ui.ClickDebounce.clickDebounce
@@ -72,9 +70,9 @@ class SearchFragment : Fragment(), OnTrackClickListener {
     override fun onTrackClick(track: Track) {
         if (clickDebounce()) {
             viewModel.saveHistory(track)
-            val intent = Intent(requireContext(), PlayerActivity::class.java)
-            intent.putExtra(TRACK, Gson().toJson(track))
-            startActivity(intent)
+            findNavController().navigate(
+                SearchFragmentDirections.actionSearchFragmentToPlayerFragment(track)
+            )
         }
     }
 
@@ -95,16 +93,16 @@ class SearchFragment : Fragment(), OnTrackClickListener {
             }
             etSearch.addTextChangedListener(
                 onTextChanged = { s, _, _, _ ->
-                searchText = s.toString()
-                if (s?.isEmpty() == true) {
-                    viewModel.getHistory()
-                } else {
-                    viewModel.loading()
-                    searchDebounce(searchRunnable)
-                }
-            }, afterTextChanged = { editable ->
-                ivClear.visibility = if (editable.isNullOrEmpty()) View.GONE else View.VISIBLE
-            })
+                    searchText = s.toString()
+                    if (s?.isEmpty() == true) {
+                        viewModel.getHistory()
+                    } else {
+                        viewModel.loading()
+                        searchDebounce(searchRunnable)
+                    }
+                }, afterTextChanged = { editable ->
+                    ivClear.visibility = if (editable.isNullOrEmpty()) View.GONE else View.VISIBLE
+                })
         }
     }
 
@@ -193,7 +191,7 @@ class SearchFragment : Fragment(), OnTrackClickListener {
         }
     }
 
-    private companion object {
+    companion object {
         const val TRACK = "track"
     }
 }

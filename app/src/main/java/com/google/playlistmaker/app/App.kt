@@ -21,12 +21,14 @@ class App : Application() {
         startKoin {
             androidLogger(Level.DEBUG)
             androidContext(this@App)
-            modules(listOf(
-                searchModule,
-                settingsModule,
-                playerModule,
-                mediaModule
-                ))
+            modules(
+                listOf(
+                    searchModule,
+                    settingsModule,
+                    playerModule,
+                    mediaModule
+                )
+            )
         }
 
         val switchTheme: SwitchThemeUseCase by inject()
