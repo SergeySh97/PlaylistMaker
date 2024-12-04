@@ -6,14 +6,16 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.google.playlistmaker.R
 import com.google.playlistmaker.databinding.ActivityMainBinding
+import com.google.playlistmaker.utils.Extensions.gone
+import com.google.playlistmaker.utils.Extensions.visible
 
 class MainActivity : AppCompatActivity() {
-    private val binding: ActivityMainBinding by lazy {
-        ActivityMainBinding.inflate(layoutInflater)
-    }
+    private var _binding: ActivityMainBinding? = null
+    private val binding: ActivityMainBinding get() = requireNotNull(_binding) { "Binding wasn't initialized!" }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        _binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         initializeUI()
     }
@@ -22,5 +24,13 @@ class MainActivity : AppCompatActivity() {
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.fcv_main) as NavHostFragment
         binding.bnvMain.setupWithNavController(navHostFragment.navController)
+
+        navHostFragment.navController.addOnDestinationChangedListener { _, destination, _ ->
+            if (destination.id == R.id.playerFragment) {
+                binding.bnvMain.gone()
+            } else {
+                binding.bnvMain.visible()
+            }
+        }
     }
 }

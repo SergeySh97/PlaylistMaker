@@ -68,11 +68,9 @@ class PlayerFragment : Fragment() {
                 @SuppressLint("SetTextI18n")
                 tvTrackTime.text = DEFAULT_TIME
                 if (t.collectionName == NULL) {
-                    tvAlbum.gone()
-                    tvAlbumHint.gone()
+                    llAlbum.gone()
                 } else {
-                    tvAlbum.visible()
-                    tvAlbumHint.visible()
+                    llAlbum.visible()
                     tvAlbum.text = t.collectionName
                 }
                 val radiusInDp = 8
