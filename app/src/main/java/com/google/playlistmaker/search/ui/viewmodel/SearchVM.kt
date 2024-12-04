@@ -3,15 +3,16 @@ package com.google.playlistmaker.search.ui.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.google.playlistmaker.search.domain.api.TracksConsumer
+import androidx.lifecycle.viewModelScope
 import com.google.playlistmaker.search.domain.model.ErrorType
-import com.google.playlistmaker.search.domain.model.NetworkResult
 import com.google.playlistmaker.search.domain.model.Track
 import com.google.playlistmaker.search.domain.usecase.ClearHistoryUseCase
 import com.google.playlistmaker.search.domain.usecase.GetHistoryUseCase
 import com.google.playlistmaker.search.domain.usecase.SaveHistoryUseCase
 import com.google.playlistmaker.search.domain.usecase.SearchTracksUseCase
 import com.google.playlistmaker.search.ui.model.SearchState
+import com.google.playlistmaker.utils.debounce
+import kotlinx.coroutines.launch
 
 class SearchVM(
     private val tracksSearchUseCase: SearchTracksUseCase,
@@ -22,6 +23,15 @@ class SearchVM(
 
     private val searchState = MutableLiveData<SearchState>()
 
+    private var searchText: String? = null ?: ""
+
+    private val trackSearchDebounce = debounce<String>(
+        SEARCH_DEBOUNCE_DELAY,
+        viewModelScope,
+        true
+    )
+    { searchTracks(it) }
+
     init {
         getHistory()
     }
@@ -30,36 +40,46 @@ class SearchVM(
         return searchState
     }
 
-    fun searchTracks(input: String) {
+    private fun searchTracks(input: String) {
         if (input.isBlank()) {
             getHistory()
         } else {
-            tracksSearchUseCase.execute(input, object : TracksConsumer {
-                override fun consume(foundTracks: NetworkResult<List<Track>, ErrorType>) {
-                    when (foundTracks) {
-                        is NetworkResult.Success -> renderState(
-                            SearchState.SearchContent(
-                                foundTracks.data
-                            )
-                        )
-
-                        is NetworkResult.Error -> searchError(foundTracks.error)
+            viewModelScope.launch {
+                tracksSearchUseCase
+                    .execute(input)
+                    .collect { pair ->
+                        processResult(pair.first, pair.second)
                     }
-                }
-            })
+            }
         }
     }
 
-    fun searchError(error: ErrorType) {
-        val state = when (error) {
-            ErrorType.NOT_FOUND -> SearchState.NotFound
-            else -> SearchState.Error(error)
+    private fun processResult(foundTracks: List<Track>?, errorMessage: ErrorType?) {
+        val tracks = mutableListOf<Track>()
+        if (foundTracks != null) {
+            tracks.addAll(foundTracks)
         }
-        renderState(state)
+        when {
+            errorMessage != null -> {
+                renderState(SearchState.Error(errorMessage))
+            }
+
+            tracks.isEmpty() -> {
+                renderState(SearchState.NotFound)
+            }
+
+            else -> {
+                renderState(SearchState.SearchContent(tracks))
+            }
+        }
     }
 
-    fun loading() {
-        renderState(SearchState.Loading)
+    fun searchDebounce(input: String) {
+        if (searchText != input) {
+            renderState(SearchState.Loading)
+            searchText = input
+            trackSearchDebounce(input)
+        }
     }
 
     fun getHistory() {
@@ -86,5 +106,9 @@ class SearchVM(
 
     private fun renderState(state: SearchState) {
         searchState.postValue(state)
+    }
+
+    private companion object {
+        const val SEARCH_DEBOUNCE_DELAY = 2000L
     }
 }

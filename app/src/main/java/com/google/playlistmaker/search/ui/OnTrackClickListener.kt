@@ -1,4 +1,4 @@
-package com.google.playlistmaker.player.ui
+package com.google.playlistmaker.search.ui
 
 import com.google.playlistmaker.search.domain.model.Track
 

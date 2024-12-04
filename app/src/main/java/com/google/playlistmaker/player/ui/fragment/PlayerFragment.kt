@@ -2,8 +2,6 @@ package com.google.playlistmaker.player.ui.fragment
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -30,7 +28,6 @@ class PlayerFragment : Fragment() {
 
     private val args by navArgs<PlayerFragmentArgs>()
     private val track by lazy { args.track }
-    private var mainThreadHandler: Handler? = null
     private val viewModel: PlayerVM by viewModel()
     private val dateFormat by lazy { SimpleDateFormat("mm:ss", Locale.getDefault()) }
 
@@ -52,11 +49,13 @@ class PlayerFragment : Fragment() {
         viewModel.getPlayingState().observe(viewLifecycleOwner) {
             playbackControl(it)
         }
+        viewModel.getTimerState().observe(viewLifecycleOwner) {
+            binding.tvTrackTime.text = dateFormat.format(it)
+        }
     }
 
     private fun initializeUI() {
 
-        mainThreadHandler = Handler(Looper.getMainLooper())
         track.let { t ->
             with(binding) {
                 tvTrackName.text = t.trackName
@@ -92,18 +91,6 @@ class PlayerFragment : Fragment() {
         }
     }
 
-    private fun trackCurrentTime(): Runnable {
-        return object : Runnable {
-            override fun run() {
-                if (viewModel.getPlayingState().value == true) {
-                    mainThreadHandler!!.postDelayed(this, TRACK_TIME_DELAY)
-                    val trackTime = dateFormat.format(viewModel.getCurrentPosition())
-                    binding.tvTrackTime.text = trackTime
-                }
-            }
-        }
-    }
-
     private fun renderState(state: PlayerState) {
         when (state) {
             is PlayerState.Prepared -> preparePlayer()
@@ -134,8 +121,8 @@ class PlayerFragment : Fragment() {
     @SuppressLint("SetTextI18n")
     private fun preparePlayer() {
         with(binding) {
-            if (track!!.previewUrl != NULL) {
-                viewModel.preparePlayer(track!!.previewUrl,
+            if (track.previewUrl != NULL) {
+                viewModel.preparePlayer(track.previewUrl,
                     {
                         onPreparedListener()
                     }, {
@@ -161,7 +148,6 @@ class PlayerFragment : Fragment() {
 
     private fun onCompletionListener() {
         with(binding) {
-            mainThreadHandler!!.removeCallbacks(trackCurrentTime())
             btPlay.setImageResource(R.drawable.bt_play)
             tvTrackTime.text = DEFAULT_TIME
             viewModel.pausePlayer()
@@ -169,12 +155,10 @@ class PlayerFragment : Fragment() {
     }
 
     private fun startPlayer() {
-        mainThreadHandler!!.post(trackCurrentTime())
         viewModel.startPlayer()
     }
 
     private fun pausePlayer() {
-        mainThreadHandler!!.removeCallbacks(trackCurrentTime())
         viewModel.pausePlayer()
     }
 
@@ -187,15 +171,12 @@ class PlayerFragment : Fragment() {
 
     override fun onDestroy() {
         super.onDestroy()
-        mainThreadHandler!!.removeCallbacks(trackCurrentTime())
         viewModel.releasePlayer()
     }
 
     private companion object {
-        const val TRACK = "track"
         const val NULL = "null"
         const val NONE = "Неизвестно"
-        const val TRACK_TIME_DELAY = 300L
         const val DEFAULT_TIME = "00:00"
     }
 }
