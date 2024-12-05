@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 
 class PlaylistVM(
     playlist: String
-): ViewModel() {
+) : ViewModel() {
 
     private val playlistLiveData = MutableLiveData(playlist)
 

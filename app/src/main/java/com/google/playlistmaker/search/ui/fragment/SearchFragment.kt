@@ -2,7 +2,6 @@ package com.google.playlistmaker.search.ui.fragment
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,20 +10,19 @@ import android.view.inputmethod.InputMethodManager
 import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
-import com.google.gson.Gson
+import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.google.playlistmaker.R
 import com.google.playlistmaker.databinding.FragmentSearchBinding
-import com.google.playlistmaker.player.ui.OnTrackClickListener
-import com.google.playlistmaker.player.ui.TrackAdapter
-import com.google.playlistmaker.player.ui.activity.PlayerActivity
 import com.google.playlistmaker.search.domain.model.ErrorType
 import com.google.playlistmaker.search.domain.model.Track
-import com.google.playlistmaker.search.ui.ClickDebounce.clickDebounce
-import com.google.playlistmaker.search.ui.SearchDebounce.searchDebounce
+import com.google.playlistmaker.search.ui.OnTrackClickListener
+import com.google.playlistmaker.search.ui.TrackAdapter
 import com.google.playlistmaker.search.ui.model.SearchState
 import com.google.playlistmaker.search.ui.viewmodel.SearchVM
 import com.google.playlistmaker.utils.Extensions.gone
 import com.google.playlistmaker.utils.Extensions.visible
+import com.google.playlistmaker.utils.debounce
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SearchFragment : Fragment(), OnTrackClickListener {
@@ -36,11 +34,13 @@ class SearchFragment : Fragment(), OnTrackClickListener {
 
     private var _binding: FragmentSearchBinding? = null
     private val binding: FragmentSearchBinding get() = requireNotNull(_binding) { "Binding wasn't initialized!" }
-    private val searchRunnable: Runnable by lazy {
-        Runnable { searchText.let { viewModel.searchTracks(it) } }
-    }
 
     private var searchText = ""
+
+    private var onTrackClickDebounce: ((Track) -> Unit)? = null
+
+    private var _adapter: TrackAdapter? = null
+    private val adapter: TrackAdapter get() = requireNotNull(_adapter) { "Adapter wasn't initialized!" }
 
 
     override fun onCreateView(
@@ -57,28 +57,24 @@ class SearchFragment : Fragment(), OnTrackClickListener {
         initializeUI()
     }
 
-    override fun onResume() {
-        super.onResume()
-        viewModel.getSearchState().observe(viewLifecycleOwner) {
-            renderState(it)
-        }
-    }
-
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+        _adapter = null
     }
 
     override fun onTrackClick(track: Track) {
-        if (clickDebounce()) {
-            viewModel.saveHistory(track)
-            val intent = Intent(requireContext(), PlayerActivity::class.java)
-            intent.putExtra(TRACK, Gson().toJson(track))
-            startActivity(intent)
-        }
+        viewModel.saveHistory(track)
+        findNavController().navigate(
+            SearchFragmentDirections.actionSearchFragmentToPlayerFragment(track)
+        )
     }
 
     private fun initializeUI() {
+
+        viewModel.getSearchState().observe(viewLifecycleOwner) {
+            renderState(it)
+        }
 
         with(binding) {
             btClearHistory.setOnClickListener {
@@ -87,25 +83,26 @@ class SearchFragment : Fragment(), OnTrackClickListener {
             ivClear.setOnClickListener {
                 etSearch.text?.clear()
                 viewModel.getHistory()
-                llError.gone()
-                rvSearch.gone()
                 val imm =
                     context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
                 imm.hideSoftInputFromWindow(etSearch.windowToken, 0)
             }
             etSearch.addTextChangedListener(
                 onTextChanged = { s, _, _, _ ->
-                searchText = s.toString()
-                if (s?.isEmpty() == true) {
-                    viewModel.getHistory()
-                } else {
-                    viewModel.loading()
-                    searchDebounce(searchRunnable)
-                }
-            }, afterTextChanged = { editable ->
-                ivClear.visibility = if (editable.isNullOrEmpty()) View.GONE else View.VISIBLE
-            })
+                    searchText = s.toString()
+                    if (s?.isBlank() == true) {
+                        //Делаю повторный поиск, чтобы скинуть последний отправленный запрос на сервер
+                        viewModel.searchDebounce(searchText)
+                        viewModel.getHistory()
+                    } else {
+                        viewModel.searchDebounce(searchText)
+                    }
+                }, afterTextChanged = { editable ->
+                    ivClear.visibility = if (editable.isNullOrEmpty()) View.GONE else View.VISIBLE
+                })
         }
+        onTrackClickDebounce = debounce(CLICK_DEBOUNCE_DELAY, lifecycleScope, false)
+        { onTrackClick(it) }
     }
 
     private fun renderState(state: SearchState) {
@@ -124,7 +121,7 @@ class SearchFragment : Fragment(), OnTrackClickListener {
         showLoading(false)
         with(binding) {
             val recyclerView = rvSearch
-            val adapter = TrackAdapter(searchList, listener)
+            _adapter = TrackAdapter(searchList, listener)
             llError.gone()
             recyclerView.visible()
             recyclerView.adapter = adapter
@@ -153,8 +150,7 @@ class SearchFragment : Fragment(), OnTrackClickListener {
                     tvError.text = getString(R.string.internet_problem)
                     rvSearch.gone()
                     btRefresh.setOnClickListener {
-                        viewModel.loading()
-                        searchDebounce(searchRunnable)
+                        viewModel.searchDebounce(searchText)
                     }
                 }
             }
@@ -166,11 +162,12 @@ class SearchFragment : Fragment(), OnTrackClickListener {
         showLoading(false)
         with(binding) {
             val historyList = viewModel.updateHistory()
-            val adapter = TrackAdapter(historyList, listener)
-            val recyclerView = rvHistory
+            _adapter = TrackAdapter(historyList, listener)
+            val recyclerView = rvSearch
             llError.gone()
-            rvSearch.gone()
-            llHistory.visible()
+            tvHistory.visible()
+            rvSearch.visible()
+            btClearHistory.visible()
             recyclerView.visible()
             recyclerView.adapter = adapter
             adapter.notifyDataSetChanged()
@@ -180,20 +177,23 @@ class SearchFragment : Fragment(), OnTrackClickListener {
     private fun goneHistory() {
         showLoading(false)
         with(binding) {
-            llHistory.gone()
+            tvHistory.gone()
+            rvSearch.gone()
+            btClearHistory.gone()
         }
     }
 
     private fun showLoading(isVisible: Boolean) {
         with(binding) {
-            llHistory.gone()
+            tvHistory.gone()
             llError.gone()
             rvSearch.gone()
+            btClearHistory.gone()
             progressBar.isVisible = isVisible
         }
     }
 
     private companion object {
-        const val TRACK = "track"
+        const val CLICK_DEBOUNCE_DELAY = 1000L
     }
 }

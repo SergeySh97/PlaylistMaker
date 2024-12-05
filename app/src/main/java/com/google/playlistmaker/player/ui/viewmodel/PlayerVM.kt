@@ -3,8 +3,12 @@ package com.google.playlistmaker.player.ui.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.google.playlistmaker.player.domain.usecase.PlayerInteractor
 import com.google.playlistmaker.player.ui.model.PlayerState
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 class PlayerVM(
     private val playerInteractor: PlayerInteractor
@@ -12,10 +16,12 @@ class PlayerVM(
 
     private val playerState = MutableLiveData<PlayerState>()
     private val playingState = MutableLiveData<Boolean>()
+    private val timerState = MutableLiveData<Long>()
+    private var timerJob: Job? = null
 
     init {
         renderState(PlayerState.Prepared)
-        playingState.value = false
+        playingState.value = playerInteractor.isPlaying()
     }
 
     fun getPlayerState(): LiveData<PlayerState> {
@@ -24,6 +30,10 @@ class PlayerVM(
 
     fun getPlayingState(): LiveData<Boolean> {
         return playingState
+    }
+
+    fun getTimerState(): LiveData<Long> {
+        return timerState
     }
 
     fun preparePlayer(
@@ -35,19 +45,24 @@ class PlayerVM(
     }
 
     fun startPlayer() {
-        playingState.value = true
+        startTimer()
         playerInteractor.start()
+        playingState.value = playerInteractor.isPlaying()
         renderState(PlayerState.Playing)
     }
 
     fun pausePlayer() {
-        playingState.value = false
+        timerJob?.cancel()
         playerInteractor.pause()
+        playingState.value = playerInteractor.isPlaying()
         renderState(PlayerState.Paused)
     }
 
-    fun getCurrentPosition(): Long {
-        return playerInteractor.getCurrentPosition()
+    private fun startTimer() {
+        timerJob = viewModelScope.launch {
+            delay(TRACK_TIME_DELAY)
+            timerState.postValue(playerInteractor.getCurrentPosition())
+        }
     }
 
     fun releasePlayer() {
@@ -56,5 +71,9 @@ class PlayerVM(
 
     private fun renderState(state: PlayerState) {
         playerState.postValue(state)
+    }
+
+    private companion object {
+        const val TRACK_TIME_DELAY = 300L
     }
 }

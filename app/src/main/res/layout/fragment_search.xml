@@ -42,7 +42,7 @@
             style="@style/SearchEditText"
             android:imeOptions="actionDone"
             android:singleLine="true"
-            android:textCursorDrawable="@drawable/search_cursor"/>
+            android:textCursorDrawable="@drawable/search_cursor" />
 
         <ImageView
             android:id="@+id/iv_clear"
@@ -121,40 +121,32 @@
         android:indeterminateTint="@color/blue"
         android:visibility="gone" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_search"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="16dp"
-        android:visibility="gone"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
-
     <LinearLayout
-        android:id="@+id/ll_history"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_gravity="center"
-        android:layout_marginTop="42dp"
-        android:visibility="gone">
+        android:orientation="vertical">
 
         <TextView
+            android:id="@+id/tv_history"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="42dp"
             android:layout_marginHorizontal="24dp"
             android:layout_gravity="center"
             android:fontFamily="@font/ys_display_medium"
             android:text="@string/looking_for"
             android:textSize="19sp"
             android:gravity="center"
+            android:visibility="gone"
             style="@style/TextColorBW" />
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_history"
+            android:id="@+id/rv_search"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
             android:layout_marginTop="16dp"
+            android:visibility="gone"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
         <Button
@@ -162,13 +154,18 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
+            android:layout_marginBottom="54dp"
             android:layout_gravity="center"
             android:textAllCaps="false"
             android:text="@string/clear_history"
             android:fontFamily="@font/ys_display_medium"
             android:textSize="14sp"
             android:letterSpacing="0"
+            android:visibility="gone"
             app:cornerRadius="54dp"
             style="@style/BackgroundTintBW" />
+
     </LinearLayout>
+
+
 </LinearLayout>

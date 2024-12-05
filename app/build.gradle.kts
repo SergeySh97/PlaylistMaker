@@ -1,6 +1,10 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
+    //SafeArgs
+    alias(libs.plugins.jetbrains.kotlin.parcelize)
+    alias(libs.plugins.androidx.navigation.safeargs)
+
     id("org.jetbrains.kotlin.kapt")
 }
 
@@ -61,8 +65,10 @@ dependencies {
     //Koin
     implementation(libs.io.insert.koin)
     //Viewpager2
-    implementation (libs.androidx.viewpager2)
+    implementation(libs.androidx.viewpager2)
     //Navigation Graph
     implementation(libs.androidx.navigation.fragment.ktx)
     implementation(libs.androidx.navigation.ui.ktx)
+    //Coroutines
+    implementation(libs.org.jetbrains.coroutines.android)
 }

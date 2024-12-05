@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 
 class FavoriteVM(
     favoriteList: String
-): ViewModel() {
+) : ViewModel() {
 
     private val favoriteListLiveData = MutableLiveData(favoriteList)
 

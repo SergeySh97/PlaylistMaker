@@ -123,6 +123,7 @@
         <item name="itemTextAppearanceInactive">@color/white</item>
         <item name="android:background">@color/black_for_vectors</item>
     </style>
+
     <style name="ThemeSwitchCompat">
         <item name="thumbTint">@color/blue</item>
         <item name="trackTint">@color/switch_track</item>

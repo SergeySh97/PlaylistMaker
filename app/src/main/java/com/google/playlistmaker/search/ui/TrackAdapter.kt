@@ -1,4 +1,4 @@
-package com.google.playlistmaker.player.ui
+package com.google.playlistmaker.search.ui
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

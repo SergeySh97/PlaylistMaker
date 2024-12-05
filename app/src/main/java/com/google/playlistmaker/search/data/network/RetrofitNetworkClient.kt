@@ -6,27 +6,30 @@ import android.net.NetworkCapabilities
 import com.google.playlistmaker.search.data.network.models.Response
 import com.google.playlistmaker.search.data.network.models.StatusCode
 import com.google.playlistmaker.search.data.network.models.TracksSearchRequest
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 class RetrofitNetworkClient(
     private val itunesApi: ItunesApi,
     private val context: Context
 ) : NetworkClient {
 
-    override fun doRequest(dto: Any): Response {
-        return if (isConnected(context)) {
-            if (dto is TracksSearchRequest) {
-                val response = itunesApi.searchTracks(dto.expression).execute()
-                val body = response.body() ?: Response()
-                if (response.body()?.results?.isNotEmpty() == true) {
-                    body.apply { resultCode = StatusCode(response.code()) }
-                } else {
-                    Response().apply { resultCode = StatusCode(404) }
-                }
-            } else {
-                Response().apply { resultCode = StatusCode(400) }
+    override suspend fun doRequest(dto: Any): Response {
+        if (!isConnected(context)) {
+            return Response().apply { resultCode = StatusCode(-1) }
+        }
+
+        if (dto !is TracksSearchRequest) {
+            return Response().apply { resultCode = StatusCode(400) }
+        }
+
+        return withContext(Dispatchers.IO) {
+            try {
+                val response = itunesApi.searchTracks(dto.expression)
+                response.apply { resultCode = StatusCode(200) }
+            } catch (e: Throwable) {
+                Response().apply { resultCode = StatusCode(501) }
             }
-        } else {
-            Response().apply { resultCode = StatusCode(-1) }
         }
     }
 
