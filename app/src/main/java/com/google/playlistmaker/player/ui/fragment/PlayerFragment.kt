@@ -52,11 +52,15 @@ class PlayerFragment : Fragment() {
         viewModel.getTimerState().observe(viewLifecycleOwner) {
             binding.tvTrackTime.text = dateFormat.format(it)
         }
+        viewModel.getFavoriteState().observe(viewLifecycleOwner) {
+            favoriteState(it)
+        }
     }
 
     private fun initializeUI() {
 
         track.let { t ->
+            viewModel.checkFavorites(t.trackId)
             with(binding) {
                 tvTrackName.text = t.trackName
                 tvArtistName.text = t.artistName.trim()
@@ -84,6 +88,9 @@ class PlayerFragment : Fragment() {
 
                 btBack.setOnClickListener {
                     requireActivity().onBackPressedDispatcher.onBackPressed()
+                }
+                btLike.setOnClickListener {
+                    viewModel.onFavoriteClicked(t)
                 }
             }
         }
@@ -158,6 +165,13 @@ class PlayerFragment : Fragment() {
 
     private fun pausePlayer() {
         viewModel.pausePlayer()
+    }
+
+    private fun favoriteState(isFavorite: Boolean) {
+        if (isFavorite) {
+               binding.btLike.setImageResource(R.drawable.bt_like_full)
+        } else binding.btLike.setImageResource(R.drawable.bt_like_empty)
+        track.isFavorite = isFavorite
     }
 
     override fun onPause() {

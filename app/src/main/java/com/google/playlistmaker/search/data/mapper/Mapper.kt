@@ -1,5 +1,6 @@
 package com.google.playlistmaker.search.data.mapper
 
+import com.google.playlistmaker.db.data.entity.TrackEntity
 import com.google.playlistmaker.search.data.dto.TrackDto
 import com.google.playlistmaker.search.domain.model.Track
 
@@ -29,5 +30,19 @@ object Mapper {
         primaryGenreName = primaryGenreName,
         country = country,
         previewUrl = previewUrl
+    )
+
+    fun Track.toTrackEntity(timestamp: Long) = TrackEntity(
+        trackName = trackName,
+        artistName = artistName,
+        trackTimeMillis = trackTimeMillis.toLong(),
+        artworkUrl100 = artworkUrl100,
+        trackId = trackId,
+        collectionName = collectionName,
+        releaseDate = releaseDate,
+        primaryGenreName = primaryGenreName,
+        country = country,
+        previewUrl = previewUrl,
+        timestamp = timestamp
     )
 }

@@ -1,0 +1,15 @@
+package com.google.playlistmaker.db.domain.usecase
+
+import com.google.playlistmaker.db.data.entity.TrackEntity
+import kotlinx.coroutines.flow.Flow
+
+interface FavoritesInteractor {
+
+    suspend fun addToFavorites(track: TrackEntity)
+
+    fun deleteFromFavorites(track: TrackEntity)
+
+    fun getFavoritesTracks(): Flow<List<TrackEntity>>
+
+    suspend fun getFavoritesId(): List<Int>
+}

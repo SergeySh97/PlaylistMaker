@@ -1,10 +1,6 @@
-package com.google.playlistmaker.search.domain.model
+package com.google.playlistmaker.media.ui.model
 
-import android.os.Parcelable
-import kotlinx.parcelize.Parcelize
-
-@Parcelize
-data class Track(
+data class MediaTrack(
     val trackName: String,
     val artistName: String,
     val trackTimeMillis: String,
@@ -15,7 +11,6 @@ data class Track(
     val primaryGenreName: String,
     val country: String,
     val previewUrl: String,
+    val timestamp: Long,
     var isFavorite: Boolean = false
-) : Parcelable {
-    fun getCoverArtwork() = artworkUrl100.replaceAfterLast('/', "512x512bb.jpg")
-}
+)
