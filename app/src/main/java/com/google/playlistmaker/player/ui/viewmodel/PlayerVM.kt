@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.google.playlistmaker.db.domain.usecase.FavoritesInteractor
+import com.google.playlistmaker.favorites.domain.usecase.FavoritesInteractor
 import com.google.playlistmaker.player.domain.usecase.PlayerInteractor
 import com.google.playlistmaker.player.ui.model.PlayerState
 import com.google.playlistmaker.search.data.mapper.Mapper.toTrackEntity
@@ -101,11 +101,7 @@ class PlayerVM(
     fun checkFavorites(trackId: Int) {
         viewModelScope.launch {
             val favoritesList = favoritesInteractor.getFavoritesId()
-            if (favoritesList.contains(trackId)) {
-                favoriteState.postValue(true)
-            } else {
-                favoriteState.postValue(false)
-            }
+            favoriteState.postValue(favoritesList.contains(trackId))
         }
     }
 

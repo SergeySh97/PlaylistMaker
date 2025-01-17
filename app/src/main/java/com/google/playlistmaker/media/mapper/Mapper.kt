@@ -1,6 +1,6 @@
 package com.google.playlistmaker.media.mapper
 
-import com.google.playlistmaker.db.data.entity.TrackEntity
+import com.google.playlistmaker.favorites.data.entity.TrackEntity
 import com.google.playlistmaker.media.ui.model.MediaTrack
 import com.google.playlistmaker.search.domain.model.Track
 

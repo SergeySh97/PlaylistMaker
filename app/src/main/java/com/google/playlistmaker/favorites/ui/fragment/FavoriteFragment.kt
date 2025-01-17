@@ -1,4 +1,4 @@
-package com.google.playlistmaker.media.ui.fragment
+package com.google.playlistmaker.favorites.ui.fragment
 
 import android.annotation.SuppressLint
 import android.os.Bundle
@@ -11,9 +11,10 @@ import com.google.playlistmaker.databinding.FragmentFavoriteBinding
 import com.google.playlistmaker.media.mapper.Mapper.toTrack
 import com.google.playlistmaker.media.ui.MediaTrackAdapter
 import com.google.playlistmaker.media.ui.OnMediaTrackClickListener
-import com.google.playlistmaker.media.ui.model.FavoriteState
+import com.google.playlistmaker.favorites.ui.model.FavoriteState
 import com.google.playlistmaker.media.ui.model.MediaTrack
-import com.google.playlistmaker.media.ui.viewmodel.FavoriteVM
+import com.google.playlistmaker.favorites.ui.viewmodel.FavoriteVM
+import com.google.playlistmaker.media.ui.fragment.MediaFragmentDirections
 import com.google.playlistmaker.utils.Extensions.gone
 import com.google.playlistmaker.utils.Extensions.visible
 import org.koin.androidx.viewmodel.ext.android.viewModel

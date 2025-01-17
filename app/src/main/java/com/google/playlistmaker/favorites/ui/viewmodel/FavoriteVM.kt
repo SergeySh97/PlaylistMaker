@@ -1,12 +1,12 @@
-package com.google.playlistmaker.media.ui.viewmodel
+package com.google.playlistmaker.favorites.ui.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.google.playlistmaker.db.domain.usecase.FavoritesInteractor
+import com.google.playlistmaker.favorites.domain.usecase.FavoritesInteractor
 import com.google.playlistmaker.media.mapper.Mapper.toMediaTrack
-import com.google.playlistmaker.media.ui.model.FavoriteState
+import com.google.playlistmaker.favorites.ui.model.FavoriteState
 import kotlinx.coroutines.launch
 
 class FavoriteVM(

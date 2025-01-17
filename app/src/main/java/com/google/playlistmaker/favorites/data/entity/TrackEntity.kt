@@ -1,4 +1,4 @@
-package com.google.playlistmaker.db.data.entity
+package com.google.playlistmaker.favorites.data.entity
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

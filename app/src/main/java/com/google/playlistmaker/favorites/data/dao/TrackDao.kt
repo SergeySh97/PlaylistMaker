@@ -1,11 +1,11 @@
-package com.google.playlistmaker.db.data.dao
+package com.google.playlistmaker.favorites.data.dao
 
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.google.playlistmaker.db.data.entity.TrackEntity
+import com.google.playlistmaker.favorites.data.entity.TrackEntity
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -15,7 +15,7 @@ interface TrackDao {
     suspend fun insertTracks(track: TrackEntity)
 
     @Delete
-    fun deleteTrack(track: TrackEntity)
+    suspend fun deleteTrack(track: TrackEntity)
 
     @Query("SELECT * FROM track_table")
     fun getTracks(): Flow<List<TrackEntity>>

@@ -169,8 +169,10 @@ class PlayerFragment : Fragment() {
 
     private fun favoriteState(isFavorite: Boolean) {
         if (isFavorite) {
-               binding.btLike.setImageResource(R.drawable.bt_like_full)
-        } else binding.btLike.setImageResource(R.drawable.bt_like_empty)
+            binding.btLike.setImageResource(R.drawable.bt_like_full)
+        } else {
+            binding.btLike.setImageResource(R.drawable.bt_like_empty)
+        }
         track.isFavorite = isFavorite
     }
 

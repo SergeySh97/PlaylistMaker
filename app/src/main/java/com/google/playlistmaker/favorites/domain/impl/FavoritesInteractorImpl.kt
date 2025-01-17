@@ -1,8 +1,8 @@
-package com.google.playlistmaker.db.domain.impl
+package com.google.playlistmaker.favorites.domain.impl
 
-import com.google.playlistmaker.db.data.entity.TrackEntity
-import com.google.playlistmaker.db.domain.api.FavoritesRepository
-import com.google.playlistmaker.db.domain.usecase.FavoritesInteractor
+import com.google.playlistmaker.favorites.data.entity.TrackEntity
+import com.google.playlistmaker.favorites.domain.api.FavoritesRepository
+import com.google.playlistmaker.favorites.domain.usecase.FavoritesInteractor
 import kotlinx.coroutines.flow.Flow
 
 class FavoritesInteractorImpl(private val repository: FavoritesRepository): FavoritesInteractor {
@@ -10,7 +10,7 @@ class FavoritesInteractorImpl(private val repository: FavoritesRepository): Favo
         repository.addToFavorites(track)
     }
 
-    override fun deleteFromFavorites(track: TrackEntity) {
+    override suspend fun deleteFromFavorites(track: TrackEntity) {
         repository.deleteFromFavorites(track)
     }
 
