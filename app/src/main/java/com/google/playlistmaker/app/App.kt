@@ -1,6 +1,7 @@
 package com.google.playlistmaker.app
 
 import android.app.Application
+import com.google.playlistmaker.db.di.dbModule
 import com.google.playlistmaker.media.di.mediaModule
 import com.google.playlistmaker.player.di.playerModule
 import com.google.playlistmaker.search.di.searchModule
@@ -26,7 +27,8 @@ class App : Application() {
                     searchModule,
                     settingsModule,
                     playerModule,
-                    mediaModule
+                    mediaModule,
+                    dbModule
                 )
             )
         }

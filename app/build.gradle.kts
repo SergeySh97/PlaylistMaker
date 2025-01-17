@@ -4,20 +4,19 @@ plugins {
     //SafeArgs
     alias(libs.plugins.jetbrains.kotlin.parcelize)
     alias(libs.plugins.androidx.navigation.safeargs)
-
-    id("org.jetbrains.kotlin.kapt")
+    alias(libs.plugins.ksp)
 }
 
 android {
     namespace = "com.google.playlistmaker"
-    compileSdk = 35
+    compileSdk = libs.versions.compileSdk.get().toInt()
 
     defaultConfig {
         applicationId = "com.google.playlistmaker"
-        minSdk = 29
-        targetSdk = 34
-        versionCode = 1
-        versionName = "1.0"
+        minSdk = libs.versions.minSdk.get().toInt()
+        targetSdk = libs.versions.targetSdk.get().toInt()
+        versionCode = libs.versions.versionCode.get().toInt()
+        versionName = libs.versions.versionName.get()
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -32,15 +31,14 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.valueOf(libs.versions.java.get())
+        targetCompatibility = JavaVersion.valueOf(libs.versions.java.get())
     }
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = JavaVersion.valueOf(libs.versions.java.get()).toString()
     }
     buildFeatures {
         viewBinding = true
-        dataBinding = true
     }
 }
 
@@ -71,4 +69,9 @@ dependencies {
     implementation(libs.androidx.navigation.ui.ktx)
     //Coroutines
     implementation(libs.org.jetbrains.coroutines.android)
+    //Room
+    implementation(libs.androidx.room.runtime)
+    implementation(libs.androidx.room.ktx)
+    ksp(libs.androidx.room.compiler)
+
 }

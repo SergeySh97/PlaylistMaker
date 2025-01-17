@@ -101,7 +101,7 @@
             android:id="@+id/bt_like"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/like"
+            android:src="@drawable/bt_like_empty"
             android:background="@color/transparent"
             android:contentDescription="@string/add_into_favorites"
             app:layout_constraintTop_toTopOf="@+id/bt_play"
