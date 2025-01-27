@@ -90,9 +90,13 @@
         <item name="android:textColor">@color/black_for_vectors</item>
     </style>
 
+    <style name="TextColorHintBW">
+        <item name="android:textColorHint">@color/black_for_vectors</item>
+    </style>
+
     <style name="TabLayout" parent="Widget.Design.TabLayout">
         <item name="tabTextColor">@color/black_for_vectors</item>
-        <item name="tabRippleColor">@color/ripple_color</item>
+        <item name="tabRippleColor">@color/ripple</item>
         <item name="tabIndicatorColor">@color/black_for_vectors</item>
         <item name="android:textSize">14sp</item>
         <item name="fontFamily">@font/ys_display_medium</item>
@@ -127,5 +131,10 @@
     <style name="ThemeSwitchCompat">
         <item name="thumbTint">@color/grey_hint_search</item>
         <item name="trackTint">@color/grey_background_search</item>
+    </style>
+
+    <style name="RoundedCorners8dp">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">8dp</item>
     </style>
 </resources>

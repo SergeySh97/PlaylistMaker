@@ -6,9 +6,13 @@
     <color name="black_for_text">#1A1B22</color>
     <color name="black_for_vectors">#1A1B22</color>
     <color name="transparent">#00000000</color>
+    <color name="grey">#AEAFB4</color>
     <color name="grey_hint_search">#AEAFB4</color>
-    <color name="ripple_color">#AEAFB4</color>
+    <color name="ripple">#AEAFB4</color>
+    <color name="iv_playlist">#AEAFB4</color>
     <color name="grey_background_search">#E6E8EB</color>
+    <color name="grey_rounder">#E6E8EB</color>
     <color name="switch_track">#9FBBF3</color>
-
+    <color name="text_color_hint">#1A1B22</color>
+    <color name="et_creator">#AEAFB4</color>
 </resources>

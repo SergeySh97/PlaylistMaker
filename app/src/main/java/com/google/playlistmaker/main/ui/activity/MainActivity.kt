@@ -26,7 +26,7 @@ class MainActivity : AppCompatActivity() {
         binding.bnvMain.setupWithNavController(navHostFragment.navController)
 
         navHostFragment.navController.addOnDestinationChangedListener { _, destination, _ ->
-            if (destination.id == R.id.playerFragment) {
+            if (destination.id == R.id.playerFragment || destination.id == R.id.creatorFragment) {
                 binding.bnvMain.gone()
             } else {
                 binding.bnvMain.visible()

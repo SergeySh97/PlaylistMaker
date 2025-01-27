@@ -38,13 +38,9 @@ class MediaFragment : Fragment() {
     }
 
     private fun initializeUI() {
-        val favoriteList = FAVORITE_LIST
-        val playlist = PLAYLIST
         binding.viewPager.adapter = MediaViewPagerAdapter(
             fragmentManager = childFragmentManager,
-            lifecycle = lifecycle,
-            favoriteList = favoriteList,
-            playlist = playlist
+            lifecycle = lifecycle
         )
 
         tabLayoutMediator =
@@ -55,10 +51,5 @@ class MediaFragment : Fragment() {
                 }
             }
         tabLayoutMediator?.attach()
-    }
-
-    private companion object {
-        const val FAVORITE_LIST = ""
-        const val PLAYLIST = ""
     }
 }

@@ -8,7 +8,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.google.playlistmaker.R
-import com.google.playlistmaker.media.ui.model.MediaTrack
+import com.google.playlistmaker.media.domain.model.MediaTrack
 import java.text.SimpleDateFormat
 import java.util.Locale
 

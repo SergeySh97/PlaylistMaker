@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    tools:context=".media.ui.fragment.FavoriteFragment">
+    tools:context=".media.favorites.ui.fragment.FavoriteFragment">
 
     <LinearLayout
         android:id="@+id/ll_error"
