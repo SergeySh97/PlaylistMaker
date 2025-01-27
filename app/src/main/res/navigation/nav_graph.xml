@@ -14,6 +14,9 @@
             android:name="track"
             app:argType="com.google.playlistmaker.search.domain.model.Track"
             app:nullable="false" />
+        <action
+            android:id="@+id/action_playerFragment_to_creatorFragment"
+            app:destination="@id/creatorFragment" />
     </fragment>
     <fragment
         android:id="@+id/mediaFragment"
@@ -28,6 +31,9 @@
                 app:argType="com.google.playlistmaker.search.domain.model.Track"
                 app:nullable="false" />
         </action>
+        <action
+            android:id="@+id/action_mediaFragment_to_creatorFragment"
+            app:destination="@id/creatorFragment" />
     </fragment>
     <fragment
         android:id="@+id/searchFragment"
@@ -48,4 +54,9 @@
         android:name="com.google.playlistmaker.settings.ui.fragment.SettingsFragment"
         android:label="activity_settings"
         tools:layout="@layout/fragment_settings" />
+    <fragment
+        android:id="@+id/creatorFragment"
+        android:name="com.google.playlistmaker.media.creator.ui.fragment.CreatorFragment"
+        android:label="fragment_creator"
+        tools:layout="@layout/fragment_creator" />
 </navigation>

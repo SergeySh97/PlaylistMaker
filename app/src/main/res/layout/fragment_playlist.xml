@@ -5,10 +5,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
-    tools:context=".media.ui.fragment.PlaylistFragment">
+    tools:context=".media.playlists.ui.fragment.PlaylistFragment">
 
     <Button
-        android:id="@+id/bt_refresh"
+        android:id="@+id/bt_new_playlist"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
@@ -21,13 +21,22 @@
         app:cornerRadius="54dp"
         style="@style/BackgroundTintBW" />
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_playlist"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_gravity="center"
+        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager" />
+
     <LinearLayout
         android:id="@+id/ll_error"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_gravity="center"
-        android:visibility="visible">
+        android:visibility="visible"
+        tools:ignore="UseCompoundDrawables">
 
         <ImageView
             android:id="@+id/iv_error_smile"

@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.google.playlistmaker.R
-import com.google.playlistmaker.media.ui.model.MediaTrack
+import com.google.playlistmaker.media.domain.model.MediaTrack
 
 class MediaTrackAdapter(
     private var tracksList: List<MediaTrack>,

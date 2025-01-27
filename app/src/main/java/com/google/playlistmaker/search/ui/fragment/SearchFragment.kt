@@ -120,11 +120,10 @@ class SearchFragment : Fragment(), OnTrackClickListener {
     private fun showSearch(searchList: List<Track>) {
         showLoading(false)
         with(binding) {
-            val recyclerView = rvSearch
             _adapter = TrackAdapter(searchList, listener)
             llError.gone()
-            recyclerView.visible()
-            recyclerView.adapter = adapter
+            rvSearch.visible()
+            rvSearch.adapter = adapter
             adapter.notifyDataSetChanged()
         }
     }
@@ -163,13 +162,11 @@ class SearchFragment : Fragment(), OnTrackClickListener {
         with(binding) {
             val historyList = viewModel.updateHistory()
             _adapter = TrackAdapter(historyList, listener)
-            val recyclerView = rvSearch
             llError.gone()
             tvHistory.visible()
             rvSearch.visible()
             btClearHistory.visible()
-            recyclerView.visible()
-            recyclerView.adapter = adapter
+            rvSearch.adapter = adapter
             adapter.notifyDataSetChanged()
         }
     }

@@ -36,9 +36,7 @@ class SearchVM(
         getHistory()
     }
 
-    fun getSearchState(): LiveData<SearchState> {
-        return searchState
-    }
+    fun getSearchState(): LiveData<SearchState> = searchState
 
     private fun searchTracks(input: String) {
         if (input.isBlank()) {

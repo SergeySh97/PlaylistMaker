@@ -49,4 +49,17 @@
     <string name="new_playlist">Новый плейлист</string>
     <string name="favorite">Избранные треки</string>
     <string name="playlists">Плейлисты</string>
+    <string name="choose_photo_for_playlist">Выбрать фото для плейлиста</string>
+    <string name="playlist_name">Название*</string>
+    <string name="playlist_description">Описание</string>
+    <string name="create">Создать</string>
+    <string name="create_success">Плейлист создан!</string>
+    <string name="playlist_art">Обложка плейлиста</string>
+    <string name="add_to_playlist">Добавить в плейлист</string>
+    <string name="track_has_been_added_to_playlist">Трек добавлен в плейлист</string>
+    <string name="track_already_added_to_playlist">Трек уже находится в плейлисте</string>
+    <string name="finish_creating">Завершить создание плейлиста?</string>
+    <string name="data_will_be_lost">Все несохраненные данные будут потеряны</string>
+    <string name="cancel">Отмена</string>
+    <string name="complete">Завершить</string>
 </resources>
