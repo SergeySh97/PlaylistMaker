@@ -26,6 +26,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
+        android:layout_marginBottom="56dp"
         android:paddingHorizontal="12dp"
         android:layout_gravity="center"
         app:layoutManager="androidx.recyclerview.widget.GridLayoutManager" />
@@ -37,6 +38,7 @@
         android:orientation="vertical"
         android:layout_gravity="center"
         android:visibility="visible"
+        android:layout_marginBottom="56dp"
         tools:ignore="UseCompoundDrawables">
 
         <ImageView
