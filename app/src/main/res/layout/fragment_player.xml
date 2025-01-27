@@ -281,9 +281,9 @@
         android:orientation="vertical"
         android:paddingHorizontal="14dp"
         app:behavior_hideable="true"
-        app:behavior_peekHeight="360dp"
+        app:behavior_peekHeight="500dp"
         app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
-        style="@style/BackgroundWB">
+        android:background="@drawable/bottom_sheet_background">
 
         <View
             android:layout_width="50dp"
@@ -296,7 +296,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="42dp"
             android:paddingHorizontal="16dp"
             android:text="@string/add_to_playlist"
             android:textSize="20sp"

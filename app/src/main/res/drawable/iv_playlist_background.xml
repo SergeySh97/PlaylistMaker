@@ -5,8 +5,8 @@
     <stroke
         android:color="@color/iv_playlist"
         android:width="1dp"
-        android:dashWidth="40dp"
-        android:dashGap="40dp" />
+        android:dashWidth="30dp"
+        android:dashGap="30dp" />
 
     <corners android:radius="8dp" />
 </shape>

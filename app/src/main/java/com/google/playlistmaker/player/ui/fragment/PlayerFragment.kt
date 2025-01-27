@@ -209,17 +209,18 @@ class PlayerFragment : Fragment(), OnPlaylistClickListener {
                         onCompletionListener()
                     })
             } else {
-                showToast(R.string.null_preview_url)
+                Toast.makeText(
+                    requireContext(),
+                    R.string.null_preview_url,
+                    Toast.LENGTH_LONG).show()
                 btPlay.setOnClickListener {
-                    showToast(R.string.null_preview_url)
+                    Toast.makeText(
+                        requireContext(),
+                        R.string.null_preview_url,
+                        Toast.LENGTH_LONG).show()
                 }
             }
         }
-    }
-
-    private fun showToast(stringId: Int) {
-        Toast.makeText(requireContext(), getString(stringId), Toast.LENGTH_SHORT)
-            .show()
     }
 
     private fun onPreparedListener() {
@@ -263,17 +264,22 @@ class PlayerFragment : Fragment(), OnPlaylistClickListener {
 
     override fun onPlaylistClick(playlist: Playlist) {
         viewModel.addTrackInPlaylist(track, playlist)
-        addTrackIntoPlaylist(isTrackInPlaylist)
+        addTrackIntoPlaylist(isTrackInPlaylist, playlist.name)
     }
 
-    private fun addTrackIntoPlaylist(isTrackInPlaylist: Boolean?) {
+    private fun addTrackIntoPlaylist(isTrackInPlaylist: Boolean?, playlistName: String) {
         if (isTrackInPlaylist == true) {
-            showToast(R.string.track_already_added_to_playlist)
+            Toast.makeText(
+                requireContext(),
+                "Трек уже добавлен в плейлист $playlistName",
+                Toast.LENGTH_SHORT).show()
         } else {
             BottomSheetBehavior.from(binding.bsAddToPlaylist).state =
                 BottomSheetBehavior.STATE_HIDDEN
-            showToast(R.string.track_has_been_added_to_playlist)
-
+            Toast.makeText(
+                requireContext(),
+                "Добавлено в плейлист $playlistName",
+                Toast.LENGTH_SHORT).show()
         }
     }
 
