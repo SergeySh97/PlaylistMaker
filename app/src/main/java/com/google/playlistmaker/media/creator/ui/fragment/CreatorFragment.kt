@@ -8,7 +8,6 @@ import android.os.Environment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
@@ -20,21 +19,22 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.playlistmaker.R
 import com.google.playlistmaker.databinding.FragmentCreatorBinding
 import com.google.playlistmaker.media.creator.ui.viewmodel.CreatorVM
-import com.google.playlistmaker.media.playlists.domain.model.Playlist
+import com.google.playlistmaker.media.media.domain.model.Playlist
+import com.google.playlistmaker.utils.Extensions.showLongToast
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.io.File
 import java.io.FileOutputStream
 
-class CreatorFragment : Fragment() {
+open class CreatorFragment : Fragment() {
 
     private val viewModel: CreatorVM by viewModel()
 
     private var _binding: FragmentCreatorBinding? = null
-    private val binding: FragmentCreatorBinding get() = requireNotNull(_binding) { "Binding wasn't initialized!" }
+    val binding: FragmentCreatorBinding get() = requireNotNull(_binding) { "Binding wasn't initialized!" }
 
-    private var playlistName = ""
-    private var playlistDescription = ""
-    private var playlistFilePath = ""
+    var playlistName = ""
+    var playlistDescription = ""
+    var playlistFilePath = ""
     private val callback: OnBackPressedCallback by lazy {
         object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
@@ -64,9 +64,28 @@ class CreatorFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         initializeUI()
+
+        binding.btCreate.setOnClickListener {
+            viewModel.createPlaylist(
+                Playlist(
+                    playlistId = 0,
+                    name = playlistName,
+                    description = playlistDescription,
+                    filePath = playlistFilePath,
+                    trackList = "",
+                    tracksCount = 0
+                )
+            )
+            requireContext().showLongToast("Плейлист $playlistName создан")
+            findNavController().navigateUp()
+        }
+
+        binding.btBack.setOnClickListener {
+            requireActivity().onBackPressedDispatcher.onBackPressed()
+        }
     }
 
-    private fun initializeUI() {
+    fun initializeUI() {
 
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)
 
@@ -77,36 +96,16 @@ class CreatorFragment : Fragment() {
                     Glide.with(requireActivity())
                         .load(uri)
                         .centerCrop()
-                        .placeholder(R.drawable.placeholder)
                         .into(binding.ivCover)
                 }
             }
 
         with(binding) {
 
-            btBack.setOnClickListener {
-                requireActivity().onBackPressedDispatcher.onBackPressed()
-            }
-
             ivCover.setOnClickListener {
                 pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
             }
 
-            btCreate.setOnClickListener {
-                viewModel.createPlaylist(
-                    Playlist(
-                        playlistId = 0,
-                        name = playlistName,
-                        description = playlistDescription,
-                        filePath = playlistFilePath,
-                        trackList = "",
-                        tracksCount = 0
-                    )
-                )
-                Toast.makeText(requireContext(), "Плейлист $playlistName создан", Toast.LENGTH_LONG)
-                    .show()
-                findNavController().navigateUp()
-            }
             @Suppress("DEPRECATION")
             etPlaylistName.addTextChangedListener(
                 onTextChanged = { s, _, _, _ ->

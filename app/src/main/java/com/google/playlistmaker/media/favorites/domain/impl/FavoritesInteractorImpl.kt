@@ -1,6 +1,6 @@
 package com.google.playlistmaker.media.favorites.domain.impl
 
-import com.google.playlistmaker.media.domain.model.MediaTrack
+import com.google.playlistmaker.media.media.domain.model.MediaTrack
 import com.google.playlistmaker.media.favorites.domain.api.FavoritesRepository
 import com.google.playlistmaker.media.favorites.domain.usecase.FavoritesInteractor
 import kotlinx.coroutines.flow.Flow

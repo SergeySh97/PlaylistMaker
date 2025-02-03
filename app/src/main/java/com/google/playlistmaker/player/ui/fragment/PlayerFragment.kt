@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -15,12 +14,14 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.playlistmaker.R
 import com.google.playlistmaker.databinding.FragmentPlayerBinding
-import com.google.playlistmaker.media.playlists.domain.model.Playlist
+import com.google.playlistmaker.media.media.domain.model.Playlist
 import com.google.playlistmaker.media.playlists.ui.OnPlaylistClickListener
 import com.google.playlistmaker.media.playlists.ui.PlaylistBottomSheetAdapter
 import com.google.playlistmaker.player.ui.model.PlayerState
 import com.google.playlistmaker.player.ui.viewmodel.PlayerVM
 import com.google.playlistmaker.utils.Extensions.gone
+import com.google.playlistmaker.utils.Extensions.showLongToast
+import com.google.playlistmaker.utils.Extensions.showShortToast
 import com.google.playlistmaker.utils.Extensions.visible
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.text.SimpleDateFormat
@@ -209,15 +210,9 @@ class PlayerFragment : Fragment(), OnPlaylistClickListener {
                         onCompletionListener()
                     })
             } else {
-                Toast.makeText(
-                    requireContext(),
-                    R.string.null_preview_url,
-                    Toast.LENGTH_LONG).show()
+                requireContext().showLongToast(getString(R.string.null_preview_url))
                 btPlay.setOnClickListener {
-                    Toast.makeText(
-                        requireContext(),
-                        R.string.null_preview_url,
-                        Toast.LENGTH_LONG).show()
+                    requireContext().showLongToast(getString( R.string.null_preview_url))
                 }
             }
         }
@@ -269,17 +264,11 @@ class PlayerFragment : Fragment(), OnPlaylistClickListener {
 
     private fun addTrackIntoPlaylist(isTrackInPlaylist: Boolean?, playlistName: String) {
         if (isTrackInPlaylist == true) {
-            Toast.makeText(
-                requireContext(),
-                "Трек уже добавлен в плейлист $playlistName",
-                Toast.LENGTH_SHORT).show()
+            requireContext().showShortToast("Трек уже добавлен в плейлист $playlistName")
         } else {
             BottomSheetBehavior.from(binding.bsAddToPlaylist).state =
                 BottomSheetBehavior.STATE_HIDDEN
-            Toast.makeText(
-                requireContext(),
-                "Добавлено в плейлист $playlistName",
-                Toast.LENGTH_SHORT).show()
+            requireContext().showShortToast("Добавлено в плейлист $playlistName")
         }
     }
 

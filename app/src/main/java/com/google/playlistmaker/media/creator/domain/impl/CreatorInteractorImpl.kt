@@ -2,8 +2,8 @@ package com.google.playlistmaker.media.creator.domain.impl
 
 import com.google.playlistmaker.media.creator.domain.api.CreatorRepository
 import com.google.playlistmaker.media.creator.domain.usecase.CreatorInteractor
-import com.google.playlistmaker.media.domain.model.MediaTrack
-import com.google.playlistmaker.media.playlists.domain.model.Playlist
+import com.google.playlistmaker.media.media.domain.model.MediaTrack
+import com.google.playlistmaker.media.media.domain.model.Playlist
 import kotlinx.coroutines.flow.Flow
 
 class CreatorInteractorImpl(private val repository: CreatorRepository) : CreatorInteractor {
@@ -25,5 +25,9 @@ class CreatorInteractorImpl(private val repository: CreatorRepository) : Creator
 
     override suspend fun addTrackIntoPlaylist(track: MediaTrack, playlist: Playlist) {
         repository.addTrackIntoPlaylist(track, playlist)
+    }
+
+    override suspend fun deleteTrackFromPlaylist(track: MediaTrack, playlist: Playlist): Flow<Playlist> {
+       return repository.deleteTrackFromPlaylist(track, playlist)
     }
 }

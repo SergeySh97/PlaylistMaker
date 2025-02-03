@@ -3,7 +3,7 @@
     android:shape="rectangle">
 
     <stroke
-        android:color="@color/grey_background_search"
+        android:color="@color/grey_background"
         android:width="1dp" />
 
     <corners android:radius="8dp" />

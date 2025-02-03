@@ -8,7 +8,8 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.google.playlistmaker.R
-import com.google.playlistmaker.media.playlists.domain.model.Playlist
+import com.google.playlistmaker.media.media.domain.model.Playlist
+import com.google.playlistmaker.utils.Extensions.setTrackText
 
 class PlaylistViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     private val cover: ImageView = itemView.findViewById(R.id.iv_cover)
@@ -22,7 +23,7 @@ class PlaylistViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         if (playlist.tracksCount == 0) {
             tracksCount.text = null
         } else {
-            tracksCount.text = getTrackText(playlist.tracksCount)
+            tracksCount.setTrackText(playlist.tracksCount)
         }
 
 
@@ -34,19 +35,5 @@ class PlaylistViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             .transform(CenterCrop(), RoundedCorners(radiusInPixels))
             .placeholder(R.drawable.placeholder)
             .into(cover)
-    }
-
-    private fun getTrackText(count: Int): String {
-        return when {
-            count % 10 == 1 && count % 100 != 11 -> "$count $TRACK_1"
-            count % 10 in 2..4 && count % 100 !in 12..14 -> "$count $TRACK_2_4"
-            else -> "$count $TRACK_ELSE"
-        }
-    }
-
-    private companion object {
-        const val TRACK_1 = "трек"
-        const val TRACK_2_4 = "трека"
-        const val TRACK_ELSE = "треков"
     }
 }
