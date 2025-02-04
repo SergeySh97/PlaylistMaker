@@ -16,5 +16,6 @@ data class TrackInPlaylistEntity(
     val country: String,
     val trackTimeMillis: Long,
     val previewUrl: String,
-    val timestamp: Long
+    val timestamp: Long,
+    val playlistCount: Int
 )

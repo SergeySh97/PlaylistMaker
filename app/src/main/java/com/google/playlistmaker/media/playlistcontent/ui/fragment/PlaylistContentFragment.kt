@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
@@ -29,6 +30,8 @@ import com.google.playlistmaker.utils.Extensions.setTimeText
 import com.google.playlistmaker.utils.Extensions.setTrackText
 import com.google.playlistmaker.utils.Extensions.showLongToast
 import com.google.playlistmaker.utils.Extensions.visible
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.text.SimpleDateFormat
 import java.util.Locale
@@ -214,8 +217,11 @@ class PlaylistContentFragment : Fragment(), OnPlaylistTrackClickListener {
                 dialog.cancel()
             }.setPositiveButton(R.string.delete) { _, _ ->
                 viewModel.deletePlaylist(playlist)
-                requireContext().showLongToast("Плейлист ${playlist.name} удален")
-                findNavController().navigateUp()
+                lifecycleScope.launch {
+                    delay(500)
+                    requireContext().showLongToast("Плейлист ${playlist.name} удален")
+                    findNavController().navigateUp()
+                }
             }.show()
     }
 

@@ -3,15 +3,16 @@ package com.google.playlistmaker.media.creator.data.impl
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.google.playlistmaker.media.creator.AppDatabase
-import com.google.playlistmaker.media.creator.data.entity.TrackInPlaylistEntity
 import com.google.playlistmaker.media.creator.domain.api.CreatorRepository
 import com.google.playlistmaker.media.media.domain.model.MediaTrack
 import com.google.playlistmaker.media.media.mapper.Mapper.toPlaylist
 import com.google.playlistmaker.media.media.mapper.Mapper.toPlaylistEntity
 import com.google.playlistmaker.media.media.mapper.Mapper.toTrackInPlaylistEntity
 import com.google.playlistmaker.media.media.domain.model.Playlist
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.withContext
 
 class CreatorRepositoryImpl(
     private val appDatabase: AppDatabase
@@ -21,9 +22,13 @@ class CreatorRepositoryImpl(
     }
 
     override suspend fun deletePlaylist(playlist: Playlist) {
-        appDatabase.playlistDao().deletePlaylist(playlist.toPlaylistEntity())
-        jsonToTrackList(playlist.trackList).iterator().forEach {
-            checkTrackInPlaylists(it)
+        withContext(Dispatchers.Default) {
+            jsonToTrackList(playlist.trackList).forEach {
+                deleteTrackFromPlaylist(it, playlist)
+            }
+            withContext(Dispatchers.IO) {
+                appDatabase.playlistDao().deletePlaylistById(playlist.playlistId)
+            }
         }
     }
 
@@ -37,16 +42,31 @@ class CreatorRepositoryImpl(
     }
 
     override suspend fun addTrackIntoPlaylist(track: MediaTrack, playlist: Playlist) {
-        appDatabase.trackInPlaylistDao()
-            .insertTrack(track.toTrackInPlaylistEntity())
-        appDatabase.playlistDao()
-            .updatePlaylist(addTrackToTrackList(playlist, track).toPlaylistEntity())
+        val existingTrack = appDatabase.trackInPlaylistDao().getTrackById(track.trackId)
+
+        if (existingTrack == null) {
+            appDatabase.trackInPlaylistDao().insertTrack(track.toTrackInPlaylistEntity().copy(playlistCount = 1))
+        } else {
+            val playlistCount = existingTrack.playlistCount
+            appDatabase.trackInPlaylistDao().updateTrack(track.toTrackInPlaylistEntity().copy(playlistCount = playlistCount + 1))
+        }
+
+        appDatabase.playlistDao().updatePlaylist(addTrackToTrackList(playlist, track).toPlaylistEntity())
     }
 
     override suspend fun deleteTrackFromPlaylist(track: MediaTrack, playlist: Playlist): Flow<Playlist> {
-        checkTrackInPlaylists(track)
-        appDatabase.playlistDao()
-            .updatePlaylist(removeTrackFromTrackList(playlist, track).toPlaylistEntity())
+        val existingTrack = appDatabase.trackInPlaylistDao().getTrackById(track.trackId)
+
+        if (existingTrack != null) {
+            if (existingTrack.playlistCount > 1) {
+                appDatabase.trackInPlaylistDao().updateTrack(track.toTrackInPlaylistEntity()
+                    .copy(playlistCount = existingTrack.playlistCount - 1))
+            } else {
+                appDatabase.trackInPlaylistDao().deleteTrack(existingTrack)
+            }
+        }
+
+        appDatabase.playlistDao().updatePlaylist(removeTrackFromTrackList(playlist, track).toPlaylistEntity())
         return appDatabase.playlistDao().getPlaylistById(playlist.playlistId).map { it.toPlaylist() }
     }
 
@@ -77,29 +97,6 @@ class CreatorRepositoryImpl(
 
     private fun jsonToTrackList(json: String): List<MediaTrack> {
         val listType = object : TypeToken<List<MediaTrack>>() {}.type
-        return Gson().fromJson(json, listType) ?: emptyList()
-    }
-
-    private suspend fun checkTrackInPlaylists(track: MediaTrack) {
-        var playlistCount = 0
-        val playlistsFlow = appDatabase.playlistDao().getPlaylists()
-        playlistsFlow.map { playlists ->
-             playlists.iterator().forEach { playlist ->
-                 jsonEntityToTrackList(playlist.trackList).iterator().forEach nested@ {
-                     if (it.trackId == track.trackId) {
-                         playlistCount++
-                         return@nested
-                     }
-                 }
-             }
-        }
-        if (playlistCount < 2) {
-            appDatabase.trackInPlaylistDao().deleteTrack(track.toTrackInPlaylistEntity())
-        }
-    }
-
-    private fun jsonEntityToTrackList(json: String): List<TrackInPlaylistEntity> {
-        val listType = object : TypeToken<List<TrackInPlaylistEntity>>() {}.type
         return Gson().fromJson(json, listType) ?: emptyList()
     }
 }

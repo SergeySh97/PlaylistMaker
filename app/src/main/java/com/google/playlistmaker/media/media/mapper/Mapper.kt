@@ -61,7 +61,8 @@ object Mapper {
         country = country,
         trackTimeMillis = trackTimeMillis.toLong(),
         previewUrl = previewUrl,
-        timestamp = timestamp
+        timestamp = timestamp,
+        playlistCount = 0
     )
 
     fun Playlist.toPlaylistEntity() =
