@@ -1,6 +1,6 @@
 package com.google.playlistmaker.search.data.mapper
 
-import com.google.playlistmaker.media.domain.model.MediaTrack
+import com.google.playlistmaker.media.media.domain.model.MediaTrack
 import com.google.playlistmaker.search.data.dto.TrackDto
 import com.google.playlistmaker.search.domain.model.Track
 

@@ -1,7 +1,7 @@
 package com.google.playlistmaker.media.creator.domain.api
 
-import com.google.playlistmaker.media.domain.model.MediaTrack
-import com.google.playlistmaker.media.playlists.domain.model.Playlist
+import com.google.playlistmaker.media.media.domain.model.MediaTrack
+import com.google.playlistmaker.media.media.domain.model.Playlist
 import kotlinx.coroutines.flow.Flow
 
 interface CreatorRepository {
@@ -15,5 +15,7 @@ interface CreatorRepository {
     suspend fun updatePlaylist(playlist: Playlist)
 
     suspend fun addTrackIntoPlaylist(track: MediaTrack, playlist: Playlist)
+
+    suspend fun deleteTrackFromPlaylist(track: MediaTrack, playlist: Playlist): Flow<Playlist>
 
 }

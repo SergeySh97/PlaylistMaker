@@ -103,7 +103,7 @@
     </style>
 
     <style name="AdapterEllipse">
-        <item name="android:src">@drawable/ellipse</item>
+        <item name="android:src">@drawable/ellipse_grey</item>
     </style>
 
     <style name="TrackInfoLeft">

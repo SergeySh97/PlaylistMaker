@@ -20,7 +20,7 @@
     </fragment>
     <fragment
         android:id="@+id/mediaFragment"
-        android:name="com.google.playlistmaker.media.ui.fragment.MediaFragment"
+        android:name="com.google.playlistmaker.media.media.ui.fragment.MediaFragment"
         android:label="activity_media"
         tools:layout="@layout/fragment_media">
         <action
@@ -34,6 +34,14 @@
         <action
             android:id="@+id/action_mediaFragment_to_creatorFragment"
             app:destination="@id/creatorFragment" />
+        <action
+            android:id="@+id/action_mediaFragment_to_playlistContentFragment"
+            app:destination="@id/playlistContentFragment">
+            <argument
+                android:name="playlist"
+                app:argType="com.google.playlistmaker.media.media.domain.model.Playlist"
+                app:nullable="false" />
+        </action>
     </fragment>
     <fragment
         android:id="@+id/searchFragment"
@@ -59,4 +67,48 @@
         android:name="com.google.playlistmaker.media.creator.ui.fragment.CreatorFragment"
         android:label="fragment_creator"
         tools:layout="@layout/fragment_creator" />
+    <fragment
+        android:id="@+id/playlistContentFragment"
+        android:name="com.google.playlistmaker.media.playlistcontent.ui.fragment.PlaylistContentFragment"
+        android:label="fragment_playlist_content"
+        tools:layout="@layout/fragment_playlist_content">
+        <argument
+            android:name="playlist"
+            app:argType="com.google.playlistmaker.media.media.domain.model.Playlist"
+            app:nullable="false" />
+        <action
+            android:id="@+id/action_playlistContentFragment_to_playerFragment"
+            app:destination="@id/playerFragment">
+            <argument
+                android:name="track"
+                app:argType="com.google.playlistmaker.search.domain.model.Track"
+                app:nullable="false" />
+        </action>
+
+        <action
+            android:id="@+id/action_playlistContentFragment_to_editorFragment"
+            app:destination="@id/editorFragment" >
+            <argument
+                android:name="playlist"
+                app:argType="com.google.playlistmaker.media.media.domain.model.Playlist"
+                app:nullable="false" />
+        </action>
+    </fragment>
+    <fragment
+        android:id="@+id/editorFragment"
+        android:name="com.google.playlistmaker.media.editor.ui.fragment.EditorFragment"
+        android:label="CreatorFragment" >
+        <argument
+            android:name="playlist"
+            app:argType="com.google.playlistmaker.media.media.domain.model.Playlist"
+            app:nullable="false" />
+        <action
+            android:id="@+id/action_editorFragment_to_playlistContentFragment"
+            app:destination="@id/playlistContentFragment" >
+            <argument
+                android:name="playlist"
+                app:argType="com.google.playlistmaker.media.media.domain.model.Playlist"
+                app:nullable="false" />
+        </action>
+    </fragment>
 </navigation>

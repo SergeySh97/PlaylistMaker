@@ -1,10 +1,10 @@
 package com.google.playlistmaker.media.favorites.data.impl
 
 import com.google.playlistmaker.media.creator.AppDatabase
-import com.google.playlistmaker.media.domain.model.MediaTrack
+import com.google.playlistmaker.media.media.domain.model.MediaTrack
 import com.google.playlistmaker.media.favorites.domain.api.FavoritesRepository
-import com.google.playlistmaker.media.mapper.Mapper.toMediaTrack
-import com.google.playlistmaker.media.mapper.Mapper.toTrackEntity
+import com.google.playlistmaker.media.media.mapper.Mapper.toMediaTrack
+import com.google.playlistmaker.media.media.mapper.Mapper.toTrackEntity
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 

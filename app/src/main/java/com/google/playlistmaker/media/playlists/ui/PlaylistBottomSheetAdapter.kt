@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.google.playlistmaker.R
-import com.google.playlistmaker.media.playlists.domain.model.Playlist
+import com.google.playlistmaker.media.media.domain.model.Playlist
 
 class PlaylistBottomSheetAdapter(
     private var playlistList: List<Playlist>,

@@ -8,7 +8,7 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.google.playlistmaker.media.creator.domain.usecase.CreatorInteractor
 import com.google.playlistmaker.media.favorites.domain.usecase.FavoritesInteractor
-import com.google.playlistmaker.media.playlists.domain.model.Playlist
+import com.google.playlistmaker.media.media.domain.model.Playlist
 import com.google.playlistmaker.player.domain.usecase.PlayerInteractor
 import com.google.playlistmaker.player.ui.model.PlayerState
 import com.google.playlistmaker.search.data.mapper.Mapper.toMediaTrack

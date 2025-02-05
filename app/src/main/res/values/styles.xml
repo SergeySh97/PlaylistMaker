@@ -103,7 +103,7 @@
     </style>
 
     <style name="AdapterEllipse">
-        <item name="android:src">@drawable/ellipse</item>
+        <item name="android:src">@drawable/ellipse_grey</item>
     </style>
 
     <style name="TrackInfoLeft">
@@ -130,11 +130,16 @@
 
     <style name="ThemeSwitchCompat">
         <item name="thumbTint">@color/grey_hint_search</item>
-        <item name="trackTint">@color/grey_background_search</item>
+        <item name="trackTint">@color/grey_background</item>
     </style>
 
     <style name="RoundedCorners8dp">
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">8dp</item>
+    </style>
+
+    <style name="AlertDialogTheme" parent="ThemeOverlay.MaterialComponents.Dialog.Alert">
+        <item name="colorPrimary">@color/blue</item>
+        <item name="android:textColorPrimary">@color/black_for_text</item>
     </style>
 </resources>

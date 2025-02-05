@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.google.playlistmaker.R
-import com.google.playlistmaker.media.playlists.domain.model.Playlist
+import com.google.playlistmaker.media.media.domain.model.Playlist
 
 class PlaylistAdapter(
     private var playlistList: List<Playlist>,
@@ -19,9 +19,9 @@ class PlaylistAdapter(
     override fun onBindViewHolder(holder: PlaylistViewHolder, position: Int) {
         val playlistData = playlistList[position]
         holder.bind(playlistData)
-        /*holder.itemView.setOnClickListener {
+        holder.itemView.setOnClickListener {
             listener.onPlaylistClick(playlistData)
-        }*/
+        }
     }
 
     override fun getItemCount(): Int {

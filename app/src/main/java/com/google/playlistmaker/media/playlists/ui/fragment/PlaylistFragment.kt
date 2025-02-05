@@ -9,12 +9,12 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.google.playlistmaker.databinding.FragmentPlaylistBinding
-import com.google.playlistmaker.media.playlists.domain.model.Playlist
+import com.google.playlistmaker.media.media.domain.model.Playlist
 import com.google.playlistmaker.media.playlists.ui.OnPlaylistClickListener
 import com.google.playlistmaker.media.playlists.ui.PlaylistAdapter
 import com.google.playlistmaker.media.playlists.ui.model.PlaylistsState
 import com.google.playlistmaker.media.playlists.ui.viewmodel.PlaylistVM
-import com.google.playlistmaker.media.ui.fragment.MediaFragmentDirections
+import com.google.playlistmaker.media.media.ui.fragment.MediaFragmentDirections
 import com.google.playlistmaker.utils.Extensions.gone
 import com.google.playlistmaker.utils.Extensions.visible
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -85,7 +85,10 @@ class PlaylistFragment : Fragment(), OnPlaylistClickListener {
     }
 
     override fun onPlaylistClick(playlist: Playlist) {
-        TODO()
+        findNavController().navigate(
+            MediaFragmentDirections
+                .actionMediaFragmentToPlaylistContentFragment(playlist)
+        )
     }
 
     companion object {

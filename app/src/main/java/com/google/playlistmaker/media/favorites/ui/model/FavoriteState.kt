@@ -1,6 +1,6 @@
 package com.google.playlistmaker.media.favorites.ui.model
 
-import com.google.playlistmaker.media.domain.model.MediaTrack
+import com.google.playlistmaker.media.media.domain.model.MediaTrack
 
 
 interface FavoriteState {
