@@ -1,7 +1,5 @@
                                                                # Playlist Maker
 
-An app for searching music and creating playlists on base iTunes API
-
 
 <details>
 <summary>Tools and Technologies Used</summary>
